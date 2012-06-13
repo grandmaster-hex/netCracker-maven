@@ -18,18 +18,13 @@
          
             <h:graphicImage url="resources/images/terran.jpg" style="margin-left:250px;" />
             
-            <h:form>
-                <p:commandLink id="admin_enter" action="/faces/admin/login.xhtml">  
-                    <h:outputText value="Админ - ВХОД" />            
-                </p:commandLink><br />
-                <p:commandLink id="hr_enter" action="/faces/hr/login.xhtml">  
-                    <h:outputText value="HR - ВХОД" />            
-                </p:commandLink><br />
-                    <p:commandLink id="inter_enter" action="/faces/inter/login.xhtml">  
-                    <h:outputText value="Интервьюер - ВХОД" />            
-                </p:commandLink>
-            </h:form>
-            
+            <p:breadCrumb id="enterRoles">  
+                <p:menuitem value="#" url="#" />  
+                <p:menuitem value="Админ - ВХОД" url="/faces/admin/login.xhtml" />  
+                <p:menuitem value="HR - ВХОД" url="/faces/hr/login.xhtml" />  
+                <p:menuitem value="Интервьюер - ВХОД" url="/faces/inter/login.xhtml" />  
+            </p:breadCrumb> 
+          
          </ui:define>
     </ui:composition> 
         
