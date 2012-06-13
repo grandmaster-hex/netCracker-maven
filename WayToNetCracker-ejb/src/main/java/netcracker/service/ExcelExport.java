@@ -103,7 +103,7 @@ public class ExcelExport {
          * Write xls file
          */
         try {
-            fos = new FileOutputStream(new File("/home/lastride/DataBase.xls"));
+            fos = new FileOutputStream(new File("/home/phd/DataBase.xls"));
             workbook.write(fos);
         } catch (IOException e) {
             e.printStackTrace();
