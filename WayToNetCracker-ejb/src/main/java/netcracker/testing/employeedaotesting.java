@@ -24,10 +24,8 @@ public class employeedaotesting {
    */
    //---------------Testing getingAllUniversities();
         
-   FormDAO st = null;
-   st = DAOFactory.getFormDAO();
-   List a = new LinkedList();
-   a=st.getAllUniversities();
+   FormDAO st = DAOFactory.getFormDAO();
+   List a =st.getAllUniversities();
    System.out.print(a.toString());
    
 //---------------Testing createEmployees();
