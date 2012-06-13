@@ -5,12 +5,13 @@
 package beans;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
-import netcracker.dao.DAOFactory;
-import netcracker.dao.FormDAO;
+
+import javax.inject.Named; 
+   // or import javax.faces.bean.ManagedBean;
+import javax.enterprise.context.SessionScoped; 
+   // or import javax.faces.bean.SessionScoped;
+import netcracker.dao.*;
+import java.util.*;
 
 
 @Named("Anketa")
@@ -468,7 +469,6 @@ public class Anketa implements Serializable {
         
         FormDAO a = DAOFactory.getFormDAO();
         List res = a.getAllUniversities();
-        System.out.print(res.toString());
         
         return res;
     }          
