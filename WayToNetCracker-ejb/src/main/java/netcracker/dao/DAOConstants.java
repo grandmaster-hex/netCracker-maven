@@ -12,7 +12,7 @@ final public class DAOConstants {
         /**
          * temlate for url jdbc:mysql://[host][,failoverhost...][:port]/[database]
          */
-        static public final String url="jdbc:mysql://localhost/waytonetcracker";
+        static public final String url="jdbc:mysql://localhost/waytonetcracker?useUnicode=true&characterEncoding=Cp1251";
         /**
          * class name of mysql driver 
          */
