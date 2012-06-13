@@ -1,0 +1,48 @@
+body {
+    width:1000px;
+    background-color: #efefef;
+    max-width:1000px;
+    margin:0 auto;
+    padding: 0;
+    padding-left: 50%;
+    margin-left: -500px;
+   
+    font-family: Arial, "Courier New", monospace;
+    line-height: 15px;
+    font-size: 15px;
+}
+
+p {
+ 
+}
+
+h3 {
+    padding-top: 30px; 
+    padding-bottom: 20px;
+    font-family: Arial, "Courier New", monospace;
+    margin:auto;
+    color: #0170ba;
+}
+
+table {
+    border-left: 2px solid #0170ba;
+    border-right: 2px solid #0170ba;
+    width:900px;
+}
+
+#content {
+    background-color: #fefefe;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    min-height: 1000px;
+    border-left: 2px solid #999;
+    border-right: 2px solid #999;
+}
+
+#anketaP {
+    width: 900px; 
+    margin: 0 auto; 
+    padding-top: 40px; 
+    padding-bottom: 30px;
+}

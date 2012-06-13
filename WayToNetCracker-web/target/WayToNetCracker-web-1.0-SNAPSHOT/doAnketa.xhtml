@@ -1,0 +1,430 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+   <head><title>IGNORED</title></head>
+    <h:body>
+    <ui:composition template="/templates/masterLayout.xhtml">
+    <ui:define name="windowTitle">
+    Анкета - NetCracker
+    </ui:define>
+        
+    <ui:define name="content">
+    
+        <h2 align="center">Анкета / III набор в НУЦ при ОНПУ</h2>
+        <h:form>
+            
+            <hr />
+            <h3 align="center">Персональная информация</h3>
+            <h:panelGrid id="personal_info" columns="6" cellpadding="3" style="margin: 0 auto;">
+                
+                <h:outputText value="Фамилия: " />  
+                <p:inputText value="#{Anketa.last_name}" />
+                
+                <h:outputText value="Имя: " />  
+                <p:inputText value="#{Anketa.first_name}" />
+                
+                <h:outputText value="Отчество: " />  
+                <p:inputText value="#{Anketa.middle_name}" />
+                
+                <h:outputText value="ВУЗ: " />  
+                <p:selectOneMenu id="vuz" value="#{Anketa.vuz}">  
+                        <f:selectItem itemLabel="Выбирете ВУЗ" itemValue="" />  
+                        <f:selectItems value="#{Anketa.getListVuz()}" />  
+                        <p:ajax update="faculty"  
+                                listener="#{Anketa.getListFaculty()}" />  
+                </p:selectOneMenu>
+                
+                <h:outputText value="Курс: " />  
+                <p:selectOneMenu value="#{Anketa.course}">
+                    <f:selectItem itemLabel="Курс" itemValue="" /> 
+                    <f:selectItem itemLabel="1" itemValue="1" />  
+                    <f:selectItem itemLabel="2" itemValue="2" />  
+                    <f:selectItem itemLabel="3" itemValue="3" />
+                    <f:selectItem itemLabel="4" itemValue="4" />
+                    <f:selectItem itemLabel="5" itemValue="5" />
+                    <f:selectItem itemLabel="6" itemValue="6" />
+                </p:selectOneMenu>
+                  
+                <h:outputText value="Факультет: " />  
+                 <p:selectOneMenu id="faculty" value="#{Anketa.faculty}">
+                          <f:selectItem itemLabel="Выбирете фак." itemValue="" /> 
+                          <f:selectItems value="#{Anketa.faculties}" />  
+                </p:selectOneMenu> 
+                
+                <h:outputText value="Год окончания: " /> 
+                <p:inputMask value="#{Anketa.studt_end_year}" mask="9999"/>
+                                
+            </h:panelGrid>           
+            
+            <hr />
+            <h3 align="center">Контакты</h3>
+            <h:panelGrid id="contactsPanel" columns="1" cellpadding="3" style="margin: 0 auto;">
+                <h:panelGrid id="contacts" columns="2" cellpadding="3" style="margin: 0 auto; border: 0; width: 320px;">
+                <h:outputText value="e-mail 1: " />  
+                <p:inputText value="#{Anketa.email1}" />
+
+                <h:outputText value="e-mail 2: " />  
+                <p:inputText value="#{Anketa.email2}" />
+
+                <h:outputText value="Телефон: " />  
+                <p:inputMask value="#{Anketa.phone1}" mask="(999)999-99-99"/> 
+
+                <h:outputText value="Другие контакты: " />  
+                <p:inputText value="#{Anketa.extra_contacts}" />
+                </h:panelGrid>
+            </h:panelGrid>
+            
+            <hr />
+            <h3 align="center">Интересы</h3>
+            <p align="center"><i>(Допускается несколько вариантов ответа)</i></p>
+            <h:panelGrid id="interestPanel" columns="1" cellpadding="0" style="margin: 0 auto;">
+            <h:panelGrid id="interest" columns="3" cellpadding="3" style="margin: 0 auto; border:0; width: 600px;">   
+            <h:outputText value="Что заинтересовало (+,±,-,?): " /> 
+            <h:outputText value="" /> 
+            <h:outputText value="" />
+            
+            <p:selectOneButton value="#{Anketa.lernCenter}">  
+                <f:selectItem itemLabel="+" itemValue="1" />  
+                <f:selectItem itemLabel="±" itemValue="2" />  
+                <f:selectItem itemLabel="-" itemValue="3" /> 
+                <f:selectItem itemLabel="?" itemValue="4" /> 
+            </p:selectOneButton> 
+            <h:outputText value="учебный центр/стажировка" />     
+            <h:outputText value="" />
+            
+            <p:selectOneButton value="#{Anketa.workNC}">  
+                <f:selectItem itemLabel="+" itemValue="1" />  
+                <f:selectItem itemLabel="±" itemValue="2" />  
+                <f:selectItem itemLabel="-" itemValue="3" /> 
+                <f:selectItem itemLabel="?" itemValue="4" /> 
+            </p:selectOneButton> 
+            <h:outputText value="работа в компании NetCracker" />
+            <h:outputText value="" />
+            
+            <p><b>Интересующая область деятельности:</b></p> 
+            <h:outputText value="" />
+            <h:outputText value="" />
+            
+            <p:selectOneButton value="#{Anketa.developer}">  
+                <f:selectItem itemLabel="+" itemValue="1" />  
+                <f:selectItem itemLabel="±" itemValue="2" />  
+                <f:selectItem itemLabel="-" itemValue="3" /> 
+                <f:selectItem itemLabel="?" itemValue="4" /> 
+            </p:selectOneButton> 
+            <h:outputText value="разработка ПО" />
+            <h:outputText value="" />
+            
+            <p:selectOneButton value="#{Anketa.chekExtraInterest}">  
+                <f:selectItem itemLabel="+" itemValue="1" />  
+                <f:selectItem itemLabel="±" itemValue="2" />  
+                <f:selectItem itemLabel="-" itemValue="3" /> 
+                <f:selectItem itemLabel="?" itemValue="4" /> 
+            </p:selectOneButton>
+            <h:outputText value="другие области (уточните)" />
+            <p:inputText value="#{Anketa.extraInterest}" />
+            
+            <p><b>Типы работы:</b></p>
+            <h:outputText value="" />
+            <h:outputText value="" />
+            
+            <p:selectOneButton value="#{Anketa.deepSpec}">  
+                <f:selectItem itemLabel="+" itemValue="1" />  
+                <f:selectItem itemLabel="±" itemValue="2" />  
+                <f:selectItem itemLabel="-" itemValue="3" /> 
+                <f:selectItem itemLabel="?" itemValue="4" /> 
+            </p:selectOneButton>
+            <h:outputText value="глубокая специализация," />
+            <h:outputText value="" />
+            
+            <p:selectOneButton value="#{Anketa.diffWork}">  
+                <f:selectItem itemLabel="+" itemValue="1" />  
+                <f:selectItem itemLabel="±" itemValue="2" />  
+                <f:selectItem itemLabel="-" itemValue="3" /> 
+                <f:selectItem itemLabel="?" itemValue="4" /> 
+            </p:selectOneButton>
+            <h:outputText value="разнообразная работа," />
+            <h:outputText value="" />
+            
+            <p:selectOneButton value="#{Anketa.managSpec}">  
+                <f:selectItem itemLabel="+" itemValue="1" />  
+                <f:selectItem itemLabel="±" itemValue="2" />  
+                <f:selectItem itemLabel="-" itemValue="3" /> 
+                <f:selectItem itemLabel="?" itemValue="4" /> 
+            </p:selectOneButton>
+            <h:outputText value="руководство специалистами," />
+            <h:outputText value="" />
+            
+            <p:selectOneButton value="#{Anketa.selling}">  
+                <f:selectItem itemLabel="+" itemValue="1" />  
+                <f:selectItem itemLabel="±" itemValue="2" />  
+                <f:selectItem itemLabel="-" itemValue="3" /> 
+                <f:selectItem itemLabel="?" itemValue="4" /> 
+            </p:selectOneButton>
+            <h:outputText value="продажи," />
+            <h:outputText value="" />
+            
+            <p:selectOneButton value="#{Anketa.chekExtraTypesInterest}">  
+                <f:selectItem itemLabel="+" itemValue="1" />  
+                <f:selectItem itemLabel="±" itemValue="2" />  
+                <f:selectItem itemLabel="-" itemValue="3" /> 
+                <f:selectItem itemLabel="?" itemValue="4" /> 
+            </p:selectOneButton>
+            <h:outputText value="другое(уточните)" />
+            <p:inputText value="#{Anketa.extraTypesInterest}" />
+            </h:panelGrid>
+            </h:panelGrid>
+            
+            
+            <hr />
+            <h3 align="center">Достоинства</h3>
+            <p id="anketaP">Владение языками <b>программирования</b> (по шкале от 1 до 5): 1 - писал простые программы с книгой/справкой; 3 - хорошо понимаю синтаксис и нек. библиотеки; 5 - написал крупный проект</p>
+            <h:panelGrid id="skills_lang" columns="6" cellpadding="3" style="margin: 0 auto;">
+                
+                <h:outputText value="Язык" />
+                <h:outputText value="С++" />
+                <h:outputText value="Java" />
+                <p:inputText value="#{Anketa.lang1Name}" />
+                <p:inputText value="#{Anketa.lang2Name}" />
+                <p:inputText value="#{Anketa.lang3Name}" />
+                
+                <h:outputText value="Уровень" />
+                <p:selectOneMenu value="#{Anketa.cPlusPlusLevel}"> 
+                    <f:selectItem itemLabel="Уровень" itemValue="" /> 
+                    <f:selectItem itemLabel="0" itemValue="0" />  
+                    <f:selectItem itemLabel="1" itemValue="1" />  
+                    <f:selectItem itemLabel="2" itemValue="2" />  
+                    <f:selectItem itemLabel="3" itemValue="3" />
+                    <f:selectItem itemLabel="4" itemValue="4" />
+                    <f:selectItem itemLabel="5" itemValue="5" />
+                </p:selectOneMenu>
+                <p:selectOneMenu value="#{Anketa.javaLevel}"> 
+                    <f:selectItem itemLabel="Уровень" itemValue="" /> 
+                    <f:selectItem itemLabel="0" itemValue="0" />  
+                    <f:selectItem itemLabel="1" itemValue="1" />  
+                    <f:selectItem itemLabel="2" itemValue="2" />  
+                    <f:selectItem itemLabel="3" itemValue="3" />
+                    <f:selectItem itemLabel="4" itemValue="4" />
+                    <f:selectItem itemLabel="5" itemValue="5" />
+                </p:selectOneMenu>
+                <p:selectOneMenu value="#{Anketa.lang1Level}">
+                    <f:selectItem itemLabel="Уровень" itemValue="" /> 
+                    <f:selectItem itemLabel="0" itemValue="0" />  
+                    <f:selectItem itemLabel="1" itemValue="1" />  
+                    <f:selectItem itemLabel="2" itemValue="2" />  
+                    <f:selectItem itemLabel="3" itemValue="3" />
+                    <f:selectItem itemLabel="4" itemValue="4" />
+                    <f:selectItem itemLabel="5" itemValue="5" />
+                </p:selectOneMenu>
+                <p:selectOneMenu value="#{Anketa.lang2Level}">
+                    <f:selectItem itemLabel="Уровень" itemValue="" /> 
+                    <f:selectItem itemLabel="0" itemValue="0" />  
+                    <f:selectItem itemLabel="1" itemValue="1" />  
+                    <f:selectItem itemLabel="2" itemValue="2" />  
+                    <f:selectItem itemLabel="3" itemValue="3" />
+                    <f:selectItem itemLabel="4" itemValue="4" />
+                    <f:selectItem itemLabel="5" itemValue="5" />
+                </p:selectOneMenu>
+                <p:selectOneMenu value="#{Anketa.lang3Level}">
+                    <f:selectItem itemLabel="Уровень" itemValue="" /> 
+                    <f:selectItem itemLabel="0" itemValue="0" />  
+                    <f:selectItem itemLabel="1" itemValue="1" />  
+                    <f:selectItem itemLabel="2" itemValue="2" />  
+                    <f:selectItem itemLabel="3" itemValue="3" />
+                    <f:selectItem itemLabel="4" itemValue="4" />
+                    <f:selectItem itemLabel="5" itemValue="5" />
+                </p:selectOneMenu>
+                
+            </h:panelGrid>
+            
+            <p id="anketaP">Как ты оцениваешь свои <b>знания</b> по разделам (по шкале от 0 до 5):</p>         
+            <h:panelGrid id="skills_otherPanel" columns="1" cellpadding="0" style="margin: 0 auto;">
+            <h:panelGrid id="skills_other" columns="4" cellpadding="3" style="margin: 0 auto; border: 0; width: 650px;">    
+                <p:selectOneMenu value="#{Anketa.tecIntenetLevel}">
+                    <f:selectItem itemLabel="0" itemValue="0" />  
+                    <f:selectItem itemLabel="1" itemValue="1" />  
+                    <f:selectItem itemLabel="2" itemValue="2" />  
+                    <f:selectItem itemLabel="3" itemValue="3" />
+                    <f:selectItem itemLabel="4" itemValue="4" />
+                    <f:selectItem itemLabel="5" itemValue="5" />
+                </p:selectOneMenu>
+                <h:outputText value="сетевые технологии," />  
+                <p:selectOneMenu value="#{Anketa.tecOopLevel}">
+                    <f:selectItem itemLabel="0" itemValue="0" />  
+                    <f:selectItem itemLabel="1" itemValue="1" />  
+                    <f:selectItem itemLabel="2" itemValue="2" />  
+                    <f:selectItem itemLabel="3" itemValue="3" />
+                    <f:selectItem itemLabel="4" itemValue="4" />
+                    <f:selectItem itemLabel="5" itemValue="5" />
+                </p:selectOneMenu>
+                <h:outputText value="обьектно-ориент. программирование," /> 
+                
+                <p:selectOneMenu value="#{Anketa.tecEffAlgLevel}">
+                    <f:selectItem itemLabel="0" itemValue="0" />  
+                    <f:selectItem itemLabel="1" itemValue="1" />  
+                    <f:selectItem itemLabel="2" itemValue="2" />  
+                    <f:selectItem itemLabel="3" itemValue="3" />
+                    <f:selectItem itemLabel="4" itemValue="4" />
+                    <f:selectItem itemLabel="5" itemValue="5" />
+                </p:selectOneMenu>
+                <h:outputText value="эффективные алгоритмы," />  
+                <p:selectOneMenu value="#{Anketa.tecBdLevel}">
+                    <f:selectItem itemLabel="0" itemValue="0" />  
+                    <f:selectItem itemLabel="1" itemValue="1" />  
+                    <f:selectItem itemLabel="2" itemValue="2" />  
+                    <f:selectItem itemLabel="3" itemValue="3" />
+                    <f:selectItem itemLabel="4" itemValue="4" />
+                    <f:selectItem itemLabel="5" itemValue="5" />
+                </p:selectOneMenu>
+                <h:outputText value="базы данных," /> 
+                
+                <p:selectOneMenu value="#{Anketa.tecWebLevel}">
+                    <f:selectItem itemLabel="0" itemValue="0" />  
+                    <f:selectItem itemLabel="1" itemValue="1" />  
+                    <f:selectItem itemLabel="2" itemValue="2" />  
+                    <f:selectItem itemLabel="3" itemValue="3" />
+                    <f:selectItem itemLabel="4" itemValue="4" />
+                    <f:selectItem itemLabel="5" itemValue="5" />
+                </p:selectOneMenu>
+                <h:outputText value="Web," />  
+                <p:selectOneMenu value="#{Anketa.tecWebProgramLevel}">
+                    <f:selectItem itemLabel="0" itemValue="0" />  
+                    <f:selectItem itemLabel="1" itemValue="1" />  
+                    <f:selectItem itemLabel="2" itemValue="2" />  
+                    <f:selectItem itemLabel="3" itemValue="3" />
+                    <f:selectItem itemLabel="4" itemValue="4" />
+                    <f:selectItem itemLabel="5" itemValue="5" />
+                </p:selectOneMenu>
+                <h:outputText value="Сетевое программирование," /> 
+                
+                <p:selectOneMenu value="#{Anketa.tecGrafLevel}">
+                    <f:selectItem itemLabel="0" itemValue="0" />  
+                    <f:selectItem itemLabel="1" itemValue="1" />  
+                    <f:selectItem itemLabel="2" itemValue="2" />  
+                    <f:selectItem itemLabel="3" itemValue="3" />
+                    <f:selectItem itemLabel="4" itemValue="4" />
+                    <f:selectItem itemLabel="5" itemValue="5" />
+                </p:selectOneMenu>
+                <h:outputText value="графический интерфейс (не Web)," />  
+                <p:selectOneMenu value="#{Anketa.tecProjLevel}">
+                    <f:selectItem itemLabel="0" itemValue="0" />  
+                    <f:selectItem itemLabel="1" itemValue="1" />  
+                    <f:selectItem itemLabel="2" itemValue="2" />  
+                    <f:selectItem itemLabel="3" itemValue="3" />
+                    <f:selectItem itemLabel="4" itemValue="4" />
+                    <f:selectItem itemLabel="5" itemValue="5" />
+                </p:selectOneMenu>
+                <h:outputText value="проектирование программ" /> 
+            </h:panelGrid>    
+            </h:panelGrid>
+            
+            
+            
+            <h:panelGrid id="skills_other_1column" columns="1" cellpadding="3" style="margin: 0 auto;">
+            
+                <h:outputText value="другие разделы (в области IT или сетей) " />
+                <p:inputTextarea value="#{Anketa.extraItLern}" rows="3" cols="100" counter="counter1" maxlength="150"       
+                counterTemplate="{0} characters remaining." autoResize="false"/>  
+                <h:outputText id="counter1" />
+                
+                <p>Если у тебя уже есть <b>опыт работы</b> и/или выполненные <b>учебные проекты</b>, опиши их: </p>
+                <p:inputTextarea value="#{Anketa.experience}" rows="3" cols="100" counter="counter2" maxlength="200"       
+                counterTemplate="{0} characters remaining." autoResize="false"/>  
+                <h:outputText id="counter2" />
+                
+                <p>Уровень <b>английского</b> языка (от 1=elementary до 5 = advanced):</p>
+                <h:panelGrid id="en_level" columns="6" cellpadding="3" style="margin: 0 auto; border:0; width:500px;">
+                    <h:outputText value="чтение" />
+                    <p:selectOneMenu value="#{Anketa.englReadLevel}">
+                        <f:selectItem itemLabel="0" itemValue="0" />  
+                        <f:selectItem itemLabel="1" itemValue="1" />  
+                        <f:selectItem itemLabel="2" itemValue="2" />  
+                        <f:selectItem itemLabel="3" itemValue="3" />
+                        <f:selectItem itemLabel="4" itemValue="4" />
+                        <f:selectItem itemLabel="5" itemValue="5" />
+                    </p:selectOneMenu>
+                    <h:outputText value="письмо" /> 
+                    <p:selectOneMenu value="#{Anketa.engWriteLevel}">
+                        <f:selectItem itemLabel="0" itemValue="0" />  
+                        <f:selectItem itemLabel="1" itemValue="1" />  
+                        <f:selectItem itemLabel="2" itemValue="2" />  
+                        <f:selectItem itemLabel="3" itemValue="3" />
+                        <f:selectItem itemLabel="4" itemValue="4" />
+                        <f:selectItem itemLabel="5" itemValue="5" />
+                    </p:selectOneMenu>
+                    <h:outputText value="устная речь" /> 
+                    <p:selectOneMenu value="#{Anketa.engSpeackLevel}">
+                        <f:selectItem itemLabel="0" itemValue="0" />  
+                        <f:selectItem itemLabel="1" itemValue="1" />  
+                        <f:selectItem itemLabel="2" itemValue="2" />  
+                        <f:selectItem itemLabel="3" itemValue="3" />
+                        <f:selectItem itemLabel="4" itemValue="4" />
+                        <f:selectItem itemLabel="5" itemValue="5" />
+                    </p:selectOneMenu>
+                    
+                </h:panelGrid>
+                
+                <h:panelGrid id="advertPanel" columns="2" cellpadding="0" style="border:0; width:450px;">
+                    <p><b>Откуда</b> ты узнал о наборе в учебный центр?</p>
+                    <p:selectOneMenu id="advert" value="#{Anketa.advertising}">  
+                        <f:selectItems value="#{Anketa.getListAdvertising()}" />  
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                
+                <p><b>Почему</b> тебя обязательно надо взять в NetCracker (важные достоинства; возможно, обещания ☺)</p>
+                <p:inputTextarea value="#{Anketa.whyMe}" rows="3" cols="100" counter="counter4" maxlength="150"       
+                counterTemplate="{0} characters remaining." autoResize="false"/>  
+                <h:outputText id="counter4" />
+                
+                <p><b>Дополнительные сведения</b> о себе: олимпиады, поощрения, курсы, сертификаты, личные качества, др.</p>
+                <p:inputTextarea value="#{Anketa.extraData}" rows="3" cols="100" counter="counter5" maxlength="150"       
+                counterTemplate="{0} characters remaining." autoResize="false"/>  
+                <h:outputText id="counter5" />
+                                
+            </h:panelGrid>
+            
+            <hr />
+            <h3 align="center">Соглашение</h3>            
+            <h:panelGrid id="confirm" columns="1" cellpadding="3" style="margin: 0 auto;">
+                
+                <p><b>Я даю согласие</b> на хранение, обработку и использование моих персональных данных с целью возможного обучения и трудоустройства в компании НЕТКРЕКЕР на данный момент и в будущем</p>
+                <p:selectBooleanButton value="#{Anketa.confirm}" onLabel="Да" offLabel="Нет" style="left: 410px;" /> 
+                
+            </h:panelGrid>
+            
+            <hr />
+            
+            
+            <p id="anketaP">Выберите дату и время, удобную для прохождения собеседования:</p>            
+            <h:panelGrid id="dateTimePanel" columns="1" cellpadding="3" style="margin: 0 auto;">
+                    
+                    <h:panelGrid id="dateTime" columns="4" cellpadding="3" style="width: 450px; border: 0; margin: 0 auto;">
+                    <h:outputText value="Выберете дату: " />
+                    <p:selectOneMenu id="date" value="#{Schedule.date}">  
+                        <f:selectItem itemLabel="Дата" itemValue="" />  
+                        <f:selectItems value="#{Schedule.getListDate()}" />  
+                        <p:ajax update="time"  
+                                listener="#{Schedule.getListTime()}" />  
+                    </p:selectOneMenu>
+                    <h:outputText value="Выбирете время: " />
+                    <p:selectOneMenu id="time" value="#{Schedule.time}">  
+                        <f:selectItem itemLabel="Время" itemValue="" />  
+                        <f:selectItems value="#{Schedule.times}" />  
+                    </p:selectOneMenu> 
+                    </h:panelGrid>
+                
+            </h:panelGrid>
+            
+            <hr />
+            <p:commandButton value="Подать заявку" actionListener="#" ajax="false" style="left: 410px;" />
+            
+        </h:form>
+        
+    </ui:define>
+    </ui:composition>
+    </h:body>
+</html>
+

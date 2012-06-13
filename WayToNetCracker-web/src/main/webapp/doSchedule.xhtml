@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+   <head><title>IGNORED</title></head>
+    <h:body>
+        
+    <ui:composition template="/templates/masterLayout.xhtml">
+         <ui:define name="windowTitle">
+            Запись на собеседование - NetCracker
+         </ui:define>
+
+         <ui:define name="content">
+             
+            <h3 align="center">Изменение времени собеседования</h3>
+            
+            <h:form id="dateTimeP">
+                
+                <h:panelGrid id="editingData" columns="2" cellpadding="3" style="margin: 0 auto;">
+
+                    <h:outputText value="Введите e-mail, указанный при заполнении анкеты:" /> 
+                <p:inputText value="#{Schedule.email}" />
+
+                <h:outputText value="Вы можете изменить свое время на такие оступные даты и время: " />
+                <h:outputText value="" /> 
+
+                
+                                
+               <h:panelGrid id="dateTime" columns="4" cellpadding="3" style="width: 450px; border: 0; margin: 0 auto;">
+                    <h:outputText value="Выберете дату: " />
+                    <p:selectOneMenu id="date" value="#{Schedule.date}">  
+                        <f:selectItem itemLabel="Дата" itemValue="" />  
+                        <f:selectItems value="#{Schedule.getListDate()}" />  
+                        <p:ajax update="time"  
+                                listener="#{Schedule.getListTime()}" />  
+                    </p:selectOneMenu>
+                    <h:outputText value="Выбирете время: " />
+                    <p:selectOneMenu id="time" value="#{Schedule.time}">  
+                        <f:selectItem itemLabel="Время" itemValue="" />  
+                        <f:selectItems value="#{Schedule.times}" />  
+                    </p:selectOneMenu> 
+                    </h:panelGrid>
+
+                        
+            <p:commandButton  id="btnSubmit" value="Изменить дату собеседования" actionListener="#"/>  
+                
+                </h:panelGrid>
+           
+            </h:form>    
+           
+         </ui:define>
+    </ui:composition> 
+        
+    </h:body>
+</html>

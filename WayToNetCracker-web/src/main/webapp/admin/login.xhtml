@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+   <head><title>IGNORED</title></head>
+    <h:body>
+        
+    <ui:composition template="/templates/masterLayoutLogin.xhtml">
+         <ui:define name="windowTitle">
+            Вход - NetCracker
+         </ui:define>
+
+         <ui:define name="content">
+             
+        <h:form id="login"> 
+            
+            <p:panel id="panel" header="Вход" style="margin-bottom:10px;"> 
+                
+                <p:messages id="messages" />  
+                
+                <h:panelGrid columns="3" style="border: 0px;">  
+                    
+                    <h:outputLabel for="login" value="Login: " />  
+                    <p:inputText id="login"   
+                        value="#{Login.login}" required="true" label="login">  
+                        <f:validateLength minimum="1" />  
+                    </p:inputText>  
+                    <p:message for="login" />  
+
+                    <h:outputLabel for="password" value="Password: " />  
+                    <p:password id="password"   
+                        value="#{Login.password}" required="true" label="password"/>  
+                    <p:message for="password" />
+                    
+                </h:panelGrid> 
+
+                <p:commandButton value="Войти" action="#{Login.checkAdmin()}"   
+                    ajax="false" />
+            </p:panel>
+            
+        </h:form> 
+        
+         </ui:define>
+    </ui:composition> 
+        
+    </h:body>
+</html>
+
