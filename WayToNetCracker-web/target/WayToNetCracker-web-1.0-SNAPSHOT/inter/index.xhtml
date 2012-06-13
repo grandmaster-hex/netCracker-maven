@@ -8,28 +8,16 @@
    <head><title>IGNORED</title></head>
     <h:body>
         
-    <ui:composition template="/templates/masterLayout.xhtml">
+    <ui:composition template="/templates/masterLayoutInter.xhtml">
          <ui:define name="windowTitle">
-            Главная test - NetCracker
+            Интервьюер - NetCracker
          </ui:define>
 
          <ui:define name="content">           
             <p>Компания NetCracker является мировым лидером в области создания и внедрения решений по управлению телекоммуникационными операциями. Основу успешных трансформационных решений NetCracker составляет обширное продуктовое и сервисное портфолио, которое включает управление взаимоотношениями с клиентами, управление продуктами, доходами и устройствами, предоставление и обеспечение качества услуг, IT-платформы, управление ресурсами и сетями. NetCracker является дочерней компанией корпорации NEC.</p>
          
-            <h:graphicImage url="resources/images/terran.jpg" style="margin-left:250px;" />
-            
-            <h:form>
-                <p:commandLink id="admin_enter" action="/faces/admin/login.xhtml">  
-                    <h:outputText value="Админ - ВХОД" />            
-                </p:commandLink><br />
-                <p:commandLink id="hr_enter" action="/faces/hr/login.xhtml">  
-                    <h:outputText value="HR - ВХОД" />            
-                </p:commandLink><br />
-                    <p:commandLink id="inter_enter" action="/faces/inter/login.xhtml">  
-                    <h:outputText value="Интервьюер - ВХОД" />            
-                </p:commandLink>
-            </h:form>
-            
+            <h:graphicImage url="../resources/images/terran.jpg" style="margin-left:250px;" />
+         
          </ui:define>
     </ui:composition> 
         
