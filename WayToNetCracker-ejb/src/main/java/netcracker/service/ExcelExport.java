@@ -138,6 +138,8 @@ public class ExcelExport {
                     for (int j = 0; j < strings.get(i).length; j++) {
                         HSSFCell cellT = rowT.createCell(j);
                         cellT.setCellValue(result.getString(strings.get(i)[j]));
+                        sheets.get(i).autoSizeColumn((short)j);
+
                     }
                 }
             }
@@ -153,7 +155,7 @@ public class ExcelExport {
          * Write xls file
          */
         try {
-            fos = new FileOutputStream(new File("/home/phd/DataBase.xls"));
+            fos = new FileOutputStream(new File("/home/lastride/DataBase.xls"));
             workbook.write(fos);
         } catch (IOException e) {
             e.printStackTrace();
