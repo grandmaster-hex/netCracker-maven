@@ -27,7 +27,6 @@ public class ExcelExport {
         Connection conn = DAOFactory.createConnection();
         FileOutputStream fos = null;
         HSSFWorkbook workbook = new HSSFWorkbook();
-
         try {
             StringBuffer sbEmployees = new StringBuffer();
             sbEmployees.append("SELECT * FROM ");
