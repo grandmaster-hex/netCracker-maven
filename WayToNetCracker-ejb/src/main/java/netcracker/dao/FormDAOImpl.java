@@ -60,9 +60,9 @@ public class FormDAOImpl implements FormDAO {
         if (extra == null) {
             throw new IllegalArgumentException("extra parameter");
         }
-        if (photo == null) {
-            throw new IllegalArgumentException("photo parameter");
-        }
+//        if (photo == null) {
+//            throw new IllegalArgumentException("photo parameter");
+//        }
         
         PreparedStatement stmtInsert = null;
         Connection conn = DAOFactory.createConnection();
@@ -73,7 +73,7 @@ public class FormDAOImpl implements FormDAO {
             sbInsert.append(" (id_student, first_name, last_name, middle_name, course, study_end_year, id_faculty, "
                              + "email1, email2, phone1, extra_contacts, why, experience, extra, photo)");
             sbInsert.append(" VALUES (");
-            sbInsert.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            sbInsert.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             stmtInsert = conn.prepareStatement(sbInsert.toString());
             stmtInsert.setString(1, null);
             stmtInsert.setString(2, first_name);
@@ -90,7 +90,8 @@ public class FormDAOImpl implements FormDAO {
             stmtInsert.setString(13, experience); 
             stmtInsert.setString(14, extra);  
             stmtInsert.setBlob(15, photo);  
-            
+            //uncomment for checking query syntax
+            System.out.print(stmtInsert.toString());
             
             int rows = stmtInsert.executeUpdate();
             if (rows != 1) {

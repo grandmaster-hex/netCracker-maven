@@ -24,10 +24,17 @@ public class employeedaotesting {
    */
    //---------------Testing getingAllUniversities();
         
-   FormDAO st = DAOFactory.getFormDAO();
-   List a =st.getAllUniversities();
-   System.out.print(a.toString());
-   
+//   FormDAO st = DAOFactory.getFormDAO();
+//   List a =st.getAllUniversities();
+//   System.out.print(a.toString());
+     FormDAO st = DAOFactory.getFormDAO();
+     st.createStudent("Кваташидзе", "Лаша", "Тамазовчи", 5, "2007", 1, "kvata.l@gmail.com", "phdhospital@mail.ru",
+             "(095)778-40-33", "33-95-46", "because", "no", "ok", null);
+     SkillsDAO s = DAOFactory.getSkillsDAO();
+     
+     List<SkillsOfType> a = s.getAllSkillTypes(1);
+     SkillsOfType as = a.get(0);
+     System.out.print(as.getId_skill_type());
 //---------------Testing createEmployees();
 //   EmployeeDAO d = null;
 //   d = DAOFactory.getEmployeeDAO();  
