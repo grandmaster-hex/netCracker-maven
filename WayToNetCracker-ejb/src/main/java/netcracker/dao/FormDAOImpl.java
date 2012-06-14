@@ -22,7 +22,7 @@ public class FormDAOImpl implements FormDAO {
     }
 
     @Override
-    public boolean createStudent(String first_name, String last_name, String middle_name, 
+    public boolean createForm(String first_name, String last_name, String middle_name, 
                                     int course, String study_end_year, int id_faculty,
                                     String email1, String email2, String phone1, 
                                     String extra_contacts, String why, 
@@ -73,7 +73,7 @@ public class FormDAOImpl implements FormDAO {
     }
 
     @Override
-    public boolean deleteStudentById(int id_student) {
+    public boolean deleteFormByStudentId(int id_student) {
         Connection conn = DAOFactory.createConnection();
         PreparedStatement stmtDelete = null;
         try {
