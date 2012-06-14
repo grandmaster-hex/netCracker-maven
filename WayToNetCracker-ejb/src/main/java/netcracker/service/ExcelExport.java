@@ -5,16 +5,16 @@
 package netcracker.service;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import netcracker.dao.DAOConstants;
+import java.util.ArrayList;
 import netcracker.dao.DAOFactory;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
 
 /**
  *
@@ -28,12 +28,6 @@ public class ExcelExport {
         FileOutputStream fos = null;
         HSSFWorkbook workbook = new HSSFWorkbook();
         try {
-            StringBuffer sbEmployees = new StringBuffer();
-            sbEmployees.append("SELECT * FROM ");
-            sbEmployees.append(DAOConstants.EmpTableName);
-            stmt = conn.prepareStatement(sbEmployees.toString());
-            result = stmt.executeQuery();
-            
             HSSFSheet advertsSheet = workbook.createSheet("adverts");
             HSSFSheet advertsForStudentsSheet = workbook.createSheet("advertsForStudents");
             HSSFSheet employeesSheet = workbook.createSheet("employees");
@@ -51,6 +45,18 @@ public class ExcelExport {
             HSSFSheet skillsTypesSheet = workbook.createSheet("skillsTypes");
             HSSFSheet studentsSheet = workbook.createSheet("students");
             HSSFSheet universitiesSheet = workbook.createSheet("universities");
+                       
+            
+            ArrayList<HSSFSheet> sheets = new ArrayList<HSSFSheet>();
+            sheets.add(advertsSheet); sheets.add(advertsForStudentsSheet);
+            sheets.add(employeesSheet); sheets.add(facultiesSheet);
+            sheets.add(interestsSheet); sheets.add(interestsForStudentsSheet);
+            sheets.add(intervalsSheet); sheets.add(intervalsForStudentsSheet);
+            sheets.add(intervalStatusesSheet); sheets.add(messagesSheet);
+            sheets.add(resultsSheet); sheets.add(rolesSheet);
+            sheets.add(skillsSheet); sheets.add(skillsForStudentsSheet);
+            sheets.add(skillsTypesSheet); sheets.add(studentsSheet);
+            sheets.add(universitiesSheet);
            
             String[] advertsFields = {"id_advert", "advert_name"};
             String[] advertsForStudentsFields = {"id_student", "id_advert", "notes"};
@@ -73,23 +79,69 @@ public class ExcelExport {
                                     "extra", "photo"};
             String[] universitiesFields = {"id_university", "university_name"};
             
+            ArrayList<String[]> strings = new ArrayList<String[]>();
+            strings.add(advertsFields); strings.add(advertsForStudentsFields);
+            strings.add(employeesFields); strings.add(facultiesFields);
+            strings.add(interestsFields); strings.add(interestsForStudentsFields);
+            strings.add(intervalsFields); strings.add(intervalsForStudentsFields);
+            strings.add(intervalStatusesFields); strings.add(messagesFields);
+            strings.add(resultsFields); strings.add(rolesFields);
+            strings.add(skillsFields); strings.add(skillsForStudentsFields);
+            strings.add(skillsTypesFields); strings.add(studentsFields);
+            strings.add(universitiesFields);
             
-            HSSFRow row = employeesSheet.createRow(0);
-            for (int i = 0; i < employeesFields.length; i++) {
-               System.out.print(i);
-               HSSFCell cell = row.createCell(i);
-               cell.setCellValue(employeesFields[i]);
+            
+            HSSFCellStyle style = workbook.createCellStyle();
+            style.setBorderTop((short) 6); // double lines border
+            style.setBorderBottom((short) 1); // single line border
+            style.setFillBackgroundColor(HSSFColor.GREY_25_PERCENT.index);
+            
+            HSSFFont font = workbook.createFont();
+            font.setFontName(HSSFFont.FONT_ARIAL);
+            font.setFontHeightInPoints((short) 12);
+            font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+            font.setColor(HSSFColor.BLUE.index);
+            
+            style.setFont(font);
+            
+            HSSFRow row = null;
+            for (int i = 0; i < sheets.size(); i++) {
+                row = sheets.get(i).createRow(0);
+                  for (int j = 0; j < strings.get(i).length; j++) {
+                        HSSFCell cell = row.createCell(j);
+                        cell.setCellValue(strings.get(i)[j]);
+                        cell.setCellStyle(style);
+                        sheets.get(i).autoSizeColumn((short)j);
+                  }
             }
-
             
             
-           /* while (result.next()) {
-                System.out.println(result.getInt("id_employee") + result.getString("login") +
-                                    result.getString("password") + result.getString("first_name") +
-                                    result.getString("last_name") + result.getString("email") +
-                                    result.getString("id_role"));
-            }*/
+            String[] tableNames = {"adverts", "advertsForStudents", "employees", "faculties",
+                                    "interests", "interestsForStudents", "intervals",
+                                    "intervalsForStudents", "intervalStatuses",
+                                    "messages", "results", "roles", "skills",
+                                    "skillsForStudents", "skillsTypes", "students",
+                                    "universities"};
             
+            StringBuffer sbEmployees = null;
+            HSSFRow rowT = null;
+            for (int i = 0; i < tableNames.length; i++) {
+                sbEmployees = new StringBuffer();
+                sbEmployees.append("SELECT * FROM ");
+                sbEmployees.append(tableNames[i]);
+                stmt = conn.prepareStatement(sbEmployees.toString());
+                result = stmt.executeQuery();
+                int c = 0;
+                while (result.next()) {
+                    c++;
+                    rowT = sheets.get(i).createRow(c);
+                    for (int j = 0; j < strings.get(i).length; j++) {
+                        System.out.println("j" + " " + j + " c " + c);
+                        HSSFCell cellT = rowT.createCell(j);
+                        cellT.setCellValue(result.getString(strings.get(i)[j]));
+                    }
+                }
+            }
         }
         catch (SQLException ex) {
             System.out.print("\nSQL exception in exportToExcel");
@@ -102,7 +154,7 @@ public class ExcelExport {
          * Write xls file
          */
         try {
-            fos = new FileOutputStream(new File("/home/phd/DataBase.xls"));
+            fos = new FileOutputStream(new File("/home/lastride/DataBase.xls"));
             workbook.write(fos);
         } catch (IOException e) {
             e.printStackTrace();
