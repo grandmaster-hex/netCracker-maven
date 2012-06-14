@@ -4,10 +4,15 @@
  */
 package netcracker.dao;
 
+import java.util.List;
+
 /**
  *
  * @author lasha.k;
  */
-public class SkillsDAO {
+public interface SkillsDAO {
     
+    public List<Skill> getAllSkillsByTypeIdForStudent(int id_student);
+    
+    public List<SkillsOfType> getAllSkillTypes(int id_student);
 }

@@ -15,8 +15,9 @@ public class SkillsOfType {
     
     private final int id_skill_type;
     private final String skill_type_name;
+    private List<Skill> skills;
     
-    public SkillsOfType(int id_skill_type, String skill_type_name){
+    public SkillsOfType(int id_skill_type, String skill_type_name,int id_student){
         if (id_skill_type<=0){
             throw new IllegalArgumentException("id skill type parameter");
         }
@@ -25,6 +26,7 @@ public class SkillsOfType {
         }
         this.id_skill_type= id_skill_type;
         this.skill_type_name = skill_type_name;
+        this.skills =DAOFactory.getSkillsDAO().getAllSkillsByTypeIdForStudent(id_student);
     }
     
     public int getId_skill_type() {
@@ -35,11 +37,7 @@ public class SkillsOfType {
         return skill_type_name;
     }
     
-    public List<Skill> SkillsOfType (){
-        List skills = new ArrayList();
-        
-        return skills;
-    }
+   
     
     @Override
     public String toString(){
