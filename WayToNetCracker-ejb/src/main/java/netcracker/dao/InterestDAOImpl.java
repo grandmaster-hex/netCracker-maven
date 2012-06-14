@@ -30,12 +30,12 @@ public class InterestDAOImpl implements InterestDAO {
             sbSelect.append(" WHERE ID_STUDENT = ?");
             stmtSelect = conn.prepareStatement(sbSelect.toString());
             stmtSelect.setInt(1, id_student);
-            //System.out.print(sbSelect.toString());
+            //System.out.print(stmtSelect.toString());
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
             while (res.next()) {
-               i = new Interest(res.getInt(1),id_student,res.getInt(2), res.getString(3));
-               interests.add(i);
+               i = new Interest(res.getInt(1),id_student,res.getString(2), res.getString(3));
+               interests.add(i);              
                rowsCount++;
             }
             if (rowsCount<=0){
@@ -45,8 +45,7 @@ public class InterestDAOImpl implements InterestDAO {
         catch (Exception e){
             System.out.print("\n Error while getting all interests for student!\n");
         }
-        return interests;
-    
+        return interests;    
     }
     
 }

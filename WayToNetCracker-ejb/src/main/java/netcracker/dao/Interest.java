@@ -12,9 +12,9 @@ public class Interest {
 
     private final int id_interest;
     private final int id_student;
-    private final int mark;
+    private final String mark;
     private final String notes;
-    public Interest(int id_interest,int id_student, int mark, String notes){
+    public Interest(int id_interest,int id_student, String mark, String notes){
         this.id_interest = id_interest;
         this.id_student=id_student;
         this.mark = mark;
@@ -29,12 +29,25 @@ public class Interest {
         return id_student;
     }
 
-    public int getMark() {
+    public String getMark() {
         return mark;
     }
 
     public String getNotes() {
         return notes;
+    }
+    public String toString(){
+        StringBuffer sbResult = new StringBuffer();
+	sbResult.append("id_interest = ");
+	sbResult.append(this.id_interest);
+	sbResult.append(", id_student = ");
+	sbResult.append(this.id_student);
+	sbResult.append(", mark = ");
+	sbResult.append(this.mark);
+	sbResult.append(", notes = ");
+	sbResult.append(this.notes);
+        
+        return sbResult.toString();
     }
             
 }
