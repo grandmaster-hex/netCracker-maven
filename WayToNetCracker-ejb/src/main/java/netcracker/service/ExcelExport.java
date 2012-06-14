@@ -136,7 +136,6 @@ public class ExcelExport {
                     c++;
                     rowT = sheets.get(i).createRow(c);
                     for (int j = 0; j < strings.get(i).length; j++) {
-                        System.out.println("j" + " " + j + " c " + c);
                         HSSFCell cellT = rowT.createCell(j);
                         cellT.setCellValue(result.getString(strings.get(i)[j]));
                     }
