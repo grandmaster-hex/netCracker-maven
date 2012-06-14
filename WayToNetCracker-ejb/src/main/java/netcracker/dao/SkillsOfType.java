@@ -26,7 +26,7 @@ public class SkillsOfType {
         }
         this.id_skill_type= id_skill_type;
         this.skill_type_name = skill_type_name;
-        this.skills =DAOFactory.getSkillsDAO().getAllSkillsByTypeIdForStudent(id_student);
+        this.skills =DAOFactory.getSkillsDAO().getAllSkillsByTypeIdForStudent(id_skill_type,id_student);
     }
     
     public int getId_skill_type() {

@@ -18,7 +18,7 @@ import java.util.List;
 public class SkillsDAOImpl implements SkillsDAO {
 
     @Override
-    public List<Skill> getAllSkillsByTypeIdForStudent(int id_student) {
+    public List<Skill> getAllSkillsByTypeIdForStudent(int id_skill_type,int id_student) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
