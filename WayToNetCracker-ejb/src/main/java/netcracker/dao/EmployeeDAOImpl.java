@@ -32,25 +32,6 @@ public class EmployeeDAOImpl implements EmployeeDAO{
      */
     public boolean createEmployee(String login, String password, String first_name, String last_name, String email, int id_role) {
         
-        if(login == null){
-            throw new IllegalArgumentException("login param");
-        }
-        if(password == null){
-            throw new IllegalArgumentException("password param");
-        }
-        if(first_name == null){
-            throw new IllegalArgumentException("first name param");
-        }
-        if(last_name == null){
-            throw new IllegalArgumentException("last name param");
-        }
-        if(email==null){
-            throw new IllegalArgumentException("email param");
-        }
-        if(id_role == 0){
-            throw new IllegalArgumentException("id_role param");
-        }
-        
         PreparedStatement stmtInsert = null;
         Connection conn = DAOFactory.createConnection();
         try{
@@ -67,8 +48,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
             stmtInsert.setString(4,last_name);
             stmtInsert.setString(5,email);
             stmtInsert.setInt(6,1);   
-            //uncomment for checking query syntax
-            //System.out.print(stmtInsert.toString());
+            
             int rows = stmtInsert.executeUpdate();
             if (rows != 1)
 			{
@@ -97,9 +77,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
      */
     @Override
     public boolean deleteEmployee(int id_employee) {
-        if(id_employee == 0){
-            throw new IllegalArgumentException("id param");
-        }
+        
         Connection conn=DAOFactory.createConnection();
         PreparedStatement stmtDelete = null;
         try{
@@ -130,9 +108,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 
     @Override
     public Employee getEmployeeById(int id_employee) {
-        if(id_employee <= 0) {
-            throw new IllegalArgumentException("id_employee param");
-        }
+
         PreparedStatement stmtSelect = null;
         Connection conn = DAOFactory.createConnection();
         ResultSet result = null;

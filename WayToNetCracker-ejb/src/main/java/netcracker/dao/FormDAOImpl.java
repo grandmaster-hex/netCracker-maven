@@ -27,43 +27,6 @@ public class FormDAOImpl implements FormDAO {
                                     String email1, String email2, String phone1, 
                                     String extra_contacts, String why, 
                                     String experience, String extra, Blob photo) {
-        if (first_name == null) {
-            throw new IllegalArgumentException("first_name parameter");
-        }
-        if (last_name == null) {
-            throw new IllegalArgumentException("last_name parameter");
-        }
-        if (middle_name == null) {
-            throw new IllegalArgumentException("middle_name parameter");
-        }
-        if (course == 0) {
-            throw new IllegalArgumentException("course parameter");
-        }
-        if (study_end_year == null) {
-            throw new IllegalArgumentException("study_end_year parameter");
-        }
-        if (id_faculty == 0) {
-            throw new IllegalArgumentException("id_faculty parameter");
-        }
-        if (email1 == null) {
-            throw new IllegalArgumentException("email1 parameter");
-        }
-        if (phone1 == null) {
-            throw new IllegalArgumentException("phone1 parameter");
-        }
-        if (why == null) {
-            throw new IllegalArgumentException("why parameter");
-        }
-        if (experience == null) {
-            throw new IllegalArgumentException("experience parameter");
-        }
-        if (extra == null) {
-            throw new IllegalArgumentException("extra parameter");
-        }
-//        if (photo == null) {
-//            throw new IllegalArgumentException("photo parameter");
-//        }
-        
         PreparedStatement stmtInsert = null;
         Connection conn = DAOFactory.createConnection();
         try{
@@ -111,9 +74,6 @@ public class FormDAOImpl implements FormDAO {
 
     @Override
     public boolean deleteStudentById(int id_student) {
-        if (id_student <= 0) {
-            throw new IllegalArgumentException("id_student param");
-        }
         Connection conn = DAOFactory.createConnection();
         PreparedStatement stmtDelete = null;
         try {
@@ -167,8 +127,6 @@ public class FormDAOImpl implements FormDAO {
     //get faculties by id returns list of faculty names or empty list
       //return List of universities_name or empty List with console text output
     public List<String> getFacultiesByUniverName(String name){
-        if (name == null)
-            throw new IllegalArgumentException();
         List universities = new LinkedList();
         Connection conn = DAOFactory.createConnection();
         PreparedStatement stmtSelect = null;

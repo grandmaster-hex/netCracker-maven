@@ -14,10 +14,6 @@ public class Message {
     private final boolean status;
     
     public Message(int id_student, String message_text, boolean status){
-        if(id_student==0)
-            throw new IllegalArgumentException("id student parameter");
-        if(message_text==null)
-            throw new IllegalArgumentException("message text parameter");
         this.id_student = id_student;
         this.message_text = message_text;
         this.status = status;

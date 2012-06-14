@@ -13,16 +13,6 @@ public class Interview {
     private int id_employee;
     private String comment;
     public Interview(int id_student, int id_employee, String comment) {
-        if (id_student <= 0) {
-            throw new IllegalArgumentException("id_student parameter");
-        }
-        if (id_employee <= 0) {
-            throw new IllegalArgumentException("id_employee parameter");
-        }
-        if (comment == null) {
-            throw new IllegalArgumentException("comment parameter");
-        }
-        
         this.id_student = id_student;
         this.id_employee = id_employee;
         this.comment = comment;

@@ -48,10 +48,6 @@ public class InterviewDAOImpl implements InterviewDAO {
 
     @Override
     public boolean deleteInterviewByIdStudent(int id_student) {
-        
-        if (id_student <= 0) {
-            throw new IllegalArgumentException("id_student param");
-        }
         Connection conn = DAOFactory.createConnection();
         PreparedStatement stmtDelete = null;
         try {

@@ -23,13 +23,6 @@ public class MessageDAOImpl implements MessageDAO{
 
     @Override
     public boolean createMessage(int id_student, String message_text) {
-        if(id_student == 0){
-            throw new IllegalArgumentException("id_student");
-        }
-        if(message_text == null){
-            throw new IllegalArgumentException("message text param");
-        }
-                
         PreparedStatement stmtInsert = null;
         Connection conn = DAOFactory.createConnection();
         try{
@@ -70,10 +63,6 @@ public class MessageDAOImpl implements MessageDAO{
 
     @Override
     public boolean deleteMessageById(int id_student) {
-        if(id_student == 0){
-            throw new IllegalArgumentException("id_student param");
-        }
-        
         Connection conn=DAOFactory.createConnection();
         PreparedStatement stmtDelete = null;
         try{
@@ -104,9 +93,6 @@ public class MessageDAOImpl implements MessageDAO{
 
     @Override
     public Message getMessageByID(int id_student) {
-        if(id_student <= 0) {
-            throw new IllegalArgumentException("id_student param");
-        }
         PreparedStatement stmtSelect = null;
         Connection conn = DAOFactory.createConnection();
         ResultSet result = null;
@@ -147,13 +133,6 @@ public class MessageDAOImpl implements MessageDAO{
 
     @Override
     public boolean setStatusById(int id_student, boolean status) {
-        if(id_student == 0){
-            throw new IllegalArgumentException("id_student param");
-        }
-        /*if(status == null){
-            throw new IllegalArgumentException("id_student param");
-        }*/
-        
         Connection conn=DAOFactory.createConnection();
         PreparedStatement stmtUpdate = null;
         try{
@@ -189,7 +168,6 @@ public class MessageDAOImpl implements MessageDAO{
 
     @Override
     public List<Message> getVisitedMessage() {
-        
         List messages = new LinkedList();
         Connection conn = DAOFactory.createConnection();
         PreparedStatement stmtSelect = null;

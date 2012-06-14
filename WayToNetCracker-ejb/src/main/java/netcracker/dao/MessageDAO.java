@@ -10,7 +10,6 @@ import java.util.List;
  * @author Администратор
  */
 public interface MessageDAO {
-    
     public boolean createMessage(int id_student, String message_text);
     public boolean deleteMessageById(int id_student);
     public Message getMessageByID(int id_student);

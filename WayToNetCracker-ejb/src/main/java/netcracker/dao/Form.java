@@ -30,43 +30,6 @@ public class Form {
                     int course, String study_end_year, int id_faculty, String email1,
                     String email2, String phone1, String extra_contacts,
                     String why, String experience, String extra, Blob photo) {
-        if (first_name == null) {
-            throw new IllegalArgumentException("first_name parameter");
-        }
-        if (last_name == null) {
-            throw new IllegalArgumentException("last_name parameter");
-        }
-        if (middle_name == null) {
-            throw new IllegalArgumentException("middle_name parameter");
-        }
-        if (course == 0) {
-            throw new IllegalArgumentException("course parameter");
-        }
-        if (study_end_year == null) {
-            throw new IllegalArgumentException("study_end_year parameter");
-        }
-        if (id_faculty == 0) {
-            throw new IllegalArgumentException("id_faculty parameter");
-        }
-        if (email1 == null) {
-            throw new IllegalArgumentException("email1 parameter");
-        }
-        if (phone1 == null) {
-            throw new IllegalArgumentException("phone1 parameter");
-        }
-        if (why == null) {
-            throw new IllegalArgumentException("why parameter");
-        }
-        if (experience == null) {
-            throw new IllegalArgumentException("experience parameter");
-        }
-        if (extra == null) {
-            throw new IllegalArgumentException("extra parameter");
-        }
-        if (photo == null) {
-            throw new IllegalArgumentException("photo parameter");
-        }
-        
         this.first_name = first_name;
         this.last_name = last_name;
         this.middle_name = middle_name;

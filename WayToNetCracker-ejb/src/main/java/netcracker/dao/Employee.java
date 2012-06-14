@@ -20,18 +20,6 @@ public class Employee {
     private final int id_role;
     //constructor initializing new Employee with params
      public Employee(String login, String password, String last, String first, String email, int id_role){
-        if(last==null)
-            throw new IllegalArgumentException("last parameter");
-        if(password == null)
-            throw new IllegalArgumentException("last parameter");
-        if(first==null)
-            throw new IllegalArgumentException("first parameter");
-        if(email==null)
-            throw new IllegalArgumentException("email parameter");
-        if(id_role == 0)
-            throw new IllegalArgumentException("id_role parameter");
-        if(login == null)
-            throw new IllegalArgumentException("login parameter");
         this.email=email;
         this.first_name=first;
         this.last_name=last;

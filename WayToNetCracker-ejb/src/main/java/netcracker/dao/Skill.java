@@ -19,26 +19,7 @@ public class Skill {
     private final int id_skill_type;
     
     public Skill(int id_skill, String skill_name, int mark, String notes,
-            int id_student, int id_skill_type)
-    {
-         if (id_skill <= 0) {
-            throw new IllegalArgumentException("id_skill parameter");
-        }
-        if (skill_name == null) {
-            throw new IllegalArgumentException("skill_name parameter");
-        }
-        if (mark <=0) {
-            throw new IllegalArgumentException("mark parameter");
-        }
-        if (notes == null) {
-            throw new IllegalArgumentException("notes parameter");
-        }
-        if (id_student <=0) {
-            throw new IllegalArgumentException("id_student parameter");
-        }
-        if (id_skill_type <=0) {
-            throw new IllegalArgumentException("id_skill_type parameter");
-        }
+            int id_student, int id_skill_type) {
         this.id_skill=id_skill;
         this.id_skill_type=id_skill_type;
         this.id_student = id_student;
