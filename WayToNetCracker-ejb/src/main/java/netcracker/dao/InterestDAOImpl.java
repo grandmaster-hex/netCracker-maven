@@ -45,6 +45,11 @@ public class InterestDAOImpl implements InterestDAO {
         catch (Exception e){
             System.out.print("\n Error while getting all interests for student!\n");
         }
+            finally
+        {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
         return interests;    
     }
     

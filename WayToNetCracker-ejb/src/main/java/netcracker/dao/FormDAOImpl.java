@@ -122,6 +122,11 @@ public class FormDAOImpl implements FormDAO {
         catch (Exception e){
             System.out.print("\n Error while getting all Universities!\n");
         }
+            finally
+        {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
         return universities;
     }
     //get faculties by id returns list of faculty names or empty list
@@ -154,6 +159,11 @@ public class FormDAOImpl implements FormDAO {
         }
         catch (Exception e){
             System.out.print("\n Error while getting all Faculties!\n");
+        }
+            finally
+        {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
         }
         return universities;
     }

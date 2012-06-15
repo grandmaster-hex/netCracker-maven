@@ -17,9 +17,51 @@ import java.util.List;
  */
 public class SkillsDAOImpl implements SkillsDAO {
 
-    @Override
+   @Override
     public List<Skill> getAllSkillsByTypeIdForStudent(int id_skill_type,int id_student) {
-        throw new UnsupportedOperationException("Not supported yet.");
+       List<Skill> skills = new ArrayList();
+       Connection conn = DAOFactory.createConnection();
+       PreparedStatement stmtSelect = null;
+       ResultSet res = null;
+       Skill skill = null;
+       try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("select "+DAOConstants.SkillsForStudentsTableName+".id_skill, "+
+                    DAOConstants.SkillsTableName+".skill_name, "+
+                    DAOConstants.SkillsForStudentsTableName+".mark, "+
+                    DAOConstants.SkillsForStudentsTableName+".notes, "+
+                    DAOConstants.SkillsForStudentsTableName+".id_student, "+
+                    DAOConstants.SkillsTableName+".id_skill_type "+
+                    "from "+DAOConstants.SkillsTableName+", "+DAOConstants.SkillsForStudentsTableName+
+                    " where "+DAOConstants.SkillsForStudentsTableName+".id_skill"+
+                    " = "+DAOConstants.SkillsTableName+".id_skill "+
+                    "and "+DAOConstants.SkillsForStudentsTableName+".id_student = ? "+
+                    "and "+DAOConstants.SkillsTableName+".id_skill_type = ?");
+            
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            stmtSelect.setInt(1,id_student);
+            stmtSelect.setInt(2,id_skill_type);
+            System.out.print(stmtSelect.toString());
+            res = stmtSelect.executeQuery();
+            int rowsCount = 0;
+            while (res.next()) {
+               skill = new Skill(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4), res.getInt(5), res.getInt(6));
+               skills.add(skill);
+               rowsCount++;
+            }
+            if (rowsCount<=0){
+                System.out.print("\n\nNo skill types found");
+            }
+        }
+        catch (Exception e){
+            System.out.print("\n Error while getting all skill types!\n");
+        }
+         finally
+        {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
+       return skills;
     }
 
     @Override
@@ -49,7 +91,13 @@ public class SkillsDAOImpl implements SkillsDAO {
         catch (Exception e){
             System.out.print("\n Error while getting all skill types!\n");
         }
+          finally
+        {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
         return skillTypes;
+        
     }
     
 }

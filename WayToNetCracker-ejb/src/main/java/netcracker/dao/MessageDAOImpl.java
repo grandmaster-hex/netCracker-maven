@@ -193,6 +193,11 @@ public class MessageDAOImpl implements MessageDAO{
         catch (Exception e){
             System.out.print("\n Error while getting visited messages!\n");
         }
+          finally
+        {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
         return messages;
     }
 
@@ -223,7 +228,13 @@ public class MessageDAOImpl implements MessageDAO{
         catch (Exception e){
             System.out.print("\n Error while getting not-visited messages!\n");
         }
+          finally
+        {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
         return messages;
+        
     }
     
 }
