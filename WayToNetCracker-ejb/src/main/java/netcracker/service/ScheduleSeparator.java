@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class ScheduleSeparator {
     
-    public List<Date> separate(Date begin, Date end, int duration) {
+    public static List<Date> separate(Date begin, Date end, int duration) {
         
         List<Date> list = new ArrayList<Date>();
         
