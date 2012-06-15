@@ -4,6 +4,8 @@
  */
 package netcracker.dao;
 
+import java.util.List;
+
 /**
  *
  * @author lastride
@@ -23,4 +25,8 @@ public interface InterviewDAO {
      * @return 
      */
     public boolean deleteInterviewByIdStudent(int id_student);
+    
+    public List <String> getInterviewsResultByStudentId(int id_student);
+    
+    public List <String> getInterviewsResultByEmployeeId(int id_employee);
 }
