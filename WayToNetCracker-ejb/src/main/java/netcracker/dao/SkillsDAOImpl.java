@@ -41,7 +41,7 @@ public class SkillsDAOImpl implements SkillsDAO {
             stmtSelect = conn.prepareStatement(sbSelect.toString());
             stmtSelect.setInt(1,id_student);
             stmtSelect.setInt(2,id_skill_type);
-            System.out.print(stmtSelect.toString());
+            //System.out.print(stmtSelect.toString());
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
             while (res.next()) {

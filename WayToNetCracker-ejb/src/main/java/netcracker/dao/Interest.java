@@ -12,11 +12,13 @@ public class Interest {
 
     private final int id_interest;
     private final int id_student;
+    private final String interest_name;
     private final String mark;
     private final String notes;
-    public Interest(int id_interest,int id_student, String mark, String notes){
+    public Interest(int id_interest,int id_student,String interest_name, String mark, String notes){
         this.id_interest = id_interest;
         this.id_student=id_student;
+        this.interest_name = interest_name;
         this.mark = mark;
         this.notes = notes;
     }
@@ -42,6 +44,8 @@ public class Interest {
 	sbResult.append(this.id_interest);
 	sbResult.append(", id_student = ");
 	sbResult.append(this.id_student);
+        sbResult.append(", interest_name = ");
+	sbResult.append(this.interest_name);
 	sbResult.append(", mark = ");
 	sbResult.append(this.mark);
 	sbResult.append(", notes = ");

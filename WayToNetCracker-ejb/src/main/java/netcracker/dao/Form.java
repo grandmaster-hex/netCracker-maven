@@ -4,38 +4,47 @@
  */
 package netcracker.dao;
 
-import com.mysql.jdbc.Blob;
+
+import java.sql.Blob;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author lastride
  */
 public class Form {
+    private final int id_student;
     private final String first_name;
     private final String last_name;
     private final String middle_name;
     private final int course;
-    private final String study_end_year;
+    private final Date study_end_year;
     private final int id_faculty;
     private final String email1;
     private final String email2;
     private final String phone1;
+    private final List<SkillsOfType> skills;
+    private final List<Interest> interests;
     private final String extra_contacts;
     private final String why;
     private final String experience;
     private final String extra;
     private final Blob photo;
     
-    public Form(String first_name, String last_name, String middle_name,
-                    int course, String study_end_year, int id_faculty, String email1,
+    public Form(int id_student,String first_name, String last_name, String middle_name,
+                    int course, Date study_end_year, int id_faculty, String email1,
                     String email2, String phone1, String extra_contacts,
                     String why, String experience, String extra, Blob photo) {
+        this.id_student = id_student;
         this.first_name = first_name;
         this.last_name = last_name;
         this.middle_name = middle_name;
         this.course = course;
         this.study_end_year = study_end_year;
         this.id_faculty = id_faculty;
+        this.interests = DAOFactory.getInterestDAO().getStudentInterestsById(id_student);
+        this.skills = DAOFactory.getSkillsDAO().getAllSkillTypes(id_student);
         this.email1 = email1;
         this.email2 = email2;
         this.phone1 = phone1;
@@ -46,6 +55,15 @@ public class Form {
         this.photo = photo;
           
     }
+
+    public List<Interest> getInterests() {
+        return interests;
+    }
+
+    public List<SkillsOfType> getSkills() {
+        return skills;
+    }
+    
     
     public String getFirstName() {
         return this.first_name;
@@ -67,7 +85,7 @@ public class Form {
     }
 
     
-    public String getStudyEndYear() {
+    public Date getStudyEndYear() {
         return this.study_end_year;
     }
 

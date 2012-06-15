@@ -50,7 +50,7 @@ public final class DAOFactory {
 		 {
                      Class.forName(DAOConstants.driver).newInstance();
                      conn = DriverManager.getConnection(DAOConstants.url, DAOConstants.user, DAOConstants.password);
-                     System.out.print("\nDB connection established! \n");
+                    // System.out.print("\nDB connection established! \n");
 		 }
 		 catch (Exception ex)
 		 {

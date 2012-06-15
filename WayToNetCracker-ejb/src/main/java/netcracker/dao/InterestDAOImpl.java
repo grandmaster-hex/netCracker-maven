@@ -25,16 +25,17 @@ public class InterestDAOImpl implements InterestDAO {
         Interest i = null;
         try {
             StringBuffer sbSelect = new StringBuffer();
-            sbSelect.append("SELECT ID_INTEREST, MARK, NOTES FROM ");
-            sbSelect.append(DAOConstants.InterestsForStudentsTableName);
-            sbSelect.append(" WHERE ID_STUDENT = ?");
+            sbSelect.append("SELECT "+DAOConstants.InterestsForStudentsTableName + ".ID_INTEREST,INTEREST_NAME, MARK, NOTES FROM ");
+            sbSelect.append(DAOConstants.InterestsForStudentsTableName +", "+DAOConstants.InterestsTableName);
+            sbSelect.append(" WHERE "+DAOConstants.InterestsForStudentsTableName+".ID_STUDENT = ? AND "+DAOConstants.InterestsForStudentsTableName+
+                    ".ID_INTEREST = "+DAOConstants.InterestsTableName+".ID_INTEREST");
             stmtSelect = conn.prepareStatement(sbSelect.toString());
             stmtSelect.setInt(1, id_student);
-            //System.out.print(stmtSelect.toString());
+           // System.out.print(stmtSelect.toString());
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
             while (res.next()) {
-               i = new Interest(res.getInt(1),id_student,res.getString(2), res.getString(3));
+               i = new Interest(res.getInt(1),id_student,res.getString(2), res.getString(3),res.getString(4));
                interests.add(i);              
                rowsCount++;
             }
@@ -52,5 +53,6 @@ public class InterestDAOImpl implements InterestDAO {
         }
         return interests;    
     }
+    
     
 }

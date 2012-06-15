@@ -4,6 +4,7 @@
  */
 package netcracker.dao;
 
+import com.itextpdf.text.pdf.codec.Base64.InputStream;
 import com.mysql.jdbc.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Date;
 
 /**
  *
@@ -96,6 +98,44 @@ public class FormDAOImpl implements FormDAO {
             DAOFactory.closeStatement(stmtDelete);
         }
         return true;
+    }
+    public Form getFormByStudentId(int id_student){
+        Connection conn = DAOFactory.createConnection();
+        PreparedStatement stmtSelect = null;
+        ResultSet res = null;
+        Form form = null;
+        try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("SELECT ID_STUDENT,FIRST_NAME,LAST_NAME,MIDDLE_NAME,COURSE, "
+                    + "STUDY_END_YEAR,ID_FACULTY,EMAIL1,EMAIL2,PHONE1,EXTRA_CONTACTS,WHY,"
+                    + "EXPERIENCE, EXTRA,PHOTO FROM ");
+            sbSelect.append(DAOConstants.StudentsTableName);
+            sbSelect.append(" WHERE ID_STUDENT = ?");
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            stmtSelect.setInt(1, id_student);            
+            res = stmtSelect.executeQuery();
+            int rowsCount = 0;
+            while (res.next()) {                
+               form = new Form(res.getInt(1),res.getString(2),res.getString(3),res.getString(4),
+                      res.getInt(5),res.getDate(6),res.getInt(7),res.getString(8),
+                       res.getString(9),res.getString(10),res.getString(11),
+                       res.getString(12),res.getString(13),res.getString(14),res.getBlob(15));               
+               rowsCount++;
+            }
+            //System.out.print(stmtSelect.toString());
+            if (rowsCount<=0){
+                System.out.print("\n\nNo Form found");
+            }
+        }
+        catch (Exception e){
+            System.out.print("\n Error while getting Form!\n");
+        }
+            finally
+        {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
+        return form;
     }
     //return List of universities_name or empty List with console text output
     public List<String> getAllUniversities() {

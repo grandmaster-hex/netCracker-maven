@@ -21,9 +21,7 @@ public class SkillsOfType {
         if (id_skill_type<=0){
             throw new IllegalArgumentException("id skill type parameter");
         }
-        if (skill_type_name == null){
-            throw new IllegalArgumentException("skill type name parameter");
-        }
+      
         this.id_skill_type= id_skill_type;
         this.skill_type_name = skill_type_name;
         this.skills =DAOFactory.getSkillsDAO().getAllSkillsByTypeIdForStudent(id_skill_type,id_student);
@@ -37,6 +35,10 @@ public class SkillsOfType {
         return skill_type_name;
     }
     
+    public List<Skill> getSkills(){
+        return skills;
+    }
+    
    
     
     @Override
@@ -46,6 +48,8 @@ public class SkillsOfType {
         sbResult.append(id_skill_type);
         sbResult.append(" ,skill_type_name = ");
         sbResult.append(skill_type_name);
+        sbResult.append(" skills =");
+        sbResult.append(skills.toString());
         
         return sbResult.toString();
     }

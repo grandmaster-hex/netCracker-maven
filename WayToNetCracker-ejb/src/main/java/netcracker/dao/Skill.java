@@ -55,17 +55,13 @@ public class Skill {
         StringBuffer sbResult = new StringBuffer();
 	sbResult.append("id skill = ");
 	sbResult.append(this.id_skill);
-	sbResult.append(", id student = ");
-	sbResult.append(this.id_student);
 	sbResult.append(", mark = ");
 	sbResult.append(this.mark);
 	sbResult.append(", notes = ");
 	sbResult.append(this.notes);
         sbResult.append(", skill_name = ");
 	sbResult.append(this.skill_name);
-        sbResult.append(", id_skill_type = ");
-	sbResult.append(this.id_skill_type);
-        
+                
         return sbResult.toString();
     }
     

@@ -50,4 +50,6 @@ public interface FormDAO {
      * @return List<String>
      */
     public List<String> getFacultiesByUniverName(String name);
+    
+    public Form getFormByStudentId(int id_student);
 }
