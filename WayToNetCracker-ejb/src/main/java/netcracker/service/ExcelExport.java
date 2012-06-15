@@ -77,7 +77,7 @@ public class ExcelExport {
             String[] employeesFields = {"id_employee", "login", "password",
                 "first_name", "last_name", "email", "id_role"};
             String[] facultiesFields = {"id_faculty", "id_university", "faculty_name"};
-            String[] interestsFields = {"id_interest", "interst_name"};
+            String[] interestsFields = {"id_interest", "interest_name"};
             String[] interestsForStudentsFields = {"id_interest", "id_student", "mark", "notes"};
             String[] intervalsFields = {"id_interval", "start_time", "end_time", "interviewers_count", "id_interval_status"};
             String[] intervalsForStudentsFields = {"id_interval", "id_student"};
