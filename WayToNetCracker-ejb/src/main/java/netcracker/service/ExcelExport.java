@@ -7,20 +7,26 @@ package netcracker.service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import netcracker.dao.DAOFactory;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.util.IOUtils;
 
 /**
  *
  * @author lastride
  */
 public class ExcelExport {
+    
     public static boolean exportToExcel() {
         PreparedStatement stmt = null;
         ResultSet result = null;
@@ -45,23 +51,31 @@ public class ExcelExport {
             HSSFSheet skillsTypesSheet = workbook.createSheet("skillsTypes");
             HSSFSheet studentsSheet = workbook.createSheet("students");
             HSSFSheet universitiesSheet = workbook.createSheet("universities");
-                       
+            
             
             ArrayList<HSSFSheet> sheets = new ArrayList<HSSFSheet>();
-            sheets.add(advertsSheet); sheets.add(advertsForStudentsSheet);
-            sheets.add(employeesSheet); sheets.add(facultiesSheet);
-            sheets.add(interestsSheet); sheets.add(interestsForStudentsSheet);
-            sheets.add(intervalsSheet); sheets.add(intervalsForStudentsSheet);
-            sheets.add(intervalStatusesSheet); sheets.add(messagesSheet);
-            sheets.add(resultsSheet); sheets.add(rolesSheet);
-            sheets.add(skillsSheet); sheets.add(skillsForStudentsSheet);
-            sheets.add(skillsTypesSheet); sheets.add(studentsSheet);
+            sheets.add(advertsSheet);
+            sheets.add(advertsForStudentsSheet);
+            sheets.add(employeesSheet);
+            sheets.add(facultiesSheet);
+            sheets.add(interestsSheet);
+            sheets.add(interestsForStudentsSheet);
+            sheets.add(intervalsSheet);
+            sheets.add(intervalsForStudentsSheet);
+            sheets.add(intervalStatusesSheet);
+            sheets.add(messagesSheet);
+            sheets.add(resultsSheet);
+            sheets.add(rolesSheet);
+            sheets.add(skillsSheet);
+            sheets.add(skillsForStudentsSheet);
+            sheets.add(skillsTypesSheet);
+            sheets.add(studentsSheet);
             sheets.add(universitiesSheet);
-           
+            
             String[] advertsFields = {"id_advert", "advert_name"};
             String[] advertsForStudentsFields = {"id_student", "id_advert", "notes"};
             String[] employeesFields = {"id_employee", "login", "password",
-                                        "first_name", "last_name", "email", "id_role"};
+                "first_name", "last_name", "email", "id_role"};
             String[] facultiesFields = {"id_faculty", "id_university", "faculty_name"};
             String[] interestsFields = {"id_interest", "interst_name"};
             String[] interestsForStudentsFields = {"id_interest", "id_student", "mark", "notes"};
@@ -75,19 +89,27 @@ public class ExcelExport {
             String[] skillsForStudentsFields = {"id_skill", "id_student", "mark", "notes"};
             String[] skillsTypesFields = {"id_skill_type", "skill_type_name"};
             String[] studentsFields = {"id_student", "first_name", "last_name", "middle_name", "course", "study_end_year",
-                                    "id_faculty", "email1", "email2", "phone1", "extra_contacts", "why", "experience",
-                                    "extra", "photo"};
+                "id_faculty", "email1", "email2", "phone1", "extra_contacts", "why", "experience",
+                "extra", "photo"};
             String[] universitiesFields = {"id_university", "university_name"};
             
             ArrayList<String[]> strings = new ArrayList<String[]>();
-            strings.add(advertsFields); strings.add(advertsForStudentsFields);
-            strings.add(employeesFields); strings.add(facultiesFields);
-            strings.add(interestsFields); strings.add(interestsForStudentsFields);
-            strings.add(intervalsFields); strings.add(intervalsForStudentsFields);
-            strings.add(intervalStatusesFields); strings.add(messagesFields);
-            strings.add(resultsFields); strings.add(rolesFields);
-            strings.add(skillsFields); strings.add(skillsForStudentsFields);
-            strings.add(skillsTypesFields); strings.add(studentsFields);
+            strings.add(advertsFields);
+            strings.add(advertsForStudentsFields);
+            strings.add(employeesFields);
+            strings.add(facultiesFields);
+            strings.add(interestsFields);
+            strings.add(interestsForStudentsFields);
+            strings.add(intervalsFields);
+            strings.add(intervalsForStudentsFields);
+            strings.add(intervalStatusesFields);
+            strings.add(messagesFields);
+            strings.add(resultsFields);
+            strings.add(rolesFields);
+            strings.add(skillsFields);
+            strings.add(skillsForStudentsFields);
+            strings.add(skillsTypesFields);
+            strings.add(studentsFields);
             strings.add(universitiesFields);
             
             
@@ -107,21 +129,21 @@ public class ExcelExport {
             HSSFRow row = null;
             for (int i = 0; i < sheets.size(); i++) {
                 row = sheets.get(i).createRow(0);
-                  for (int j = 0; j < strings.get(i).length; j++) {
-                        HSSFCell cell = row.createCell(j);
-                        cell.setCellValue(strings.get(i)[j]);
-                        cell.setCellStyle(style);
-                        sheets.get(i).autoSizeColumn((short)j);
-                  }
+                for (int j = 0; j < strings.get(i).length; j++) {
+                    HSSFCell cell = row.createCell(j);
+                    cell.setCellValue(strings.get(i)[j]);
+                    cell.setCellStyle(style);
+                    sheets.get(i).autoSizeColumn((short) j);
+                }
             }
             
             
             String[] tableNames = {"adverts", "advertsForStudents", "employees", "faculties",
-                                    "interests", "interestsForStudents", "intervals",
-                                    "intervalsForStudents", "intervalStatuses",
-                                    "messages", "results", "roles", "skills",
-                                    "skillsForStudents", "skillsTypes", "students",
-                                    "universities"};
+                "interests", "interestsForStudents", "intervals",
+                "intervalsForStudents", "intervalStatuses",
+                "messages", "results", "roles", "skills",
+                "skillsForStudents", "skillsTypes", "students",
+                "universities"};
             
             StringBuffer sbEmployees = null;
             HSSFRow rowT = null;
@@ -137,17 +159,44 @@ public class ExcelExport {
                     rowT = sheets.get(i).createRow(c);
                     for (int j = 0; j < strings.get(i).length; j++) {
                         HSSFCell cellT = rowT.createCell(j);
-                        cellT.setCellValue(result.getString(strings.get(i)[j]));
-                        sheets.get(i).autoSizeColumn((short)j);
-
+                        if (sheets.get(i).getSheetName().equals("students")) {
+                            HSSFCellStyle styleT = workbook.createCellStyle();
+                            
+                            styleT.setAlignment(CellStyle.ALIGN_CENTER);
+                            styleT.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+                            cellT.setCellStyle(styleT);
+                        }
+                        if (strings.get(i)[j].equals("photo")) {
+                            InputStream img = result.getBinaryStream("photo");
+                            try {
+                                rowT.setHeightInPoints(70f);
+                                
+                                byte[] bytes = IOUtils.toByteArray(img);
+                                int pictureIdx = workbook.addPicture(bytes, workbook.PICTURE_TYPE_JPEG);
+                                img.close();
+                                CreationHelper helper = workbook.getCreationHelper();
+                                Drawing drawing = studentsSheet.createDrawingPatriarch();
+                                ClientAnchor anchor = helper.createClientAnchor();
+                                anchor.setAnchorType(ClientAnchor.MOVE_DONT_RESIZE);
+                                anchor.setCol1(j);
+                                anchor.setRow1(c);
+                                studentsSheet.autoSizeColumn(j);
+                                Picture pict = drawing.createPicture(anchor, pictureIdx);
+                                pict.getPreferredSize();
+                                pict.resize(0.1);
+                            } catch (IOException ex) {
+                                Logger.getLogger(ExcelExport.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else {
+                            cellT.setCellValue(result.getString(strings.get(i)[j]));
+                        }
+                        sheets.get(i).autoSizeColumn((short) j);
                     }
                 }
             }
-        }
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             System.out.print("\nSQL exception in exportToExcel");
-        }
-        finally {
+        } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmt);
         }
@@ -172,6 +221,7 @@ public class ExcelExport {
         
         return true;
     }
+    
     public static void main(String[] args) {
         ExcelExport.exportToExcel();
     }
