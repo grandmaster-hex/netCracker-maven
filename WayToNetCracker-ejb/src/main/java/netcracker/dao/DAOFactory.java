@@ -26,6 +26,13 @@ public final class DAOFactory {
         return new FormDAOImpl();
     }
     
+    public static InterestDAO getInterestDAO(){
+        return new InterestDAOImpl();
+    }
+    
+    public static SkillsDAO getSkillsDAO() {
+        return new SkillsDAOImpl();
+    }
     public static InterviewDAO getInterviewDAO() {
         return new InterviewDAOImpl();
     }
