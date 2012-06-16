@@ -18,7 +18,7 @@ import java.util.List;
 public class InterviewDAOImpl implements InterviewDAO {
 
     @Override
-    public boolean createInterview(int id_student, int id_employee, String comment) {
+    public boolean createInterview(Interview interview) {
         PreparedStatement stmtInsert = null;
         Connection conn = DAOFactory.createConnection();
         try{
@@ -29,9 +29,9 @@ public class InterviewDAOImpl implements InterviewDAO {
             sbInsert.append(" VALUES (");
             sbInsert.append("?, ?, ?)");
             stmtInsert = conn.prepareStatement(sbInsert.toString());
-            stmtInsert.setInt(1, id_student);
-            stmtInsert.setInt(2, id_employee);
-            stmtInsert.setString(3, comment);
+            stmtInsert.setInt(1, interview.getIdStudent());
+            stmtInsert.setInt(2, interview.getIdEmployee());
+            stmtInsert.setString(3, interview.getComment());
             
             int rows = stmtInsert.executeUpdate();
             if (rows != 1) {

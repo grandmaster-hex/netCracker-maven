@@ -18,7 +18,7 @@ public interface InterviewDAO {
      * @param comment
      * @return 
      */
-    public boolean createInterview(int id_student, int id_employee, String comment);
+    public boolean createInterview(Interview interview);
     /**
      * Deletes interview by id_student
      * @param id_student

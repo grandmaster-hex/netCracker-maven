@@ -4,7 +4,6 @@
  */
 package netcracker.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,10 +17,6 @@ public class SkillsOfType {
     private List<Skill> skills;
     
     public SkillsOfType(int id_skill_type, String skill_type_name,int id_student){
-        if (id_skill_type<=0){
-            throw new IllegalArgumentException("id skill type parameter");
-        }
-      
         this.id_skill_type= id_skill_type;
         this.skill_type_name = skill_type_name;
         this.skills =DAOFactory.getSkillsDAO().getAllSkillsByTypeIdForStudent(id_skill_type,id_student);

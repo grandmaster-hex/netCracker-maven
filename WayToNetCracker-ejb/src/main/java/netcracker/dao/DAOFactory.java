@@ -8,12 +8,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import netcracker.dao.DAOConstants;
-import netcracker.dao.EmployeeDAO;
-import netcracker.dao.EmployeeDAOImpl;
-import netcracker.dao.FormDAO;
-import netcracker.dao.FormDAOImpl;
-import netcracker.dao.InterviewDAO;
 
 /**
  *

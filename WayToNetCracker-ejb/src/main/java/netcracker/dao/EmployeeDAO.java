@@ -9,7 +9,7 @@ package netcracker.dao;
  * @author lasha.k
  */
 public interface EmployeeDAO {
-    public boolean createEmployee(String login, String password, String firstName, String lastName, String email, int roleId);
+    public boolean createEmployee(Employee emp);
     public boolean deleteEmployee(int id);
     public Employee getEmployeeById(int id_employee);
 }

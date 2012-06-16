@@ -10,8 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
-import netcracker.dao.DAOConstants;
-import netcracker.dao.DAOFactory;
 
 /**
  *
@@ -22,7 +20,7 @@ public class MessageDAOImpl implements MessageDAO{
     public MessageDAOImpl(){}
 
     @Override
-    public boolean createMessage(int id_student, String message_text) {
+    public boolean createMessage(Message message) {
         PreparedStatement stmtInsert = null;
         Connection conn = DAOFactory.createConnection();
         try{
@@ -33,9 +31,9 @@ public class MessageDAOImpl implements MessageDAO{
             sbInsert.append(" values(");
             sbInsert.append("?,?,?)");
             stmtInsert = conn.prepareStatement(sbInsert.toString());
-            stmtInsert.setInt(1,id_student);
-            stmtInsert.setString(2,message_text);
-            stmtInsert.setBoolean(3,false);
+            stmtInsert.setInt(1, message.getIdStudent());
+            stmtInsert.setString(2, message.getEditValues());
+            stmtInsert.setBoolean(3, false);
              
             //uncomment for checking query syntax
             //System.out.print(stmtInsert.toString());
@@ -62,7 +60,7 @@ public class MessageDAOImpl implements MessageDAO{
     }
 
     @Override
-    public boolean deleteMessageById(int id_student) {
+    public boolean deleteMessageByIdStudent(int id_student) {
         Connection conn=DAOFactory.createConnection();
         PreparedStatement stmtDelete = null;
         try{
@@ -92,7 +90,7 @@ public class MessageDAOImpl implements MessageDAO{
     }
 
     @Override
-    public Message getMessageByID(int id_student) {
+    public Message getMessageByIdStudent(int id_student) {
         PreparedStatement stmtSelect = null;
         Connection conn = DAOFactory.createConnection();
         ResultSet result = null;
@@ -132,7 +130,7 @@ public class MessageDAOImpl implements MessageDAO{
     }
 
     @Override
-    public boolean setStatusById(int id_student, boolean status) {
+    public boolean setStatusByIdStudent(int id_student, boolean status) {
         Connection conn=DAOFactory.createConnection();
         PreparedStatement stmtUpdate = null;
         try{

@@ -24,16 +24,16 @@ public class InterestDAOImpl implements InterestDAO {
         Connection conn = DAOFactory.createConnection();
         try{
             StringBuffer sbInsert = new StringBuffer();
-            sbInsert.append("insert into ");
+            sbInsert.append("INSERT INTO ");
             sbInsert.append(DAOConstants.InterestsForStudentsTableName);
             sbInsert.append(" (id_interest, id_student, mark, notes)");
             sbInsert.append(" values(");
             sbInsert.append("?,?,?,?)");
             stmtInsert = conn.prepareStatement(sbInsert.toString());
-            stmtInsert.setInt(1,interest.getId_interest());
-            stmtInsert.setInt(2,interest.getId_student());
-            stmtInsert.setString(3,interest.getMark());
-            stmtInsert.setString(4,interest.getNotes());
+            stmtInsert.setInt(1, interest.getId_interest());
+            stmtInsert.setInt(2, interest.getId_student());
+            stmtInsert.setString(3, interest.getMark());
+            stmtInsert.setString(4, interest.getNotes());
             System.out.print(stmtInsert.toString());          
             int rows = stmtInsert.executeUpdate();
             if (rows != 1)

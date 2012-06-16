@@ -30,7 +30,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
      * @param id_role employees id_role
      * @return 
      */
-    public boolean createEmployee(String login, String password, String first_name, String last_name, String email, int id_role) {
+    public boolean createEmployee(Employee emp) {
         
         PreparedStatement stmtInsert = null;
         Connection conn = DAOFactory.createConnection();
@@ -42,11 +42,11 @@ public class EmployeeDAOImpl implements EmployeeDAO{
             sbInsert.append(" values(");
             sbInsert.append("?,?,?,?,?,?)");
             stmtInsert = conn.prepareStatement(sbInsert.toString());
-            stmtInsert.setString(1,login);
-            stmtInsert.setString(2,password);
-            stmtInsert.setString(3,first_name);
-            stmtInsert.setString(4,last_name);
-            stmtInsert.setString(5,email);
+            stmtInsert.setString(1, emp.getLogin());
+            stmtInsert.setString(2, emp.getPassword());
+            stmtInsert.setString(3, emp.getFirstName());
+            stmtInsert.setString(4, emp.getLastName());
+            stmtInsert.setString(5, emp.getLogin());
             stmtInsert.setInt(6,1);   
             
             int rows = stmtInsert.executeUpdate();

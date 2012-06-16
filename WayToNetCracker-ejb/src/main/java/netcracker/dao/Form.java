@@ -6,7 +6,6 @@ package netcracker.dao;
 
 
 import java.sql.Blob;
-import java.util.Date;
 import java.util.List;
 
 /**

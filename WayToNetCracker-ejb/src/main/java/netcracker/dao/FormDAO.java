@@ -4,7 +4,6 @@
  */
 package netcracker.dao;
 
-import com.mysql.jdbc.Blob;
 import java.util.List;
 
 /**
@@ -36,7 +35,7 @@ public interface FormDAO {
      * @param id_student students id
      * @return boolean
      */
-    public boolean deleteFormByStudentId(int id_student);
+    public boolean deleteFormByIdStudent(int id_student);
     /**
      * Get all universities from DB
      * @return List<String>
@@ -48,5 +47,5 @@ public interface FormDAO {
      */
     public List<String> getFacultiesByUniverName(String name);
     
-    public Form getFormByStudentId(int id_student);
+    public Form getFormByIdStudent(int id_student);
 }
