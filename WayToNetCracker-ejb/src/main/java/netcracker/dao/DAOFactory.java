@@ -8,12 +8,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import netcracker.dao.DAOConstants;
-import netcracker.dao.EmployeeDAO;
-import netcracker.dao.EmployeeDAOImpl;
-import netcracker.dao.FormDAO;
-import netcracker.dao.FormDAOImpl;
-import netcracker.dao.InterviewDAO;
+import netcracker.dao.*;
+
 
 /**
  *
@@ -28,8 +24,8 @@ public final class DAOFactory {
         return new EmployeeDAOImpl();
     }
     
-    public static FormDAO getFormDAO() {
-        return new FormDAOImpl();
+    public static StudentDAO getFormDAO() {
+        return new StudentDAOImpl();
     }
     
     public static SkillsDAOImpl getSkillsDAO() {
