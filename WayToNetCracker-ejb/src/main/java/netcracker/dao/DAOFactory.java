@@ -25,6 +25,14 @@ public final class DAOFactory {
     public static InterviewDAO getInterviewDAO() {
         return new InterviewDAOImpl();
     }
+    
+    public static InterestDAO getInterestDAO(){
+        return new InterestDAOImpl();
+    }
+    
+    public static SkillsDAO getSkillsDAO(){
+        return new SkillsDAOImpl();
+    }
     //Create java.sql.Connection with params set in DAOConstants.java
     public static Connection createConnection(){
             Connection conn = null;
