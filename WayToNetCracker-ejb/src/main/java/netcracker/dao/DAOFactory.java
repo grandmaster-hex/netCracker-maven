@@ -22,7 +22,7 @@ public final class DAOFactory {
         return new EmployeeDAOImpl();
     }
     
-    public static StudentDAO getFormDAO() {
+    public static StudentDAO getStudentDAO() {
         return new StudentDAOImpl();
     }
     

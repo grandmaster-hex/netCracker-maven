@@ -82,7 +82,7 @@ public class Student {
 
     
     public int getCourse() {
-        return this.getCourse();
+        return this.course;
     }
 
     
@@ -112,7 +112,7 @@ public class Student {
 
     
     public String getExtraContacts() {
-        return this.getExtraContacts();
+        return this.extra_contacts;
     }
 
    
