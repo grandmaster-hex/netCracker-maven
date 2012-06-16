@@ -24,11 +24,7 @@ public class FormDAOImpl implements FormDAO {
     }
 
     @Override
-    public boolean createForm(String first_name, String last_name, String middle_name, 
-                                    int course, String study_end_year, int id_faculty,
-                                    String email1, String email2, String phone1, 
-                                    String extra_contacts, String why, 
-                                    String experience, String extra, Blob photo) {
+    public boolean createForm(Form form) {
         PreparedStatement stmtInsert = null;
         Connection conn = DAOFactory.createConnection();
         try{
@@ -41,20 +37,20 @@ public class FormDAOImpl implements FormDAO {
             sbInsert.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             stmtInsert = conn.prepareStatement(sbInsert.toString());
             stmtInsert.setString(1, null);
-            stmtInsert.setString(2, first_name);
-            stmtInsert.setString(3, last_name);
-            stmtInsert.setString(4, middle_name);
-            stmtInsert.setInt(5,course);
-            stmtInsert.setString(6, study_end_year);
-            stmtInsert.setInt(7, id_faculty);
-            stmtInsert.setString(8, email1);
-            stmtInsert.setString(9, email2);
-            stmtInsert.setString(10, phone1);  
-            stmtInsert.setString(11, extra_contacts);  
-            stmtInsert.setString(12, why);  
-            stmtInsert.setString(13, experience); 
-            stmtInsert.setString(14, extra);  
-            stmtInsert.setBlob(15, photo);  
+            stmtInsert.setString(2, form.getFirstName());
+            stmtInsert.setString(3, form.getLastName());
+            stmtInsert.setString(4, form.getMiddleName());
+            stmtInsert.setInt(5,form.getCourse());
+            stmtInsert.setDate(6, form.getStudyEndYear());
+            stmtInsert.setInt(7, form.getIdFaculty());
+            stmtInsert.setString(8, form.getEmail1());
+            stmtInsert.setString(9, form.getEmail2());
+            stmtInsert.setString(10, form.getPhone1());  
+            stmtInsert.setString(11, form.getExtraContacts());  
+            stmtInsert.setString(12, form.getWhy());  
+            stmtInsert.setString(13, form.getExperience()); 
+            stmtInsert.setString(14, form.getExperience());  
+            stmtInsert.setBlob(15, form.getPhoto());  
             //uncomment for checking query syntax
             System.out.print(stmtInsert.toString());
             

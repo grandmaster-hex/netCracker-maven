@@ -19,7 +19,7 @@ public class Form {
     private final String last_name;
     private final String middle_name;
     private final int course;
-    private final Date study_end_year;
+    private final java.sql.Date study_end_year;
     private final int id_faculty;
     private final String email1;
     private final String email2;
@@ -33,7 +33,7 @@ public class Form {
     private final Blob photo;
     
     public Form(int id_student,String first_name, String last_name, String middle_name,
-                    int course, Date study_end_year, int id_faculty, String email1,
+                    int course, java.sql.Date study_end_year, int id_faculty, String email1,
                     String email2, String phone1, String extra_contacts,
                     String why, String experience, String extra, Blob photo) {
         this.id_student = id_student;
@@ -55,13 +55,15 @@ public class Form {
         this.photo = photo;
           
     }
-
+    public int getStudentId(){
+        return this.id_student;
+    }
     public List<Interest> getInterests() {
-        return interests;
+        return this.interests;
     }
 
     public List<SkillsOfType> getSkills() {
-        return skills;
+        return this.skills;
     }
     
     
@@ -85,7 +87,7 @@ public class Form {
     }
 
     
-    public Date getStudyEndYear() {
+    public java.sql.Date getStudyEndYear() {
         return this.study_end_year;
     }
 

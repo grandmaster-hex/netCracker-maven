@@ -30,10 +30,7 @@ public interface FormDAO {
      * @param photo
      * @return 
      */
-    public boolean createForm(String first_name, String last_name, String middle_name,
-                    int course, String study_end_year, int id_faculty, String email1,
-                    String email2, String phone1, String extra_contacts,
-                    String why, String experience, String extra, Blob photo);
+    public boolean createForm(Form form);
     /**
      * Delete student by id_student
      * @param id_student students id
