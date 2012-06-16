@@ -467,7 +467,7 @@ public class Anketa implements Serializable {
     //метод берущий список вузов
     public List getListVuz(){
         
-        FormDAO a = DAOFactory.getFormDAO();
+        StudentDAO a = DAOFactory.getStudentDAO();
         List res = a.getAllUniversities();
         
         return res;
@@ -476,7 +476,7 @@ public class Anketa implements Serializable {
     public void getListFaculty(){
         if(vuz !=null && !vuz.equals(""))  
         {
-            FormDAO a = DAOFactory.getFormDAO();
+            StudentDAO a = DAOFactory.getStudentDAO();
             List res = a.getFacultiesByUniverName(vuz);
             faculties=res;
         }
