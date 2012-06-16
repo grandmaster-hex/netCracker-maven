@@ -22,8 +22,8 @@ public final class DAOFactory {
         return new EmployeeDAOImpl();
     }
     
-    public static FormDAO getFormDAO() {
-        return new FormDAOImpl();
+    public static StudentDAO getFormDAO() {
+        return new StudentDAOImpl();
     }
     
     public static InterestDAO getInterestDAO(){
@@ -35,6 +35,9 @@ public final class DAOFactory {
     }
     public static InterviewDAO getInterviewDAO() {
         return new InterviewDAOImpl();
+    }
+    public static SheduleDAO getSheduleDAO() {
+        return new SheduleDAOImpl();
     }
     //Create java.sql.Connection with params set in DAOConstants.java
     public static Connection createConnection(){

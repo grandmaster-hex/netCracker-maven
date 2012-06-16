@@ -29,7 +29,7 @@ public interface StudentDAO {
      * @param photo
      * @return 
      */
-    public boolean createForm(Student form);
+    public boolean createForm(Student student);
     /**
      * Delete student by id_student
      * @param id_student students id
