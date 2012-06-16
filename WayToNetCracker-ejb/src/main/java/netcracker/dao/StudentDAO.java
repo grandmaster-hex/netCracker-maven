@@ -29,13 +29,13 @@ public interface StudentDAO {
      * @param photo
      * @return 
      */
-    public boolean createForm(Student student);
+    public boolean createStudent(Student student);
     /**
      * Delete student by id_student
      * @param id_student students id
      * @return boolean
      */
-    public boolean deleteFormByIdStudent(int id_student);
+    public boolean deleteStudentByIdStudent(int id_student);
     /**
      * Get all universities from DB
      * @return List<String>
@@ -47,5 +47,5 @@ public interface StudentDAO {
      */
     public List<String> getFacultiesByUniverName(String name);
     
-    public Student getFormByIdStudent(int id_student);
+    public Student getStudentByIdStudent(int id_student);
 }

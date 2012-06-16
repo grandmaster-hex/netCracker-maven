@@ -24,7 +24,7 @@ public class StudentDAOImpl implements StudentDAO {
     }
 
     @Override
-    public boolean createForm(Student form) {
+    public boolean createStudent(Student student) {
         PreparedStatement stmtInsert = null;
         Connection conn = DAOFactory.createConnection();
         try{
@@ -37,20 +37,20 @@ public class StudentDAOImpl implements StudentDAO {
             sbInsert.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             stmtInsert = conn.prepareStatement(sbInsert.toString());
             stmtInsert.setString(1, null);
-            stmtInsert.setString(2, form.getFirstName());
-            stmtInsert.setString(3, form.getLastName());
-            stmtInsert.setString(4, form.getMiddleName());
-            stmtInsert.setInt(5,form.getCourse());
-            stmtInsert.setDate(6, form.getStudyEndYear());
-            stmtInsert.setInt(7, form.getIdFaculty());
-            stmtInsert.setString(8, form.getEmail1());
-            stmtInsert.setString(9, form.getEmail2());
-            stmtInsert.setString(10, form.getPhone1());  
-            stmtInsert.setString(11, form.getExtraContacts());  
-            stmtInsert.setString(12, form.getWhy());  
-            stmtInsert.setString(13, form.getExperience()); 
-            stmtInsert.setString(14, form.getExperience());  
-            stmtInsert.setBlob(15, form.getPhoto());  
+            stmtInsert.setString(2, student.getFirstName());
+            stmtInsert.setString(3, student.getLastName());
+            stmtInsert.setString(4, student.getMiddleName());
+            stmtInsert.setInt(5, student.getCourse());
+            stmtInsert.setDate(6, student.getStudyEndYear());
+            stmtInsert.setInt(7, student.getIdFaculty());
+            stmtInsert.setString(8, student.getEmail1());
+            stmtInsert.setString(9, student.getEmail2());
+            stmtInsert.setString(10, student.getPhone1());  
+            stmtInsert.setString(11, student.getExtraContacts());  
+            stmtInsert.setString(12, student.getWhy());  
+            stmtInsert.setString(13, student.getExperience()); 
+            stmtInsert.setString(14, student.getExperience());  
+            stmtInsert.setBlob(15, student.getPhoto());  
             //uncomment for checking query syntax
             System.out.print(stmtInsert.toString());
             
@@ -71,7 +71,7 @@ public class StudentDAOImpl implements StudentDAO {
     }
 
     @Override
-    public boolean deleteFormByIdStudent(int id_student) {
+    public boolean deleteStudentByIdStudent(int id_student) {
         Connection conn = DAOFactory.createConnection();
         PreparedStatement stmtDelete = null;
         try {
@@ -95,7 +95,7 @@ public class StudentDAOImpl implements StudentDAO {
         }
         return true;
     }
-    public Student getFormByIdStudent(int id_student){
+    public Student getStudentByIdStudent(int id_student){
         Connection conn = DAOFactory.createConnection();
         PreparedStatement stmtSelect = null;
         ResultSet res = null;
