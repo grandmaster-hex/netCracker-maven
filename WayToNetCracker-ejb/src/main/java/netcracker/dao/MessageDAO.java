@@ -10,10 +10,10 @@ import java.util.List;
  * @author Администратор
  */
 public interface MessageDAO {
-    public boolean createMessage(int id_student, String message_text);
-    public boolean deleteMessageById(int id_student);
-    public Message getMessageByID(int id_student);
-    public boolean setStatusById(int id_student, boolean status);
+    public boolean createMessage(Message message);
+    public boolean deleteMessageByIdStudent(int id_student);
+    public Message getMessageByIdStudent(int id_student);
+    public boolean setStatusByIdStudent(int id_student, boolean status);
     public List<Message> getVisitedMessage();
     public List<Message> getNotVisitedMessage();
 }

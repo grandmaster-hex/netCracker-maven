@@ -71,7 +71,7 @@ public class FormDAOImpl implements FormDAO {
     }
 
     @Override
-    public boolean deleteFormByStudentId(int id_student) {
+    public boolean deleteFormByIdStudent(int id_student) {
         Connection conn = DAOFactory.createConnection();
         PreparedStatement stmtDelete = null;
         try {
@@ -95,7 +95,7 @@ public class FormDAOImpl implements FormDAO {
         }
         return true;
     }
-    public Form getFormByStudentId(int id_student){
+    public Form getFormByIdStudent(int id_student){
         Connection conn = DAOFactory.createConnection();
         PreparedStatement stmtSelect = null;
         ResultSet res = null;
