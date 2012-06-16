@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import netcracker.dao.*;
 
 
+
 /**
  *
  * @author lasha.k
@@ -24,8 +25,8 @@ public final class DAOFactory {
         return new EmployeeDAOImpl();
     }
     
-    public static StudentDAO getFormDAO() {
-        return new StudentDAOImpl();
+    public static FormDAO getFormDAO() {
+        return new FormDAOImpl();
     }
     
     public static SkillsDAOImpl getSkillsDAO() {
