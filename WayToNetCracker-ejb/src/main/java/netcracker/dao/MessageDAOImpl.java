@@ -97,6 +97,7 @@ public class MessageDAOImpl implements MessageDAO{
         Connection conn = DAOFactory.createConnection();
         ResultSet result = null;
         Message message = null;
+        
 
         try {
             StringBuffer sbSelect = new StringBuffer();
