@@ -39,6 +39,9 @@ public final class DAOFactory {
     public static SheduleDAO getSheduleDAO() {
         return new SheduleDAOImpl();
     }
+    public static AdvertDAO getAdvertDAO(){
+        return new AdvertDAOImpl();
+    }
     //Create java.sql.Connection with params set in DAOConstants.java
     public static Connection createConnection(){
             Connection conn = null;
