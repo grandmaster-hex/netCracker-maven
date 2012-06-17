@@ -14,9 +14,9 @@ import netcracker.dao.Shedule;
  *
  * @author AnnKats
  */
-public class ScheduleSeparator {
+public class ScheduleService {
     
-    public static void separate(Date begin, Date end, int duration,int interval_status,int interviewers_count) {
+    public static List<Shedule> separate(Date begin, Date end, int duration,int interval_status,int interviewers_count) {
                
         List<Shedule> she = new ArrayList<Shedule>();
         long msBegin = begin.getTime();
@@ -27,7 +27,7 @@ public class ScheduleSeparator {
             she.add(new Shedule(new java.sql.Date(new Date(tm).getTime()), 
                     new java.sql.Date(new Date(tm+msDuration).getTime()),interviewers_count,interval_status));
         }
-        DAOFactory.getSheduleDAO().createShedule(she);
+        return she;
     }
    
 }
