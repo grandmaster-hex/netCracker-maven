@@ -4,10 +4,12 @@
  */
 package netcracker.dao;
 
+import java.util.List;
+
 /**
  *
  * @author lastride
  */
 public interface SheduleDAO {
-    public boolean createShedule(Shedule shedule);
+    public boolean createShedule(List<Shedule> shedule);
 }
