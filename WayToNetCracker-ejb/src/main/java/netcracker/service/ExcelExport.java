@@ -221,8 +221,4 @@ public class ExcelExport {
         
         return true;
     }
-    
-    public static void main(String[] args) {
-        ExcelExport.exportToExcel();
-    }
 }
