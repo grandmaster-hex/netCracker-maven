@@ -5,6 +5,7 @@
 package netcracker.dao;
 
 import java.sql.Connection;
+import java.sql.Timestamp;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -52,6 +53,39 @@ public class SheduleDAOImpl implements SheduleDAO {
             DAOFactory.closeStatement(stmtInsert);
         }
        return true;
+    }
+
+    @Override
+    public boolean deleteShedule(Timestamp start, Timestamp end) {
+        Connection conn=DAOFactory.createConnection();
+        PreparedStatement stmtDelete = null;
+        try{
+            StringBuffer sbDelete = new StringBuffer();
+            sbDelete.append("delete from ");
+            sbDelete.append(DAOConstants.IntervalsTableName);
+            sbDelete.append(" where start_time >= ? and end_time <= ?");
+            stmtDelete = conn.prepareStatement(sbDelete.toString());
+            stmtDelete.setTimestamp(1, start);
+            stmtDelete.setTimestamp(2, end);
+            int rows = stmtDelete.executeUpdate();
+            System.out.print(stmtDelete.toString());
+            if (rows ==0)
+            {
+                System.out.print("\n\n Nothing to delete! ");
+               
+            }
+            
+        }
+        catch(SQLException ex){
+            System.out.print("\nSQLException while removing shedule");
+        }
+        finally
+        {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtDelete);
+        }
+        return true;
+        
     }
     
 }
