@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  */
 public class Shedule {
     private final int id_interval;
-    private Timestamp start_time;
+    private final Timestamp start_time;
     private final Timestamp end_time;
     private final int interviewers_count;
     private final int id_interval_status;
