@@ -60,7 +60,6 @@ public class PhotoExport {
                             + "_" + result.getString("first_name") + ".jpeg"); 
                         }
                     }
-                    
                     zip.putNextEntry(entry);
                     zip.write((byte[]) result.getObject("photo"));
                 }
@@ -71,6 +70,7 @@ public class PhotoExport {
             } finally {
                 DAOFactory.closeConnection(conn);
                 DAOFactory.closeStatement(stmt);
+                DAOFactory.closeStatement(stmtCount);
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(PhotoExport.class.getName()).log(Level.SEVERE, null, ex);
