@@ -29,5 +29,13 @@ public class ScheduleService {
         }
         return she;
     }
+    
+    public static boolean deleteSheduleBetweenDates(Date start, Date end){
+        java.sql.Timestamp st = new java.sql.Timestamp(start.getTime());
+        java.sql.Timestamp en = new java.sql.Timestamp(end.getTime());
+        if(DAOFactory.getSheduleDAO().deleteShedule(st, en))
+            return true;
+        else return false;
+    }
    
 }
