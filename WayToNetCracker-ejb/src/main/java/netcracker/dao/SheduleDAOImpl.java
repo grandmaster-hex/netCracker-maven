@@ -157,14 +157,6 @@ public class SheduleDAOImpl implements SheduleDAO {
             stmtInsert = conn.prepareStatement(sbInsert.toString());
             stmtInsert.setInt(1, id_interval);
             stmtInsert.setInt(2, id_student);
-
-            int rows = stmtInsert.executeUpdate();
-            if (rows != 1) {
-                throw new SQLException(
-                        "executeUpdate return value: "
-                        + rows);
-            }
-
         } catch (SQLException ex) {
             System.out.print("\nSQL exception in addStudentToInterval()");
         } finally {
@@ -172,5 +164,146 @@ public class SheduleDAOImpl implements SheduleDAO {
             DAOFactory.closeStatement(stmtInsert);
         }
         return true;
+    }
+
+    @Override
+    public List<Shedule> getAllAvailableIntervals() {
+        List<Shedule> availableIntervalsList = new ArrayList();
+        Connection conn = DAOFactory.createConnection();
+        PreparedStatement stmtSelect = null;
+        ResultSet res = null;
+        Shedule shedule = null;
+        try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("SELECT id_interval, start_time, end_time,"
+                    + " interviewers_count,"
+                    + DAOConstants.IntervalsTableName + ".id_interval_status FROM ");
+            sbSelect.append(DAOConstants.IntervalsTableName + "," + DAOConstants.IntervalStatusesTableName);
+            sbSelect.append(" WHERE " + DAOConstants.IntervalsTableName + " = "
+                    + DAOConstants.IntervalStatusesTableName + " AND interval_status_name like '%available%'");
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            res = stmtSelect.executeQuery();
+            int rowsCount = 0;
+            while (res.next()) {
+                shedule = new Shedule(res.getInt(1), res.getTimestamp(2),
+                        res.getTimestamp(3), res.getInt(4),
+                        res.getInt(5));
+                availableIntervalsList.add(shedule);
+                rowsCount++;
+            }
+            if (rowsCount <= 0) {
+                System.out.print("\n\nNo available intervals found");
+            }
+        } catch (Exception e) {
+            System.out.print("\n Error while getAllAvailableIntervals\n");
+        } finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
+        return availableIntervalsList;
+    }
+
+    @Override
+    public List<Shedule> getAllAdditionalIntervals() {
+        List<Shedule> additionalIntervalsList = new ArrayList();
+        Connection conn = DAOFactory.createConnection();
+        PreparedStatement stmtSelect = null;
+        ResultSet res = null;
+        Shedule shedule = null;
+        try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("SELECT id_interval, start_time, end_time,"
+                    + " interviewers_count,"
+                    + DAOConstants.IntervalsTableName + ".id_interval_status FROM ");
+            sbSelect.append(DAOConstants.IntervalsTableName + "," + DAOConstants.IntervalStatusesTableName);
+            sbSelect.append(" WHERE " + DAOConstants.IntervalsTableName + " = "
+                    + DAOConstants.IntervalStatusesTableName + " AND interval_status_name like '%additional%'");
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            res = stmtSelect.executeQuery();
+            int rowsCount = 0;
+            while (res.next()) {
+                shedule = new Shedule(res.getInt(1), res.getTimestamp(2),
+                        res.getTimestamp(3), res.getInt(4),
+                        res.getInt(5));
+                additionalIntervalsList.add(shedule);
+                rowsCount++;
+            }
+            if (rowsCount <= 0) {
+                System.out.print("\n\nNo additional intervals found");
+            }
+        } catch (Exception e) {
+            System.out.print("\n Error while getAllAdditionalIntervals\n");
+        } finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
+        return additionalIntervalsList;
+    }
+
+    @Override
+    public List<Shedule> getAllNotAvailableIntervals() {
+        List<Shedule> notAvailableIntervalsList = new ArrayList();
+        Connection conn = DAOFactory.createConnection();
+        PreparedStatement stmtSelect = null;
+        ResultSet res = null;
+        Shedule shedule = null;
+        try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("SELECT id_interval, start_time, end_time,"
+                    + " interviewers_count,"
+                    + DAOConstants.IntervalsTableName + ".id_interval_status FROM ");
+            sbSelect.append(DAOConstants.IntervalsTableName + "," + DAOConstants.IntervalStatusesTableName);
+            sbSelect.append(" WHERE " + DAOConstants.IntervalsTableName + " = "
+                    + DAOConstants.IntervalStatusesTableName + " AND interval_status_name like '%not available %'");
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            res = stmtSelect.executeQuery();
+            int rowsCount = 0;
+            while (res.next()) {
+                shedule = new Shedule(res.getInt(1), res.getTimestamp(2),
+                        res.getTimestamp(3), res.getInt(4),
+                        res.getInt(5));
+                notAvailableIntervalsList.add(shedule);
+                rowsCount++;
+            }
+            if (rowsCount <= 0) {
+                System.out.print("\n\nNo additional intervals found");
+            }
+        } catch (Exception e) {
+            System.out.print("\n Error while getAllAdditionalIntervals\n");
+        } finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
+        return notAvailableIntervalsList;
+    }
+
+    @Override
+    public List<java.util.Date> getUniqueDates() {
+        List<java.util.Date> datesList = new ArrayList();
+        Connection conn = DAOFactory.createConnection();
+        PreparedStatement stmtSelect = null;
+        ResultSet res = null;
+        try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("SELECT DISTINCT YEAR(start_time), MONTH(start_time),  DAY(start_time) FROM ");
+            sbSelect.append(DAOConstants.IntervalsTableName);
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            res = stmtSelect.executeQuery();
+            int rowsCount = 0;
+            while (res.next()) {
+                java.util.Date d = new java.util.Date(res.getInt(1) - 1900, res.getInt(2), res.getInt(3));
+                datesList.add(d);
+                rowsCount++;
+            }
+            if (rowsCount <= 0) {
+                System.out.print("\n\nNo UniqueDates found");
+            }
+        } catch (Exception e) {
+            System.out.print("\n Error while getUniqueDates\n");
+        } finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
+        return datesList;
     }
 }

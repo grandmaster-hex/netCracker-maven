@@ -5,6 +5,7 @@
 package netcracker.dao;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,4 +18,8 @@ public interface SheduleDAO {
     public List<Shedule> getAllIntervals();
     public boolean addStudentToInterval(int id_interval, int id_student);
     public boolean removeStudentFromInterval(int id_interval, int id_student);
+    public List<Shedule> getAllAvailableIntervals();
+    public List<Shedule> getAllAdditionalIntervals();
+    public List<Shedule> getAllNotAvailableIntervals();
+    public List<Date> getUniqueDates();
 }
