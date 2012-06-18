@@ -4,6 +4,7 @@
  */
 package netcracker.service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,7 +17,7 @@ import netcracker.dao.Shedule;
  */
 public class ScheduleService {
     
-    public static List<Shedule> separate(Date begin, Date end, int duration,int interval_status,int interviewers_count) {
+    public static List<Shedule> separate(Timestamp begin, Timestamp end, int duration,int interval_status,int interviewers_count) {
                
         List<Shedule> she = new ArrayList<Shedule>();
         long msBegin = begin.getTime();
@@ -24,8 +25,8 @@ public class ScheduleService {
         long msDuration = duration * 60 * 1000;
         
         for(long tm = msBegin; tm + msDuration <= msEnd; tm += msDuration) {
-            she.add(new Shedule(new java.sql.Date(new Date(tm).getTime()), 
-                    new java.sql.Date(new Date(tm+msDuration).getTime()),interviewers_count,interval_status));
+            she.add(new Shedule(new Timestamp(new Date(tm).getTime()), 
+                    new Timestamp(new Date(tm+msDuration).getTime()),interviewers_count,interval_status));
         }
         return she;
     }
