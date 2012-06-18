@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -111,6 +112,45 @@ public class SkillsDAOImpl implements SkillsDAO {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtInsert);
         }
+        return true;
+    }
+
+    @Override
+    public boolean createSkillsForIdStudent(List<Skill> skills, int id_student) {
+        PreparedStatement stmtInsert = null;
+        Connection conn = DAOFactory.createConnection();
+        Iterator<Skill> itr = skills.iterator();
+        StringBuffer sbInsert = new StringBuffer();
+        sbInsert.append("insert into ");
+        sbInsert.append(DAOConstants.SkillsForStudentsTableName);
+        sbInsert.append(" (id_skill, id_student, mark, notes)");
+        sbInsert.append(" values(");
+        sbInsert.append("?,?,?,?)");
+        try {
+            stmtInsert = conn.prepareStatement(sbInsert.toString());
+            while (itr.hasNext()) {
+                Skill element = itr.next();
+                stmtInsert.setInt(1, element.getId_skill());
+                stmtInsert.setInt(2, id_student);
+                stmtInsert.setInt(3, element.getMark());
+                stmtInsert.setString(4, element.getNotes());
+                int rows = stmtInsert.executeUpdate();
+                stmtInsert.clearParameters();
+                sbInsert.delete(0, sbInsert.length());
+                if (rows != 1) {
+                    throw new SQLException(
+                            "executeUpdate return value: "
+                            + rows);
+                }
+
+            }
+        } catch (SQLException ex) {
+            System.out.print("\nSQL exception in createSkillsForIdStudent");
+        } finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtInsert);
+        }
+
         return true;
     }
 }
