@@ -203,4 +203,37 @@ public class StudentDAOImpl implements StudentDAO {
         }
         return universities;
     }
+
+    @Override
+    public boolean setIntervalToStudent(int id_student, int id_interval) {
+        PreparedStatement stmtInsert = null;
+        Connection conn = DAOFactory.createConnection();
+        try{
+            StringBuffer sbInsert = new StringBuffer();
+            sbInsert.append("INSERT INTO ");
+            sbInsert.append(DAOConstants.IntervalsForStudentsTableName);
+            sbInsert.append(" (id_interval, id_student)");
+            sbInsert.append(" VALUES (");
+            sbInsert.append("?, ?)");
+            stmtInsert = conn.prepareStatement(sbInsert.toString());
+            stmtInsert.setInt(1,id_interval);
+            stmtInsert.setInt(2, id_student);
+            
+            System.out.print(stmtInsert.toString());
+            
+            int rows = stmtInsert.executeUpdate();
+            if (rows != 1) {
+		throw new SQLException("executeUpdate return value: "+ rows);
+            }
+          
+        }
+        catch (SQLException ex) {
+            System.out.print("\nSQL exception in setIntervals");
+        }
+        finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtInsert);
+        }
+       return true;
+    }
 }

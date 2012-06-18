@@ -48,4 +48,6 @@ public interface StudentDAO {
     public List<String> getFacultiesByUniverName(String name);
     
     public Student getStudentByIdStudent(int id_student);
+    
+    public boolean setIntervalToStudent(int id_student, int id_interval);
 }
