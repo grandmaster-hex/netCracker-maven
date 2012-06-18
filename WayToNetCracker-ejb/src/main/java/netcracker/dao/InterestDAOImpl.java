@@ -139,6 +139,35 @@ public class InterestDAOImpl implements InterestDAO {
         }
         return interests;    
     }
+
+    @Override
+    public boolean deleteInterestsForIdStudent(int id_student) {
+        Connection conn = DAOFactory.createConnection();
+        PreparedStatement stmtDelete = null;
+        try{
+            StringBuffer sbDelete = new StringBuffer();
+            sbDelete.append("DELETE FROM ");
+            sbDelete.append(DAOConstants.InterestsForStudentsTableName);
+            sbDelete.append(" WHERE id_student = ?");
+            stmtDelete = conn.prepareStatement(sbDelete.toString());
+            stmtDelete.setInt(1, id_student);
+            int rows = stmtDelete.executeUpdate();
+            if (rows !=1)
+            {
+                throw new SQLException("\nexecuteUpdate in deleteInterestsForIdStudent() return value: "+rows);
+               
+            }
+            
+        }
+        catch(SQLException ex) {
+            System.out.print("\nSQLException while removing deleteInterestsForIdStudent");
+        }
+        finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtDelete);
+        }
+        return true;
+    }
     
     
 }

@@ -14,4 +14,5 @@ public interface InterestDAO {
     public List<Interest> getStudentInterestsById(int id_student);
     public boolean createInterest(Interest interest);
     public boolean createInterests(List<Interest> interests);
+    public boolean deleteInterestsForIdStudent(int id_student);
 }
