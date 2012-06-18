@@ -155,13 +155,6 @@ public class AdvertDAOImpl implements AdvertDAO {
             sbDelete.append(" WHERE id_student = ?");
             stmtDelete = conn.prepareStatement(sbDelete.toString());
             stmtDelete.setInt(1, id_student);
-            int rows = stmtDelete.executeUpdate();
-            if (rows != 1) {
-                throw new SQLException(
-                        "executeUpdate return value: "
-                        + rows);
-            }
-
         } catch (SQLException ex) {
             System.out.print("\nSQL exception in create deleteAdvertsForIdStudent()");
         } finally {

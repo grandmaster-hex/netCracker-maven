@@ -7,6 +7,7 @@ package netcracker.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,51 +17,48 @@ import java.util.List;
  */
 public class SkillsDAOImpl implements SkillsDAO {
 
-   @Override
-    public List<Skill> getAllSkillsByTypeIdForStudent(int id_skill_type,int id_student) {
-       List<Skill> skills = new ArrayList();
-       Connection conn = DAOFactory.createConnection();
-       PreparedStatement stmtSelect = null;
-       ResultSet res = null;
-       Skill skill = null;
-       try {
+    @Override
+    public List<Skill> getAllSkillsByTypeIdForStudent(int id_skill_type, int id_student) {
+        List<Skill> skills = new ArrayList();
+        Connection conn = DAOFactory.createConnection();
+        PreparedStatement stmtSelect = null;
+        ResultSet res = null;
+        Skill skill = null;
+        try {
             StringBuffer sbSelect = new StringBuffer();
-            sbSelect.append("select "+DAOConstants.SkillsForStudentsTableName+".id_skill, "+
-                    DAOConstants.SkillsTableName+".skill_name, "+
-                    DAOConstants.SkillsForStudentsTableName+".mark, "+
-                    DAOConstants.SkillsForStudentsTableName+".notes, "+
-                    DAOConstants.SkillsForStudentsTableName+".id_student, "+
-                    DAOConstants.SkillsTableName+".id_skill_type "+
-                    "from "+DAOConstants.SkillsTableName+", "+DAOConstants.SkillsForStudentsTableName+
-                    " where "+DAOConstants.SkillsForStudentsTableName+".id_skill"+
-                    " = "+DAOConstants.SkillsTableName+".id_skill "+
-                    "and "+DAOConstants.SkillsForStudentsTableName+".id_student = ? "+
-                    "and "+DAOConstants.SkillsTableName+".id_skill_type = ?");
-            
+            sbSelect.append("select " + DAOConstants.SkillsForStudentsTableName + ".id_skill, "
+                    + DAOConstants.SkillsTableName + ".skill_name, "
+                    + DAOConstants.SkillsForStudentsTableName + ".mark, "
+                    + DAOConstants.SkillsForStudentsTableName + ".notes, "
+                    + DAOConstants.SkillsForStudentsTableName + ".id_student, "
+                    + DAOConstants.SkillsTableName + ".id_skill_type "
+                    + "from " + DAOConstants.SkillsTableName + ", " + DAOConstants.SkillsForStudentsTableName
+                    + " where " + DAOConstants.SkillsForStudentsTableName + ".id_skill"
+                    + " = " + DAOConstants.SkillsTableName + ".id_skill "
+                    + "and " + DAOConstants.SkillsForStudentsTableName + ".id_student = ? "
+                    + "and " + DAOConstants.SkillsTableName + ".id_skill_type = ?");
+
             stmtSelect = conn.prepareStatement(sbSelect.toString());
-            stmtSelect.setInt(1,id_student);
-            stmtSelect.setInt(2,id_skill_type);
+            stmtSelect.setInt(1, id_student);
+            stmtSelect.setInt(2, id_skill_type);
             //System.out.print(stmtSelect.toString());
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
             while (res.next()) {
-               skill = new Skill(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4), res.getInt(5), res.getInt(6));
-               skills.add(skill);
-               rowsCount++;
+                skill = new Skill(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4), res.getInt(5), res.getInt(6));
+                skills.add(skill);
+                rowsCount++;
             }
-            if (rowsCount<=0){
+            if (rowsCount <= 0) {
                 System.out.print("\n\nNo skill types found");
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.print("\n Error while getting all skill types!\n");
-        }
-         finally
-        {
+        } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtSelect);
         }
-       return skills;
+        return skills;
     }
 
     @Override
@@ -79,24 +77,40 @@ public class SkillsDAOImpl implements SkillsDAO {
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
             while (res.next()) {
-               sot = new SkillsOfType(res.getInt(1),res.getString(2),id_student);
-               skillTypes.add(sot);
-               rowsCount++;
+                sot = new SkillsOfType(res.getInt(1), res.getString(2), id_student);
+                skillTypes.add(sot);
+                rowsCount++;
             }
-            if (rowsCount<=0){
+            if (rowsCount <= 0) {
                 System.out.print("\n\nNo skill types found");
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.print("\n Error while getting all skill types!\n");
-        }
-          finally
-        {
+        } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtSelect);
         }
         return skillTypes;
-        
+
     }
-    
+
+    @Override
+    public boolean deleteAllSkillsForIdStudent(int id_student) {
+        PreparedStatement stmtInsert = null;
+        Connection conn = DAOFactory.createConnection();
+        try {
+            StringBuffer sbInsert = new StringBuffer();
+            sbInsert.append("DELETE FROM ");
+            sbInsert.append(DAOConstants.SkillsForStudentsTableName);
+            sbInsert.append(" WHERE id_student = ?");
+            stmtInsert = conn.prepareStatement(sbInsert.toString());
+            stmtInsert.setInt(1, id_student);
+        } catch (SQLException ex) {
+            System.out.print("\nSQL exception in deleteAllSkillsForIdStudent");
+        } finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtInsert);
+        }
+        return true;
+    }
 }

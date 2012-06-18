@@ -14,4 +14,7 @@ import java.util.List;
 public interface SheduleDAO {
     public boolean createShedule(List<Shedule> shedule);
     public boolean deleteShedule(Timestamp start, Timestamp end);
+    public List<Shedule> getAllIntervals();
+    public boolean addStudentToInterval(int id_interval, int id_student);
+    public boolean removeStudentFromInterval(int id_interval, int id_student);
 }
