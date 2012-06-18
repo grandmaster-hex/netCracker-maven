@@ -96,8 +96,8 @@ public class SheduleDAOImpl implements SheduleDAO {
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
             while (res.next()) {
-                shedule = new Shedule(res.getInt(1), null,
-                        null, res.getInt(4),
+                shedule = new Shedule(res.getInt(1), res.getTimestamp(2),
+                        res.getTimestamp(3), res.getInt(4),
                         res.getInt(5));
                 sheduleList.add(shedule);
                 rowsCount++;

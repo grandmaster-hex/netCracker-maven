@@ -18,18 +18,18 @@ public class Shedule {
     private final int interviewers_count;
     private final int id_interval_status;
     
-    public Shedule(int id_interval, Date start_time, Date end_time, int interviewers_count,
+    public Shedule(int id_interval, Timestamp start_time, Timestamp end_time, int interviewers_count,
                     int id_interval_status) {
         this.id_interval = id_interval;
-        this.start_time = new Timestamp(start_time.getTime());
-        this.end_time = new Timestamp(end_time.getTime());
+        this.start_time = start_time;
+        this.end_time = end_time;
         this.interviewers_count = interviewers_count;
         this.id_interval_status = id_interval_status;
     }
-     public Shedule(Date start_time, Date end_time, int interviewers_count,
+    public Shedule(Timestamp start_time, Timestamp end_time, int interviewers_count,
                     int id_interval_status) {
-        this.start_time = new Timestamp(start_time.getTime());
-        this.end_time = new Timestamp(end_time.getTime());
+        this.start_time = start_time;
+        this.end_time = end_time;
         this.interviewers_count = interviewers_count;
         this.id_interval_status = id_interval_status;
     }
