@@ -97,11 +97,11 @@ public class AdvertDAOImpl implements AdvertDAO{
         ResultSet res = null;        
         try {
             StringBuffer sbSelect = new StringBuffer();
-            sbSelect.append("SELECT advert_name , id_advert FROM ");
+            sbSelect.append("SELECT id_advert , advert_name FROM ");
             sbSelect.append(DAOConstants.AdvertsTableName);
             stmtSelect = conn.prepareStatement(sbSelect.toString());
-           
-//            System.out.print(stmtSelect.toString());
+                       
+            System.out.print(stmtSelect.toString());
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
             while (res.next()) {
