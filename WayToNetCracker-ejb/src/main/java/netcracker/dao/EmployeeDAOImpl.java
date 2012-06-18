@@ -49,7 +49,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             stmtInsert.setString(3, emp.getFirstName());
             stmtInsert.setString(4, emp.getLastName());
             stmtInsert.setString(5, emp.getLogin());
-            stmtInsert.setInt(6, 1);
+            stmtInsert.setInt(6, emp.getIdRole());
 
             int rows = stmtInsert.executeUpdate();
             if (rows != 1) {
@@ -168,5 +168,119 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             DAOFactory.closeStatement(stmtSelect);
         }
         return rolesList;
+    }
+
+    public List<Employee> getEmployeeListByRole(String role_name) {
+        List<Employee> empList = new ArrayList<Employee>();
+
+        PreparedStatement stmtSelect = null;
+        Connection conn = DAOFactory.createConnection();
+        ResultSet result = null;
+
+        try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("SELECT login, password, first_name, last_name, email, id_role FROM ");
+            sbSelect.append(DAOConstants.EmpTableName);
+            sbSelect.append(" WHERE id_role = (SELECT id_role FROM roles WHERE role_name = ? )");
+
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            stmtSelect.setString(1, role_name);
+            result = stmtSelect.executeQuery();
+
+            while (result.next()) {
+                empList.add(new Employee(result.getString(1), result.getString(2),
+                        result.getString(3), result.getString(4), result.getString(5),
+                        result.getInt(6)));
+            }
+
+        } catch (SQLException ex) {
+            System.out.print("\nSQL exception in getInterviewerList");
+        } finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
+
+        return empList;
+    }
+
+    public List<Employee> getInterviewerList() {
+        return getEmployeeListByRole("Interviewer");
+    }
+
+    public List<Employee> getHRList() {
+        return getEmployeeListByRole("HR");
+    }
+
+    public boolean checkPassword(int id_employee, String password) {
+        PreparedStatement stmtSelect = null;
+        Connection conn = DAOFactory.createConnection();
+        ResultSet result = null;
+        boolean found = false;
+        try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("SELECT login FROM ");
+            sbSelect.append(DAOConstants.EmpTableName);
+            sbSelect.append(" WHERE id_employee = ? AND password = ?");
+
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            stmtSelect.setInt(1, id_employee);
+            stmtSelect.setString(2, password);
+            result = stmtSelect.executeQuery();
+
+            int cnt = 0;
+            while (result.next()) {
+                cnt++;
+            }
+            if (cnt > 0) {
+                found = true;
+            }
+
+        } catch (SQLException ex) {
+            System.out.print("\nSQL exception in checkPassword");
+        } finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
+
+        return found;
+    }
+
+    public boolean changePassword(int id_employee, String oldPassword, String password) {
+
+        if (checkPassword(id_employee, oldPassword) == false) {
+            return false;
+        }
+
+        PreparedStatement stmtUpdate = null;
+        Connection conn = DAOFactory.createConnection();
+        ResultSet result = null;
+
+        try {
+            StringBuffer sbUpdate = new StringBuffer();
+            sbUpdate.append("UPDATE ");
+            sbUpdate.append(DAOConstants.EmpTableName);
+            sbUpdate.append(" SET password = ? WHERE id_employee = ?");
+
+            stmtUpdate = conn.prepareStatement(sbUpdate.toString());
+            stmtUpdate.setString(1, password);
+            stmtUpdate.setInt(2, id_employee);
+
+            int rows = stmtUpdate.executeUpdate();
+            if (rows != 1) {
+                throw new SQLException("\nexecuteUpdate in changePassword() return value: " + rows);
+            }
+
+        } catch (SQLException ex) {
+            System.out.print("\nSQL exception in changePassword");
+        } finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtUpdate);
+        }
+
+        return true;
+    }
+
+    public boolean resetPassword(int id_employee, String oldPassword) {
+        return changePassword(id_employee, oldPassword, "");
     }
 }
