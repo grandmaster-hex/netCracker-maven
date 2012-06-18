@@ -115,6 +115,7 @@ public class InterestDAOImpl implements InterestDAO {
             sbSelect.append(" WHERE "+DAOConstants.InterestsForStudentsTableName+".ID_STUDENT = ? AND "+DAOConstants.InterestsForStudentsTableName+
                     ".ID_INTEREST = "+DAOConstants.InterestsTableName+".ID_INTEREST");
             stmtSelect = conn.prepareStatement(sbSelect.toString());
+            
             stmtSelect.setInt(1, id_student);
            // System.out.print(stmtSelect.toString());
             res = stmtSelect.executeQuery();
@@ -128,7 +129,7 @@ public class InterestDAOImpl implements InterestDAO {
                 System.out.print("\n\nNo interests found");
             }
         }
-        catch (Exception e){
+        catch (SQLException e){
             System.out.print("\n Error while getting all interests for student!\n");
         }
             finally
