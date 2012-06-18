@@ -13,5 +13,6 @@ import java.util.List;
 public interface AdvertDAO {
     public boolean createAdvert(Advert advert);
     public List<Advert> getAdvertsByIdStudent(int id_student);
+    public List<Advert> getAllAdverts();
     
 }

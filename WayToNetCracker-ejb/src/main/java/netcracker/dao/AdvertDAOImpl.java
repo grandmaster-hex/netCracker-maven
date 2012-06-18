@@ -89,5 +89,38 @@ public class AdvertDAOImpl implements AdvertDAO{
         return ad;    
          
     }
-    
+     @Override
+    public List<Advert> getAllAdverts() {
+        List<Advert> ad = new ArrayList<Advert>();
+        Connection conn = DAOFactory.createConnection();
+        PreparedStatement stmtSelect = null;
+        ResultSet res = null;        
+        try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("SELECT advert_name , id_advert FROM ");
+            sbSelect.append(DAOConstants.AdvertsTableName);
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+           
+//            System.out.print(stmtSelect.toString());
+            res = stmtSelect.executeQuery();
+            int rowsCount = 0;
+            while (res.next()) {
+               ad.add(new Advert(res.getInt(1),res.getString(2)));           
+               rowsCount++;
+            }
+            if (rowsCount<=0){
+                System.out.print("\n\nNo adverts found");
+            }
+        }
+        catch (SQLException e){
+            System.out.print("\n Error while getting all adverts!\n");
+        }
+            finally
+        {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
+        return ad;    
+         
+    }
 }
