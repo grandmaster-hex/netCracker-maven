@@ -5,6 +5,7 @@
 package netcracker.dao;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -179,8 +180,8 @@ public class SheduleDAOImpl implements SheduleDAO {
                     + " interviewers_count,"
                     + DAOConstants.IntervalsTableName + ".id_interval_status FROM ");
             sbSelect.append(DAOConstants.IntervalsTableName + "," + DAOConstants.IntervalStatusesTableName);
-            sbSelect.append(" WHERE " + DAOConstants.IntervalsTableName + " = "
-                    + DAOConstants.IntervalStatusesTableName + " AND interval_status_name like '%available%'");
+            sbSelect.append(" WHERE " + DAOConstants.IntervalsTableName + ".id_interval_status = "
+                    + DAOConstants.IntervalStatusesTableName + ".id_interval_status AND interval_status_name like '%available%'");
             stmtSelect = conn.prepareStatement(sbSelect.toString());
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
@@ -195,7 +196,7 @@ public class SheduleDAOImpl implements SheduleDAO {
                 System.out.print("\n\nNo available intervals found");
             }
         } catch (Exception e) {
-            System.out.print("\n Error while getAllAvailableIntervals\n");
+            e.printStackTrace();
         } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtSelect);
@@ -216,8 +217,8 @@ public class SheduleDAOImpl implements SheduleDAO {
                     + " interviewers_count,"
                     + DAOConstants.IntervalsTableName + ".id_interval_status FROM ");
             sbSelect.append(DAOConstants.IntervalsTableName + "," + DAOConstants.IntervalStatusesTableName);
-            sbSelect.append(" WHERE " + DAOConstants.IntervalsTableName + " = "
-                    + DAOConstants.IntervalStatusesTableName + " AND interval_status_name like '%additional%'");
+            sbSelect.append(" WHERE " + DAOConstants.IntervalsTableName + ".id_interval_status = "
+                    + DAOConstants.IntervalStatusesTableName + ".id_interval_status AND interval_status_name like '%additional%'");
             stmtSelect = conn.prepareStatement(sbSelect.toString());
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
@@ -253,8 +254,8 @@ public class SheduleDAOImpl implements SheduleDAO {
                     + " interviewers_count,"
                     + DAOConstants.IntervalsTableName + ".id_interval_status FROM ");
             sbSelect.append(DAOConstants.IntervalsTableName + "," + DAOConstants.IntervalStatusesTableName);
-            sbSelect.append(" WHERE " + DAOConstants.IntervalsTableName + " = "
-                    + DAOConstants.IntervalStatusesTableName + " AND interval_status_name like '%not available %'");
+            sbSelect.append(" WHERE " + DAOConstants.IntervalsTableName + ".id_interval_status = "
+                    + DAOConstants.IntervalStatusesTableName + ".id_interval_status AND interval_status_name like '%not available %'");
             stmtSelect = conn.prepareStatement(sbSelect.toString());
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
@@ -269,7 +270,7 @@ public class SheduleDAOImpl implements SheduleDAO {
                 System.out.print("\n\nNo additional intervals found");
             }
         } catch (Exception e) {
-            System.out.print("\n Error while getAllAdditionalIntervals\n");
+            System.out.print("\n Error while getAllNotAvailableIntervals\n");
         } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtSelect);
@@ -286,7 +287,9 @@ public class SheduleDAOImpl implements SheduleDAO {
         try {
             StringBuffer sbSelect = new StringBuffer();
             sbSelect.append("SELECT DISTINCT YEAR(start_time), MONTH(start_time),  DAY(start_time) FROM ");
-            sbSelect.append(DAOConstants.IntervalsTableName);
+            sbSelect.append(DAOConstants.IntervalsTableName + ", " + DAOConstants.IntervalStatusesTableName);
+            sbSelect.append(" WHERE " + DAOConstants.IntervalsTableName + ".id_interval_status = "
+                    + DAOConstants.IntervalStatusesTableName + ".id_interval_status AND interval_status_name like '%available%'");
             stmtSelect = conn.prepareStatement(sbSelect.toString());
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
@@ -305,5 +308,43 @@ public class SheduleDAOImpl implements SheduleDAO {
             DAOFactory.closeStatement(stmtSelect);
         }
         return datesList;
+    }
+
+    @Override
+    public List<String> getStartTimeByDate(java.util.Date d) {
+        List<String> timestampList = new ArrayList();
+        Connection conn = DAOFactory.createConnection();
+        PreparedStatement stmtSelect = null;
+        ResultSet res = null;
+        try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("SELECT TIME(start_time) FROM ");
+            sbSelect.append(DAOConstants.IntervalsTableName);
+            sbSelect.append(" WHERE YEAR(start_time) = ? AND MONTH(start_time) = ? "
+                    + "AND DAYOFMONTH(start_time) = ?");
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy");
+            SimpleDateFormat sdfMonth = new SimpleDateFormat("M");
+            SimpleDateFormat sdfDay = new SimpleDateFormat("d");
+            stmtSelect.setString(1, sdfYear.format(d));
+            stmtSelect.setString(2, sdfMonth.format(d));
+            stmtSelect.setString(3, sdfDay.format(d));
+            res = stmtSelect.executeQuery();
+            int rowsCount = 0;
+            while (res.next()) {
+                SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+                timestampList.add(sdfTime.format(res.getTimestamp(1)));
+                rowsCount++;
+            }
+            if (rowsCount <= 0) {
+                System.out.print("\n\nNo getStartTimeByDate found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
+        return timestampList;
     }
 }

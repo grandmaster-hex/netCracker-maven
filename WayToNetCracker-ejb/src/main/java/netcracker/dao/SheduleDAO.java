@@ -22,4 +22,5 @@ public interface SheduleDAO {
     public List<Shedule> getAllAdditionalIntervals();
     public List<Shedule> getAllNotAvailableIntervals();
     public List<Date> getUniqueDates();
+    public List<String> getStartTimeByDate(Date d);
 }
