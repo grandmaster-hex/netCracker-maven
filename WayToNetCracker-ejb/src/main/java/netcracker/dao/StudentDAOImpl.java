@@ -236,4 +236,35 @@ public class StudentDAOImpl implements StudentDAO {
         }
        return true;
     }
+
+    @Override
+    public boolean emailExists(String email) {
+        PreparedStatement stmtInsert = null;
+        Connection conn = DAOFactory.createConnection();
+        ResultSet res = null;
+        int rowsCount = 0;
+        try{
+            StringBuffer sbInsert = new StringBuffer();
+            sbInsert.append("SELECT count(id_student) FROM ");
+            sbInsert.append(DAOConstants.StudentsTableName);
+            sbInsert.append(" WHERE email like ?");
+            stmtInsert = conn.prepareStatement(sbInsert.toString());
+            stmtInsert.setString(1, null);
+            res = stmtInsert.executeQuery();
+            while (res.next()) {
+                rowsCount = res.getInt(1);
+            }
+        }
+        catch (SQLException ex) {
+            System.out.print("\nSQL exception in createEmployee");
+        }
+        finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtInsert);
+        }
+       if (rowsCount > 0) {
+           return true;
+       }
+       else return false;
+    }
 }

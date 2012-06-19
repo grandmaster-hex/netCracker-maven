@@ -4,13 +4,16 @@
  */
 package netcracker.dao;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,41 +24,47 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     public EmployeeDAOImpl() {
     }
 
-    /**
-     * Creates new employee
-     *
-     * @param login employees login
-     * @param password employees password
-     * @param first_name employees first_name
-     * @param last_name employees last_name
-     * @param email employees email
-     * @param id_role employees id_role
-     * @return
-     */
     public boolean createEmployee(Employee emp) {
-
         PreparedStatement stmtInsert = null;
+        PreparedStatement stmtCheckLogin = null;
+        ResultSet resultCheckLogin = null;
         Connection conn = DAOFactory.createConnection();
         try {
-            StringBuffer sbInsert = new StringBuffer();
-            sbInsert.append("insert into ");
-            sbInsert.append(DAOConstants.EmpTableName);
-            sbInsert.append(" (login, password, first_name, last_name, email, id_role)");
-            sbInsert.append(" values(");
-            sbInsert.append("?,?,?,?,?,?)");
-            stmtInsert = conn.prepareStatement(sbInsert.toString());
-            stmtInsert.setString(1, emp.getLogin());
-            stmtInsert.setString(2, emp.getPassword());
-            stmtInsert.setString(3, emp.getFirstName());
-            stmtInsert.setString(4, emp.getLastName());
-            stmtInsert.setString(5, emp.getLogin());
-            stmtInsert.setInt(6, emp.getIdRole());
+            StringBuffer sbCheckLogin = new StringBuffer();
+            sbCheckLogin.append("SELECT count(id_employee) FROM ");
+            sbCheckLogin.append(DAOConstants.EmpTableName);
+            sbCheckLogin.append(" WHERE login like ?");
 
-            int rows = stmtInsert.executeUpdate();
-            if (rows != 1) {
-                throw new SQLException(
-                        "executeUpdate return value: "
-                        + rows);
+            stmtCheckLogin = conn.prepareStatement(sbCheckLogin.toString());
+            stmtCheckLogin.setString(1, emp.getLogin());
+            resultCheckLogin = stmtCheckLogin.executeQuery();
+            int rowsCount = 0;
+            while (resultCheckLogin.next()) {
+                rowsCount = resultCheckLogin.getInt(1);
+            }
+            if (rowsCount > 0) {
+                return false;
+            } else {
+                StringBuffer sbInsert = new StringBuffer();
+                sbInsert.append("INSERT INTO ");
+                sbInsert.append(DAOConstants.EmpTableName);
+                sbInsert.append(" (login, password, first_name, last_name, email, id_role)");
+                sbInsert.append(" VALUES(");
+                sbInsert.append("?,?,?,?,?,?)");
+                stmtInsert = conn.prepareStatement(sbInsert.toString());
+                stmtInsert.setString(1, emp.getLogin());
+                stmtInsert.setString(2, this.getPasswordHash(emp.getPassword()));
+                stmtInsert.setString(3, emp.getFirstName());
+                stmtInsert.setString(4, emp.getLastName());
+                stmtInsert.setString(5, emp.getLogin());
+                stmtInsert.setInt(6, emp.getIdRole());
+
+                int rows = stmtInsert.executeUpdate();
+                if (rows != 1) {
+                    throw new SQLException(
+                            "executeUpdate return value: "
+                            + rows);
+                }
             }
 
         } catch (SQLException ex) {
@@ -67,14 +76,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return true;
     }
 
-    /**
-     * Delete Employee
-     *
-     * @param id id of deleted employee
-     * @return
-     */
     @Override
-    public boolean deleteEmployee(int id_employee) {
+    public boolean deleteEmployeeById(int id_employee) {
 
         Connection conn = DAOFactory.createConnection();
         PreparedStatement stmtDelete = null;
@@ -85,12 +88,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             sbDelete.append(" where id_employee = ?");
             stmtDelete = conn.prepareStatement(sbDelete.toString());
             stmtDelete.setInt(1, id_employee);
-            int rows = stmtDelete.executeUpdate();
-            if (rows != 1) {
-                throw new SQLException("\nexecuteUpdate in deleteEmployee() return value: " + rows);
-
-            }
-
+            stmtDelete.executeUpdate();
         } catch (SQLException ex) {
             System.out.print("\nSQLException while removing Employee");
         } finally {
@@ -102,12 +100,10 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public Employee getEmployeeById(int id_employee) {
-
         PreparedStatement stmtSelect = null;
         Connection conn = DAOFactory.createConnection();
         ResultSet result = null;
         Employee emp = null;
-
         try {
             StringBuffer sbSelect = new StringBuffer();
             sbSelect.append("SELECT login, password, first_name, last_name, email, id_role FROM ");
@@ -211,7 +207,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return getEmployeeListByRole("HR");
     }
 
-    public boolean checkPassword(int id_employee, String password) {
+    public boolean checkPassword(String login, String password) {
         PreparedStatement stmtSelect = null;
         Connection conn = DAOFactory.createConnection();
         ResultSet result = null;
@@ -220,11 +216,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             StringBuffer sbSelect = new StringBuffer();
             sbSelect.append("SELECT login FROM ");
             sbSelect.append(DAOConstants.EmpTableName);
-            sbSelect.append(" WHERE id_employee = ? AND password = ?");
+            sbSelect.append(" WHERE login like ? AND password = ?");
 
             stmtSelect = conn.prepareStatement(sbSelect.toString());
-            stmtSelect.setInt(1, id_employee);
-            stmtSelect.setString(2, password);
+            stmtSelect.setString(1, login);
+            stmtSelect.setString(2, this.getPasswordHash(password));
             result = stmtSelect.executeQuery();
 
             int cnt = 0;
@@ -247,12 +243,30 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     public boolean changePassword(int id_employee, String oldPassword, String password) {
 
-        if (checkPassword(id_employee, oldPassword) == false) {
+        PreparedStatement stmtSelect = null;
+        Connection conn = DAOFactory.createConnection();
+        ResultSet resultLogin = null;
+        String login = null;
+        StringBuffer sbSelect = new StringBuffer();
+        sbSelect.append("SELECT login FROM ");
+        sbSelect.append(DAOConstants.EmpTableName);
+        sbSelect.append(" WHERE id_employee = ?");
+        try {
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            stmtSelect.setInt(1, id_employee);
+            resultLogin = stmtSelect.executeQuery();
+            while (resultLogin.next()) {
+                login = resultLogin.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (checkPassword(login, oldPassword) == false) {
             return false;
         }
 
         PreparedStatement stmtUpdate = null;
-        Connection conn = DAOFactory.createConnection();
         ResultSet result = null;
 
         try {
@@ -262,7 +276,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             sbUpdate.append(" SET password = ? WHERE id_employee = ?");
 
             stmtUpdate = conn.prepareStatement(sbUpdate.toString());
-            stmtUpdate.setString(1, password);
+            stmtUpdate.setString(1, this.getPasswordHash(password));
             stmtUpdate.setInt(2, id_employee);
 
             int rows = stmtUpdate.executeUpdate();
@@ -282,5 +296,25 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     public boolean resetPassword(int id_employee, String oldPassword) {
         return changePassword(id_employee, oldPassword, "");
+    }
+
+    /**
+     * Password hashing (md5)
+     */
+    public String getPasswordHash(String password) {
+        MessageDigest md5;
+        StringBuffer hexString = new StringBuffer();
+        try {
+            md5 = MessageDigest.getInstance("md5");
+            md5.reset();
+            md5.update(password.getBytes());
+            byte messageDigest[] = md5.digest();
+            for (int i = 0; i < messageDigest.length; i++) {
+                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            }
+        } catch (NoSuchAlgorithmException e) {
+            return e.toString();
+        }
+        return hexString.toString();
     }
 }

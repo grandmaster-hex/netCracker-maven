@@ -27,22 +27,20 @@ public class SkillsDAOImpl implements SkillsDAO {
         Skill skill = null;
         try {
             StringBuffer sbSelect = new StringBuffer();
-            sbSelect.append("select " + DAOConstants.SkillsForStudentsTableName + ".id_skill, "
+            sbSelect.append("SELECT " + DAOConstants.SkillsForStudentsTableName + ".id_skill, "
                     + DAOConstants.SkillsTableName + ".skill_name, "
                     + DAOConstants.SkillsForStudentsTableName + ".mark, "
                     + DAOConstants.SkillsForStudentsTableName + ".notes, "
                     + DAOConstants.SkillsForStudentsTableName + ".id_student, "
                     + DAOConstants.SkillsTableName + ".id_skill_type "
-                    + "from " + DAOConstants.SkillsTableName + ", " + DAOConstants.SkillsForStudentsTableName
-                    + " where " + DAOConstants.SkillsForStudentsTableName + ".id_skill"
+                    + "FROM " + DAOConstants.SkillsTableName + ", " + DAOConstants.SkillsForStudentsTableName
+                    + " WHERE " + DAOConstants.SkillsForStudentsTableName + ".id_skill"
                     + " = " + DAOConstants.SkillsTableName + ".id_skill "
-                    + "and " + DAOConstants.SkillsForStudentsTableName + ".id_student = ? "
-                    + "and " + DAOConstants.SkillsTableName + ".id_skill_type = ?");
-
+                    + "AND " + DAOConstants.SkillsForStudentsTableName + ".id_student = ? "
+                    + "AND " + DAOConstants.SkillsTableName + ".id_skill_type = ?");
             stmtSelect = conn.prepareStatement(sbSelect.toString());
             stmtSelect.setInt(1, id_student);
             stmtSelect.setInt(2, id_skill_type);
-            //System.out.print(stmtSelect.toString());
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
             while (res.next()) {
@@ -63,7 +61,7 @@ public class SkillsDAOImpl implements SkillsDAO {
     }
 
     @Override
-    public List<SkillsOfType> getAllSkillTypes(int id_student) {
+    public List<SkillsOfType> getAllSkillTypesByIdStudent(int id_student) {
         List<SkillsOfType> skillTypes = new ArrayList();
         Connection conn = DAOFactory.createConnection();
         PreparedStatement stmtSelect = null;
@@ -71,10 +69,9 @@ public class SkillsDAOImpl implements SkillsDAO {
         SkillsOfType sot = null;
         try {
             StringBuffer sbSelect = new StringBuffer();
-            sbSelect.append("SELECT ID_SKILL_TYPE, SKILL_TYPE_NAME FROM ");
+            sbSelect.append("SELECT id_skill_type, skill_type_name FROM ");
             sbSelect.append(DAOConstants.SkillsTypesForStudentsTableName);
             stmtSelect = conn.prepareStatement(sbSelect.toString());
-            //System.out.print(sbSelect.toString());
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
             while (res.next()) {
@@ -96,41 +93,42 @@ public class SkillsDAOImpl implements SkillsDAO {
     }
 
     @Override
-    public boolean deleteAllSkillsForIdStudent(int id_student) {
-        PreparedStatement stmtInsert = null;
+    public boolean deleteAllSkillsByIdStudent(int id_student) {
+        PreparedStatement stmtDelete = null;
         Connection conn = DAOFactory.createConnection();
         try {
-            StringBuffer sbInsert = new StringBuffer();
-            sbInsert.append("DELETE FROM ");
-            sbInsert.append(DAOConstants.SkillsForStudentsTableName);
-            sbInsert.append(" WHERE id_student = ?");
-            stmtInsert = conn.prepareStatement(sbInsert.toString());
-            stmtInsert.setInt(1, id_student);
+            StringBuffer sbDelete = new StringBuffer();
+            sbDelete.append("DELETE FROM ");
+            sbDelete.append(DAOConstants.SkillsForStudentsTableName);
+            sbDelete.append(" WHERE id_student = ?");
+            stmtDelete = conn.prepareStatement(sbDelete.toString());
+            stmtDelete.setInt(1, id_student);
+            stmtDelete.executeUpdate();
         } catch (SQLException ex) {
             System.out.print("\nSQL exception in deleteAllSkillsForIdStudent");
         } finally {
             DAOFactory.closeConnection(conn);
-            DAOFactory.closeStatement(stmtInsert);
+            DAOFactory.closeStatement(stmtDelete);
         }
         return true;
     }
 
     @Override
-    public boolean createSkillsForIdStudent(List<Skill> skills, int id_student) {
+    public boolean createSkillsByIdStudent(List<Skill> skills, int id_student) {
         PreparedStatement stmtInsert = null;
         Connection conn = DAOFactory.createConnection();
         Iterator<Skill> itr = skills.iterator();
         StringBuffer sbInsert = new StringBuffer();
-        sbInsert.append("insert into ");
+        sbInsert.append("INSERT INTO ");
         sbInsert.append(DAOConstants.SkillsForStudentsTableName);
         sbInsert.append(" (id_skill, id_student, mark, notes)");
-        sbInsert.append(" values(");
+        sbInsert.append(" VALUES(");
         sbInsert.append("?,?,?,?)");
         try {
             stmtInsert = conn.prepareStatement(sbInsert.toString());
             while (itr.hasNext()) {
                 Skill element = itr.next();
-                stmtInsert.setInt(1, element.getId_skill());
+                stmtInsert.setInt(1, element.getIdSkill());
                 stmtInsert.setInt(2, id_student);
                 stmtInsert.setInt(3, element.getMark());
                 stmtInsert.setString(4, element.getNotes());

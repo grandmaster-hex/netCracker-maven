@@ -43,7 +43,7 @@ public class Student {
         this.study_end_year = study_end_year;
         this.id_faculty = id_faculty;
         this.interests = DAOFactory.getInterestDAO().getStudentInterestsById(id_student);
-        this.skills = DAOFactory.getSkillsDAO().getAllSkillTypes(id_student);
+        this.skills = DAOFactory.getSkillsDAO().getAllSkillTypesByIdStudent(id_student);
         this.email1 = email1;
         this.email2 = email2;
         this.phone1 = phone1;

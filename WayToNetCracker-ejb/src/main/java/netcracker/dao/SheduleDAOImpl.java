@@ -58,19 +58,13 @@ public class SheduleDAOImpl implements SheduleDAO {
         PreparedStatement stmtDelete = null;
         try {
             StringBuffer sbDelete = new StringBuffer();
-            sbDelete.append("delete from ");
+            sbDelete.append("DELETE FROM ");
             sbDelete.append(DAOConstants.IntervalsTableName);
-            sbDelete.append(" where start_time >= ? and end_time <= ?");
+            sbDelete.append(" WHERE start_time >= ? AND end_time <= ?");
             stmtDelete = conn.prepareStatement(sbDelete.toString());
             stmtDelete.setTimestamp(1, start);
             stmtDelete.setTimestamp(2, end);
-            int rows = stmtDelete.executeUpdate();
-            System.out.print(stmtDelete.toString());
-            if (rows == 0) {
-                System.out.print("\n\n Nothing to delete! ");
-
-            }
-
+            stmtDelete.executeUpdate();
         } catch (SQLException ex) {
             System.out.print("\nSQLException while removing shedule");
         } finally {
@@ -148,21 +142,23 @@ public class SheduleDAOImpl implements SheduleDAO {
 
     @Override
     public boolean removeStudentFromInterval(int id_interval, int id_student) {
-        PreparedStatement stmtInsert = null;
+        PreparedStatement stmtDelete = null;
         Connection conn = DAOFactory.createConnection();
         try {
-            StringBuffer sbInsert = new StringBuffer();
-            sbInsert.append("DELETE FROM ");
-            sbInsert.append(DAOConstants.IntervalsForStudentsTableName);
-            sbInsert.append(" WHERE id_interval = ? AND id_student = ?");
-            stmtInsert = conn.prepareStatement(sbInsert.toString());
-            stmtInsert.setInt(1, id_interval);
-            stmtInsert.setInt(2, id_student);
+            StringBuffer sbDelete = new StringBuffer();
+            sbDelete.append("DELETE FROM ");
+            sbDelete.append(DAOConstants.IntervalsForStudentsTableName);
+            sbDelete.append(" WHERE id_interval = ? AND id_student = ?");
+            stmtDelete = conn.prepareStatement(sbDelete.toString());
+            stmtDelete.setInt(1, id_interval);
+            stmtDelete.setInt(2, id_student);
+            stmtDelete.executeUpdate();
+            
         } catch (SQLException ex) {
             System.out.print("\nSQL exception in addStudentToInterval()");
         } finally {
             DAOFactory.closeConnection(conn);
-            DAOFactory.closeStatement(stmtInsert);
+            DAOFactory.closeStatement(stmtDelete);
         }
         return true;
     }

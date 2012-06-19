@@ -23,13 +23,13 @@ public class AdvertDAOImpl implements AdvertDAO {
         Connection conn = DAOFactory.createConnection();
         try {
             StringBuffer sbInsert = new StringBuffer();
-            sbInsert.append("insert into ");
+            sbInsert.append("INSERT INTO ");
             sbInsert.append(DAOConstants.AdvertsTableName);
             sbInsert.append(" (advert_name)");
-            sbInsert.append(" values(");
+            sbInsert.append(" VALUES(");
             sbInsert.append("?)");
             stmtInsert = conn.prepareStatement(sbInsert.toString());
-            stmtInsert.setString(1, advert.getAdvert_name());
+            stmtInsert.setString(1, advert.getAdvertName());
             int rows = stmtInsert.executeUpdate();
             if (rows != 1) {
                 throw new SQLException(
@@ -58,8 +58,8 @@ public class AdvertDAOImpl implements AdvertDAO {
                     + DAOConstants.AdvertsTableName + ".advert_name FROM ");
             sbSelect.append(DAOConstants.AdvertsTableName + ", " + DAOConstants.AdvertsForStudentsTableName);
             sbSelect.append(" WHERE " + DAOConstants.AdvertsForStudentsTableName
-                    + ".ID_ADVERT = " + DAOConstants.AdvertsTableName + ".ID_ADVERT ");
-            sbSelect.append("AND " + DAOConstants.AdvertsForStudentsTableName + ".ID_STUDENT = ?");
+                    + ".id_advert = " + DAOConstants.AdvertsTableName + ".id_advert ");
+            sbSelect.append("AND " + DAOConstants.AdvertsForStudentsTableName + ".id_student = ?");
             stmtSelect = conn.prepareStatement(sbSelect.toString());
             stmtSelect.setInt(1, id_student);
             res = stmtSelect.executeQuery();
@@ -122,7 +122,7 @@ public class AdvertDAOImpl implements AdvertDAO {
             sbInsert.append("INSERT INTO ");
             sbInsert.append(DAOConstants.AdvertsForStudentsTableName);
             sbInsert.append(" (id_student, id_advert, notes)");
-            sbInsert.append(" values(");
+            sbInsert.append(" VALUES(");
             sbInsert.append("?, ?, ?)");
             stmtInsert = conn.prepareStatement(sbInsert.toString());
             stmtInsert.setInt(1, id_student);
@@ -155,8 +155,9 @@ public class AdvertDAOImpl implements AdvertDAO {
             sbDelete.append(" WHERE id_student = ?");
             stmtDelete = conn.prepareStatement(sbDelete.toString());
             stmtDelete.setInt(1, id_student);
+            stmtDelete.executeUpdate();
         } catch (SQLException ex) {
-            System.out.print("\nSQL exception in create deleteAdvertsForIdStudent()");
+            System.out.print("\nSQL exception in deleteAdvertsForIdStudent()");
         } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtDelete);

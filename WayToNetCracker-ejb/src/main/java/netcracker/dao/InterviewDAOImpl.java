@@ -21,7 +21,7 @@ public class InterviewDAOImpl implements InterviewDAO {
     public boolean createInterview(Interview interview) {
         PreparedStatement stmtInsert = null;
         Connection conn = DAOFactory.createConnection();
-        try{
+        try {
             StringBuffer sbInsert = new StringBuffer();
             sbInsert.append("INSERT INTO ");
             sbInsert.append(DAOConstants.ResultsTableName);
@@ -32,21 +32,19 @@ public class InterviewDAOImpl implements InterviewDAO {
             stmtInsert.setInt(1, interview.getIdStudent());
             stmtInsert.setInt(2, interview.getIdEmployee());
             stmtInsert.setString(3, interview.getComment());
-            
+
             int rows = stmtInsert.executeUpdate();
             if (rows != 1) {
-		throw new SQLException("executeUpdate return value: "+ rows);
+                throw new SQLException("executeUpdate return value: " + rows);
             }
-          
-        }
-        catch (SQLException ex) {
-            System.out.print("\nSQL exception in createEmployee");
-        }
-        finally {
+
+        } catch (SQLException ex) {
+            System.out.print("\nSQL exception in createInterview");
+        } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtInsert);
         }
-       return true;
+        return true;
     }
 
     @Override
@@ -60,27 +58,18 @@ public class InterviewDAOImpl implements InterviewDAO {
             sbDelete.append(" WHERE id_student = ?");
             stmtDelete = conn.prepareStatement(sbDelete.toString());
             stmtDelete.setInt(1, id_student);
-            int rows = stmtDelete.executeUpdate();
-            if (rows !=1) {
-                throw new SQLException("\n executeUpdate in deleteEmployee() return value: "+rows);
-            }
-        }
-        catch(SQLException ex) {
-            System.out.print("\nSQLException while removing Employee");
-        }
-        finally {
+            stmtDelete.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.print("\nSQLException while deleteInterviewByIdStudent");
+        } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtDelete);
         }
         return true;
     }
+
     @Override
     public List<String> getInterviewsResultByStudentId(int id_student) {
-        if (id_student <=0)
-            {
-                throw new IllegalArgumentException("\nError with student param");
-               
-            }
         List<String> comments = new ArrayList();
         Connection conn = DAOFactory.createConnection();
         PreparedStatement stmtSelect = null;
@@ -88,31 +77,28 @@ public class InterviewDAOImpl implements InterviewDAO {
         String comment = null;
         try {
             StringBuffer sbSelect = new StringBuffer();
-            sbSelect.append("select "+DAOConstants.ResultsTableName+".id_comment "+
-                    "from "+DAOConstants.ResultsTableName+
-                    " where "+DAOConstants.ResultsTableName+".id_student = ?");
+            sbSelect.append("SELECT " + DAOConstants.ResultsTableName + ".id_comment "
+                    + "FROM " + DAOConstants.ResultsTableName
+                    + " WHERE " + DAOConstants.ResultsTableName + ".id_student = ?");
             stmtSelect = conn.prepareStatement(sbSelect.toString());
-            stmtSelect.setInt(1,id_student);
+            stmtSelect.setInt(1, id_student);
             System.out.print(sbSelect.toString());
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
             while (res.next()) {
-               comment = new String(res.getString(1));
-               comments.add(comment);
-               rowsCount++;
+                comment = new String(res.getString(1));
+                comments.add(comment);
+                rowsCount++;
             }
-            if (rowsCount<=0){
+            if (rowsCount <= 0) {
                 System.out.print("\n\nNo comments found!");
             }
-            if (rowsCount>2){
+            if (rowsCount > 2) {
                 System.out.print("\n\nSome error: student have more than 2 comments!");
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.print("\n Error while getting all comments about this student!\n");
-        }
-            finally
-        {
+        } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtSelect);
         }
@@ -121,11 +107,6 @@ public class InterviewDAOImpl implements InterviewDAO {
 
     @Override
     public List<String> getInterviewsResultByEmployeeId(int id_employee) {
-        if (id_employee <=0)
-            {
-                throw new IllegalArgumentException("\nError with employee param");
-               
-            }
         List<String> comments = new ArrayList();
         Connection conn = DAOFactory.createConnection();
         PreparedStatement stmtSelect = null;
@@ -133,34 +114,30 @@ public class InterviewDAOImpl implements InterviewDAO {
         String comment = null;
         try {
             StringBuffer sbSelect = new StringBuffer();
-            sbSelect.append("select "+DAOConstants.ResultsTableName+".id_comment "+
-                    "from "+DAOConstants.ResultsTableName+
-                    " where "+DAOConstants.ResultsTableName+".id_employee = ?");
+            sbSelect.append("SELECT " + DAOConstants.ResultsTableName + ".id_comment "
+                    + "FROM " + DAOConstants.ResultsTableName
+                    + " WHERE " + DAOConstants.ResultsTableName + ".id_employee = ?");
             stmtSelect = conn.prepareStatement(sbSelect.toString());
-            stmtSelect.setInt(1,id_employee);
+            stmtSelect.setInt(1, id_employee);
             System.out.print(sbSelect.toString());
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
             while (res.next()) {
-               comment = new String(res.getString(1));
-               comments.add(comment);
-               rowsCount++;
+                comment = res.getString(1);
+                comments.add(comment);
+                rowsCount++;
             }
-            if (rowsCount<=0){
+            if (rowsCount <= 0) {
                 System.out.print("\n\nThis employee did no comment!");
             }
-            
-        }
-        catch (Exception e){
+
+        } catch (Exception e) {
             System.out.print("\n Error while getting all comments this employee!\n");
-        }
-            finally
-        {
+        } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtSelect);
         }
         return comments;
-      
+
     }
-    
 }
