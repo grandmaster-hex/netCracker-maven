@@ -4,7 +4,6 @@
  */
 package netcracker.dao;
 
-import com.itextpdf.text.pdf.codec.Base64.InputStream;
 import com.mysql.jdbc.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,20 +18,20 @@ import java.util.Date;
  * @author lastride
  */
 public class StudentDAOImpl implements StudentDAO {
+
     public StudentDAOImpl() {
-        
     }
 
     @Override
     public boolean createStudent(Student student) {
         PreparedStatement stmtInsert = null;
         Connection conn = DAOFactory.createConnection();
-        try{
+        try {
             StringBuffer sbInsert = new StringBuffer();
             sbInsert.append("INSERT INTO ");
             sbInsert.append(DAOConstants.StudentsTableName);
             sbInsert.append(" (id_student, first_name, last_name, middle_name, course, study_end_year, id_faculty, "
-                             + "email1, email2, phone1, extra_contacts, why, experience, extra, photo)");
+                    + "email1, email2, phone1, extra_contacts, why, experience, extra, photo)");
             sbInsert.append(" VALUES (");
             sbInsert.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             stmtInsert = conn.prepareStatement(sbInsert.toString());
@@ -45,29 +44,24 @@ public class StudentDAOImpl implements StudentDAO {
             stmtInsert.setInt(7, student.getIdFaculty());
             stmtInsert.setString(8, student.getEmail1());
             stmtInsert.setString(9, student.getEmail2());
-            stmtInsert.setString(10, student.getPhone1());  
-            stmtInsert.setString(11, student.getExtraContacts());  
-            stmtInsert.setString(12, student.getWhy());  
-            stmtInsert.setString(13, student.getExperience()); 
-            stmtInsert.setString(14, student.getExperience());  
-            stmtInsert.setBlob(15, student.getPhoto());  
-            //uncomment for checking query syntax
-            System.out.print(stmtInsert.toString());
-            
+            stmtInsert.setString(10, student.getPhone1());
+            stmtInsert.setString(11, student.getExtraContacts());
+            stmtInsert.setString(12, student.getWhy());
+            stmtInsert.setString(13, student.getExperience());
+            stmtInsert.setString(14, student.getExperience());
+            stmtInsert.setBlob(15, student.getPhoto());
             int rows = stmtInsert.executeUpdate();
             if (rows != 1) {
-		throw new SQLException("executeUpdate return value: "+ rows);
+                throw new SQLException("executeUpdate return value: " + rows);
             }
-          
-        }
-        catch (SQLException ex) {
+
+        } catch (SQLException ex) {
             System.out.print("\nSQL exception in createEmployee");
-        }
-        finally {
+        } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtInsert);
         }
-       return true;
+        return true;
     }
 
     @Override
@@ -82,20 +76,19 @@ public class StudentDAOImpl implements StudentDAO {
             stmtDelete = conn.prepareStatement(sbDelete.toString());
             stmtDelete.setInt(1, id_student);
             int rows = stmtDelete.executeUpdate();
-            if (rows !=1) {
-                throw new SQLException("\n executeUpdate in deleteEmployee() return value: "+rows);
+            if (rows != 1) {
+                throw new SQLException("\n executeUpdate in deleteEmployee() return value: " + rows);
             }
-        }
-        catch(SQLException ex) {
+        } catch (SQLException ex) {
             System.out.print("\nSQLException while removing Employee");
-        }
-        finally {
+        } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtDelete);
         }
         return true;
     }
-    public Student getStudentByIdStudent(int id_student){
+
+    public Student getStudentByIdStudent(int id_student) {
         Connection conn = DAOFactory.createConnection();
         PreparedStatement stmtSelect = null;
         ResultSet res = null;
@@ -108,32 +101,28 @@ public class StudentDAOImpl implements StudentDAO {
             sbSelect.append(DAOConstants.StudentsTableName);
             sbSelect.append(" WHERE ID_STUDENT = ?");
             stmtSelect = conn.prepareStatement(sbSelect.toString());
-            stmtSelect.setInt(1, id_student);            
+            stmtSelect.setInt(1, id_student);
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
-            while (res.next()) {                
-               form = new Student(res.getInt(1),res.getString(2),res.getString(3),res.getString(4),
-                      res.getInt(5),res.getDate(6),res.getInt(7),res.getString(8),
-                       res.getString(9),res.getString(10),res.getString(11),
-                       res.getString(12),res.getString(13),res.getString(14),res.getBlob(15));               
-               rowsCount++;
+            while (res.next()) {
+                form = new Student(res.getInt(1), res.getString(2), res.getString(3), res.getString(4),
+                        res.getInt(5), res.getDate(6), res.getInt(7), res.getString(8),
+                        res.getString(9), res.getString(10), res.getString(11),
+                        res.getString(12), res.getString(13), res.getString(14), res.getBlob(15));
+                rowsCount++;
             }
-            //System.out.print(stmtSelect.toString());
-            if (rowsCount<=0){
+            if (rowsCount <= 0) {
                 System.out.print("\n\nNo Form found");
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.print("\n Error while getting Form!\n");
-        }
-            finally
-        {
+        } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtSelect);
         }
         return form;
     }
-    //return List of universities_name or empty List with console text output
+
     public List<String> getAllUniversities() {
         List universities = new LinkedList();
         Connection conn = DAOFactory.createConnection();
@@ -148,26 +137,22 @@ public class StudentDAOImpl implements StudentDAO {
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
             while (res.next()) {
-               universities.add(res.getString(1));
-               rowsCount++;
+                universities.add(res.getString(1));
+                rowsCount++;
             }
-            if (rowsCount<=0){
+            if (rowsCount <= 0) {
                 System.out.print("\n\nNo Universities found");
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.print("\n Error while getting all Universities!\n");
-        }
-            finally
-        {
+        } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtSelect);
         }
         return universities;
     }
-    //get faculties by id returns list of faculty names or empty list
-      //return List of universities_name or empty List with console text output
-    public List<String> getFacultiesByUniverName(String name){
+
+    public List<String> getFacultiesByUniverName(String name) {
         List universities = new LinkedList();
         Connection conn = DAOFactory.createConnection();
         PreparedStatement stmtSelect = null;
@@ -176,28 +161,25 @@ public class StudentDAOImpl implements StudentDAO {
         try {
             StringBuffer sbSelect = new StringBuffer();
             sbSelect.append("SELECT FACULTY_NAME FROM ");
-            sbSelect.append(DAOConstants.UniversitiesTableName+", "+DAOConstants.FacultiesTableName);
+            sbSelect.append(DAOConstants.UniversitiesTableName + ", " + DAOConstants.FacultiesTableName);
             sbSelect.append(" WHERE ");
-            sbSelect.append(DAOConstants.UniversitiesTableName+".university_name = ? and ");
-            sbSelect.append(DAOConstants.UniversitiesTableName+".id_university = "+DAOConstants.FacultiesTableName+".id_university");
+            sbSelect.append(DAOConstants.UniversitiesTableName + ".university_name = ? and ");
+            sbSelect.append(DAOConstants.UniversitiesTableName + ".id_university = " + DAOConstants.FacultiesTableName + ".id_university");
             stmtSelect = conn.prepareStatement(sbSelect.toString());
             stmtSelect.setString(1, name);
-           // System.out.print(stmtSelect.toString());
+            // System.out.print(stmtSelect.toString());
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
             while (res.next()) {
-               universities.add(res.getString(1));
-               rowsCount++;
+                universities.add(res.getString(1));
+                rowsCount++;
             }
-            if (rowsCount<=0){
+            if (rowsCount <= 0) {
                 System.out.print("\n\nNo Faculties found");
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.print("\n Error while getting all Faculties!\n");
-        }
-            finally
-        {
+        } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtSelect);
         }
@@ -208,7 +190,7 @@ public class StudentDAOImpl implements StudentDAO {
     public boolean setIntervalToStudent(int id_student, int id_interval) {
         PreparedStatement stmtInsert = null;
         Connection conn = DAOFactory.createConnection();
-        try{
+        try {
             StringBuffer sbInsert = new StringBuffer();
             sbInsert.append("INSERT INTO ");
             sbInsert.append(DAOConstants.IntervalsForStudentsTableName);
@@ -216,25 +198,23 @@ public class StudentDAOImpl implements StudentDAO {
             sbInsert.append(" VALUES (");
             sbInsert.append("?, ?)");
             stmtInsert = conn.prepareStatement(sbInsert.toString());
-            stmtInsert.setInt(1,id_interval);
+            stmtInsert.setInt(1, id_interval);
             stmtInsert.setInt(2, id_student);
-            
+
             System.out.print(stmtInsert.toString());
-            
+
             int rows = stmtInsert.executeUpdate();
             if (rows != 1) {
-		throw new SQLException("executeUpdate return value: "+ rows);
+                throw new SQLException("executeUpdate return value: " + rows);
             }
-          
-        }
-        catch (SQLException ex) {
+
+        } catch (SQLException ex) {
             System.out.print("\nSQL exception in setIntervals");
-        }
-        finally {
+        } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtInsert);
         }
-       return true;
+        return true;
     }
 
     @Override
@@ -243,7 +223,7 @@ public class StudentDAOImpl implements StudentDAO {
         Connection conn = DAOFactory.createConnection();
         ResultSet res = null;
         int rowsCount = 0;
-        try{
+        try {
             StringBuffer sbInsert = new StringBuffer();
             sbInsert.append("SELECT count(id_student) FROM ");
             sbInsert.append(DAOConstants.StudentsTableName);
@@ -254,17 +234,16 @@ public class StudentDAOImpl implements StudentDAO {
             while (res.next()) {
                 rowsCount = res.getInt(1);
             }
-        }
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             System.out.print("\nSQL exception in createEmployee");
-        }
-        finally {
+        } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtInsert);
         }
-       if (rowsCount > 0) {
-           return true;
-       }
-       else return false;
+        if (rowsCount > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
