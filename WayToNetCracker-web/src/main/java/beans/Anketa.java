@@ -4,7 +4,7 @@
  */
 package beans;
 
-import java.io.Serializable;
+import java.io.*;
 
 import javax.inject.Named; 
    // or import javax.faces.bean.ManagedBean;
@@ -16,6 +16,7 @@ import java.util.*;
 
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
+import javax.sql.rowset.serial.SerialBlob;
 import org.primefaces.event.FileUploadEvent;  
 import org.primefaces.model.UploadedFile;
 
@@ -508,5 +509,24 @@ public class Anketa implements Serializable {
         
         return res;
     } 
-    
+    public void save() throws FileNotFoundException, IOException{
+       Calendar cal = Calendar.getInstance();
+      cal.set(Calendar.YEAR,studt_end_year);  
+      Date date = cal.getTime();
+      File file = new File("/home/phd/Pictures/5.jpg");  
+      FileInputStream fis = new FileInputStream(file);  
+      byte b1[] = new byte[(int)file.length()];  
+      fis.read(b1);  
+      //System.out.println(b1.length);  
+            try {
+                java.sql.Blob b2 = new SerialBlob(b1);  
+                Student s1 = new Student(first_name, last_name, middle_name, course, new java.sql.Date(date.getTime()),
+                        1, email1, email2, phone1, extra_contacts, whyMe, experience, extraData, b2);        
+                StudentDAO stud = DAOFactory.getStudentDAO();
+                 stud.createStudent(s1);
+            }
+            catch(Exception e){
+                System.out.print("ERROR!");
+            }
+    }
 }
