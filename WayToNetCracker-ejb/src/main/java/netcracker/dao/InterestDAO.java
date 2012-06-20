@@ -35,4 +35,6 @@ public interface InterestDAO {
      * @return 
      */
     public boolean deleteInterestsForIdStudent(int id_student);
+    
+    public String getInterestNameById(int id_interest);
 }

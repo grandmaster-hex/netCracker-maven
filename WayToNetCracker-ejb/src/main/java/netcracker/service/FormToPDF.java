@@ -99,7 +99,7 @@ public class FormToPDF {
         
         for (int i = 0; i < interestList.size(); i++) {
              Interest interest = interestList.get(i);
-             String key = DAOFactory.getInterestDAO().getInterestNameById(interest.getId_interest());
+             String key = DAOFactory.getInterestDAO().getInterestNameById(interest.getIdInterest());
              String value = interest.getMark();
              if (key.equals(DAOConstants.InterestOther) ||
                      key.equals(DAOConstants.InterestOtherJob))
