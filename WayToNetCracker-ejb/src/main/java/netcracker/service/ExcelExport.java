@@ -34,43 +34,17 @@ public class ExcelExport {
         FileOutputStream fos = null;
         HSSFWorkbook workbook = new HSSFWorkbook();
         try {
-            HSSFSheet advertsSheet = workbook.createSheet("adverts");
-            HSSFSheet advertsForStudentsSheet = workbook.createSheet("advertsForStudents");
-            HSSFSheet employeesSheet = workbook.createSheet("employees");
-            HSSFSheet facultiesSheet = workbook.createSheet("faculties");
-            HSSFSheet interestsSheet = workbook.createSheet("interests");
-            HSSFSheet interestsForStudentsSheet = workbook.createSheet("interestsForStudents");
-            HSSFSheet intervalsSheet = workbook.createSheet("intervals");
-            HSSFSheet intervalsForStudentsSheet = workbook.createSheet("intervalsForStudents");
-            HSSFSheet intervalStatusesSheet = workbook.createSheet("intervalStatuses");
-            HSSFSheet messagesSheet = workbook.createSheet("messages");
-            HSSFSheet resultsSheet = workbook.createSheet("results");
-            HSSFSheet rolesSheet = workbook.createSheet("roles");
-            HSSFSheet skillsSheet = workbook.createSheet("skills");
-            HSSFSheet skillsForStudentsSheet = workbook.createSheet("skillsForStudents");
-            HSSFSheet skillsTypesSheet = workbook.createSheet("skillsTypes");
-            HSSFSheet studentsSheet = workbook.createSheet("students");
-            HSSFSheet universitiesSheet = workbook.createSheet("universities");
-            
+            String[] tableNames = {"adverts", "advertsForStudents", "employees", "faculties",
+                "interests", "interestsForStudents", "intervals",
+                "intervalsForStudents", "intervalStatuses",
+                "messages", "results", "roles", "skills",
+                "skillsForStudents", "skillsTypes", "students",
+                "universities"};
             
             ArrayList<HSSFSheet> sheets = new ArrayList<HSSFSheet>();
-            sheets.add(advertsSheet);
-            sheets.add(advertsForStudentsSheet);
-            sheets.add(employeesSheet);
-            sheets.add(facultiesSheet);
-            sheets.add(interestsSheet);
-            sheets.add(interestsForStudentsSheet);
-            sheets.add(intervalsSheet);
-            sheets.add(intervalsForStudentsSheet);
-            sheets.add(intervalStatusesSheet);
-            sheets.add(messagesSheet);
-            sheets.add(resultsSheet);
-            sheets.add(rolesSheet);
-            sheets.add(skillsSheet);
-            sheets.add(skillsForStudentsSheet);
-            sheets.add(skillsTypesSheet);
-            sheets.add(studentsSheet);
-            sheets.add(universitiesSheet);
+            for (int i = 0; i < tableNames.length; i++) {
+                sheets.add(workbook.createSheet(tableNames[i]));
+            }
             
             String[] advertsFields = {"id_advert", "advert_name"};
             String[] advertsForStudentsFields = {"id_student", "id_advert", "notes"};
@@ -90,7 +64,7 @@ public class ExcelExport {
             String[] skillsTypesFields = {"id_skill_type", "skill_type_name"};
             String[] studentsFields = {"id_student", "first_name", "last_name", "middle_name", "course", "study_end_year",
                 "id_faculty", "email1", "email2", "phone1", "extra_contacts", "why", "experience",
-                "extra", "photo"};
+                "extra", "reg_day", "photo"};
             String[] universitiesFields = {"id_university", "university_name"};
             
             ArrayList<String[]> strings = new ArrayList<String[]>();
@@ -114,21 +88,25 @@ public class ExcelExport {
             
             
             HSSFCellStyle style = workbook.createCellStyle();
-            style.setBorderTop((short) 6); // double lines border
-            style.setBorderBottom((short) 1); // single line border
-            style.setFillBackgroundColor(HSSFColor.GREY_25_PERCENT.index);
+            style.setBorderTop(CellStyle.BORDER_THIN); 
+            style.setBorderLeft(CellStyle.BORDER_THIN);
+            style.setBorderRight(CellStyle.BORDER_THIN);
+            style.setBorderBottom(CellStyle.BORDER_THIN); 
+            style.setAlignment(CellStyle.ALIGN_CENTER);
+            style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
             
             HSSFFont font = workbook.createFont();
             font.setFontName(HSSFFont.FONT_ARIAL);
             font.setFontHeightInPoints((short) 12);
             font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-            font.setColor(HSSFColor.BLUE.index);
+            font.setColor(HSSFColor.BROWN.index);
             
             style.setFont(font);
             
             HSSFRow row = null;
             for (int i = 0; i < sheets.size(); i++) {
                 row = sheets.get(i).createRow(0);
+                row.setHeightInPoints(20f);
                 for (int j = 0; j < strings.get(i).length; j++) {
                     HSSFCell cell = row.createCell(j);
                     cell.setCellValue(strings.get(i)[j]);
@@ -136,14 +114,6 @@ public class ExcelExport {
                     sheets.get(i).autoSizeColumn((short) j);
                 }
             }
-            
-            
-            String[] tableNames = {"adverts", "advertsForStudents", "employees", "faculties",
-                "interests", "interestsForStudents", "intervals",
-                "intervalsForStudents", "intervalStatuses",
-                "messages", "results", "roles", "skills",
-                "skillsForStudents", "skillsTypes", "students",
-                "universities"};
             
             StringBuffer sbEmployees = null;
             HSSFRow rowT = null;
@@ -161,7 +131,6 @@ public class ExcelExport {
                         HSSFCell cellT = rowT.createCell(j);
                         if (sheets.get(i).getSheetName().equals("students")) {
                             HSSFCellStyle styleT = workbook.createCellStyle();
-                            
                             styleT.setAlignment(CellStyle.ALIGN_CENTER);
                             styleT.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
                             cellT.setCellStyle(styleT);
@@ -175,12 +144,12 @@ public class ExcelExport {
                                 int pictureIdx = workbook.addPicture(bytes, workbook.PICTURE_TYPE_JPEG);
                                 img.close();
                                 CreationHelper helper = workbook.getCreationHelper();
-                                Drawing drawing = studentsSheet.createDrawingPatriarch();
+                                Drawing drawing = sheets.get(i).createDrawingPatriarch();
                                 ClientAnchor anchor = helper.createClientAnchor();
                                 anchor.setAnchorType(ClientAnchor.MOVE_DONT_RESIZE);
                                 anchor.setCol1(j);
                                 anchor.setRow1(c);
-                                studentsSheet.autoSizeColumn(j);
+                                sheets.get(i).autoSizeColumn(j);
                                 Picture pict = drawing.createPicture(anchor, pictureIdx);
                                 pict.getPreferredSize();
                                 pict.resize(0.1);
