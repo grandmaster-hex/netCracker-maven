@@ -145,4 +145,41 @@ public class InterestDAOImpl implements InterestDAO {
         }
         return true;
     }
+    @Override
+    public String getInterestNameById(int id_interest) {
+        
+        String interestName = null;
+        
+        Connection conn = DAOFactory.createConnection();
+        PreparedStatement stmtSelect = null;
+        ResultSet res = null;
+        
+        try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("SELECT interest_name FROM ");
+            sbSelect.append(DAOConstants.InterestsTableName);
+            sbSelect.append(" WHERE id_interest = ?");
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            
+            stmtSelect.setInt(1, id_interest);
+           // System.out.print(stmtSelect.toString());
+            res = stmtSelect.executeQuery();
+            int rowsCount = 0;
+            while (res.next()) {
+               interestName = res.getString(1);
+               rowsCount++;
+            }
+            if (rowsCount <= 0) {
+                System.out.print("\nNo interest with such id found\n");
+            }
+        }
+        catch (SQLException e) {
+            System.out.print("\n Error while getting interest by id_interest!\n");
+        }
+        finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
+        return interestName;    
+    }
 }

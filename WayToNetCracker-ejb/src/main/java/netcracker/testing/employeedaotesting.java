@@ -37,8 +37,8 @@ public class employeedaotesting {
                     cal.set(Calendar.MINUTE,00);
                     cal.set(Calendar.SECOND,00);
                     Date end = cal.getTime();
-                    netcracker.service.ScheduleService.deleteSheduleBetweenDates(d, end);                    
-                    DAOFactory.getSheduleDAO().createShedule(netcracker.service.ScheduleService.separate(d, end, 20, 1, 7));
+//                    netcracker.service.ScheduleService.deleteSheduleBetweenDates(d, end);                    
+//                    DAOFactory.getSheduleDAO().createShedule(netcracker.service.ScheduleService.separate(d, end, 20, 1, 7));
 
         
             //---------------Testing Skills
