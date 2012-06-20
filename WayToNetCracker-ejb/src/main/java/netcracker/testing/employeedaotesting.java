@@ -20,7 +20,7 @@ import org.apache.poi.util.IOUtils;
  * @author lasha.k
  */
 public class employeedaotesting {
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException{
       
             //---------------Testing getingAllUniversities();
                     
@@ -28,15 +28,15 @@ public class employeedaotesting {
             //   List a =st.getAllUniversities();
             //   System.out.print(a.toString());
             //------------------Testing separate date method
-                    Calendar cal = Calendar.getInstance();
-                    cal.set(Calendar.HOUR_OF_DAY,17);
-                    cal.set(Calendar.MINUTE,00);
-                    cal.set(Calendar.SECOND,00);
-                    Date d = cal.getTime();
-                    cal.set(Calendar.HOUR_OF_DAY,18);
-                    cal.set(Calendar.MINUTE,00);
-                    cal.set(Calendar.SECOND,00);
-                    Date end = cal.getTime();
+//                    Calendar cal = Calendar.getInstance();
+//                    cal.set(Calendar.HOUR_OF_DAY,17);
+//                    cal.set(Calendar.MINUTE,00);
+//                    cal.set(Calendar.SECOND,00);
+//                    Date d = cal.getTime();
+//                    cal.set(Calendar.HOUR_OF_DAY,18);
+//                    cal.set(Calendar.MINUTE,00);
+//                    cal.set(Calendar.SECOND,00);
+//                    Date end = cal.getTime();
 //                    netcracker.service.ScheduleService.deleteSheduleBetweenDates(d, end);                    
 //                    DAOFactory.getSheduleDAO().createShedule(netcracker.service.ScheduleService.separate(d, end, 20, 1, 7));
 
@@ -58,17 +58,23 @@ public class employeedaotesting {
 //      
       
                  // System.out.print(b.toString());
-//                  
-//      File file = new File("/home/phd/Pictures/5.jpg");  
-//      FileInputStream fis = new FileInputStream(file);  
-//      byte b1[] = new byte[(int)file.length()];  
-//      fis.read(b1);  
-//      System.out.println(b1.length);  
-//            try {
-//                java.sql.Blob b2 = new SerialBlob(b1);  
-//                Student s1 = new Student(2, "asd", "asd", "asd", 4, sqlDate, 1, "asd", "fgh", "gfh", "hjg", "kj", "hgj", "kj", b2);        
-//                StudentDAO stud = DAOFactory.getStudentDAO();
-//                 stud.createStudent(s1);
+      Calendar cal = Calendar.getInstance();
+      cal.set(Calendar.YEAR,2007);  
+      Date date = cal.getTime();
+      File file = new File("/home/phd/Pictures/5.jpg");  
+      FileInputStream fis = new FileInputStream(file);  
+      byte b1[] = new byte[(int)file.length()];  
+      fis.read(b1);  
+      //System.out.println(b1.length);  
+            try {
+                java.sql.Blob b2 = new SerialBlob(b1);  
+                Student s1 = new Student("asd", "asd", "asd", 4, new java.sql.Date(date.getTime()), 1, "asd", "fgh", "gfh", "hjg", "kj", "hgj", "kj", b2);        
+                StudentDAO stud = DAOFactory.getStudentDAO();
+                 stud.createStudent(s1);
+            }
+            catch(Exception e){
+                System.out.print("ERROR!");
+            }
                       //---------------Testing createEmployees();
                       //   EmployeeDAO d = null;
                       //   d = DAOFactory.getEmployeeDAO();  
