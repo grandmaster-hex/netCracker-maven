@@ -510,14 +510,10 @@ public class Anketa implements Serializable {
         return res;
     } 
     public void save() throws FileNotFoundException, IOException{
-       Calendar cal = Calendar.getInstance();
+      Calendar cal = Calendar.getInstance();
       cal.set(Calendar.YEAR,studt_end_year);  
-      Date date = cal.getTime();
-      File file = new File("/home/phd/Pictures/5.jpg");  
-      FileInputStream fis = new FileInputStream(file);  
-      byte b1[] = new byte[(int)file.length()];  
-      fis.read(b1);  
-      //System.out.println(b1.length);  
+      Date date = cal.getTime();    
+      byte b1[] = foto.getContents();     
             try {
                 java.sql.Blob b2 = new SerialBlob(b1);  
                 Student s1 = new Student(first_name, last_name, middle_name, course, new java.sql.Date(date.getTime()),
