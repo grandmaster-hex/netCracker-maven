@@ -56,6 +56,30 @@ public class Student {
         this.photo = photo;
 
     }
+    public Student(String first_name, String last_name, String middle_name,
+            int course, java.sql.Date study_end_year, int id_faculty, String email1,
+            String email2, String phone1, String extra_contacts,
+            String why, String experience, String extra, Blob photo) {
+        this.id_student = 0;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.middle_name = middle_name;
+        this.course = course;
+        this.study_end_year = study_end_year;
+        this.id_faculty = id_faculty;
+        this.interests = null;
+        this.skills = null;
+        this.email1 = email1;
+        this.email2 = email2;
+        this.phone1 = phone1;
+        this.extra_contacts = extra_contacts;
+        this.why = why;
+        this.experience = experience;
+        this.extra = extra;
+        this.reg_date = new java.sql.Date(System.currentTimeMillis());
+        this.photo = photo;
+
+    }
 
     public int getStudentId() {
         return this.id_student;
