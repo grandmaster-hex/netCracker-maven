@@ -282,7 +282,7 @@ public class SheduleDAOImpl implements SheduleDAO {
         ResultSet res = null;
         try {
             StringBuffer sbSelect = new StringBuffer();
-            sbSelect.append("SELECT DISTINCT YEAR(start_time), MONTH(start_time),  DAY(start_time) FROM ");
+            sbSelect.append("SELECT DISTINCT YEAR(start_time), MONTH(start_time)-1,  DAY(start_time) FROM ");
             sbSelect.append(DAOConstants.IntervalsTableName + ", " + DAOConstants.IntervalStatusesTableName);
             sbSelect.append(" WHERE " + DAOConstants.IntervalsTableName + ".id_interval_status = "
                     + DAOConstants.IntervalStatusesTableName + ".id_interval_status AND interval_status_name like '%available%'");
