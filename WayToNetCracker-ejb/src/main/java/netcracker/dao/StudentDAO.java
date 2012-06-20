@@ -66,4 +66,9 @@ public interface StudentDAO {
      * @return
      */
     public boolean emailExists(String email);
+    
+    // by Ann for Form
+    public String getUniversityNameByIdStudent(int id_student);
+    
+    public String getFacultyNameByIdStudent(int id_student);
 }

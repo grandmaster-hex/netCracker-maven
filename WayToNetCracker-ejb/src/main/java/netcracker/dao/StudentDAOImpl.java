@@ -246,4 +246,81 @@ public class StudentDAOImpl implements StudentDAO {
             return false;
         }
     }
+    
+    /// Added by Ann for Form
+    @Override
+    public String getUniversityNameByIdStudent(int id_student) {
+        
+        String universityName = "";
+        Connection conn = DAOFactory.createConnection();
+        PreparedStatement stmtSelect = null;
+        ResultSet res = null;
+        
+        try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("SELECT UNIVERSITY_NAME FROM ");
+            sbSelect.append(DAOConstants.FacultiesTableName);
+            sbSelect.append("WHERE id_university = (SELECT id_university FROM");
+            sbSelect.append(DAOConstants.StudentsTableName);
+            sbSelect.append("WHERE id_student = ? )");
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            stmtSelect.setInt(1, id_student);
+            //System.out.print(sbSelect.toString());
+            res = stmtSelect.executeQuery();
+            int rowsCount = 0;
+            while (res.next()) {
+               universityName = res.getString(1);
+               rowsCount++;
+            }
+            if (rowsCount <= 0) {
+                System.out.print("\nNo University found\n");
+            }
+        }
+        catch (Exception e) {
+            System.out.print("\n Error while getting university student_id\n");
+        }
+        finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
+        return universityName;
+    }
+    /// Added by Ann for Form
+    @Override
+    public String getFacultyNameByIdStudent(int id_student) {
+        
+        String facultyName = "";
+        Connection conn = DAOFactory.createConnection();
+        PreparedStatement stmtSelect = null;
+        ResultSet res = null;
+        
+        try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("SELECT faculty_name FROM ");
+            sbSelect.append(DAOConstants.FacultiesTableName);
+            sbSelect.append("WHERE id_faculty = (SELECT id_faculty FROM");
+            sbSelect.append(DAOConstants.StudentsTableName);
+            sbSelect.append("WHERE id_student = ? )");
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            stmtSelect.setInt(1, id_student);
+            //System.out.print(sbSelect.toString());
+            res = stmtSelect.executeQuery();
+            int rowsCount = 0;
+            while (res.next()) {
+               facultyName = res.getString(1);
+               rowsCount++;
+            }
+            if (rowsCount <= 0) {
+                System.out.print("\nNo Faculty found\n");
+            }
+        }
+        catch (Exception e) {
+            System.out.print("\n Error while getting faculty by student_id\n");
+        }
+        finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
+        return facultyName;
+    }
 }

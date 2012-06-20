@@ -4,14 +4,20 @@
  */
 package netcracker.service;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.pdf.*;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.pdf.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import netcracker.dao.*;
 
 /**
  *
@@ -22,38 +28,16 @@ public class FormToPDF {
     private Document document;
     
     private BaseFont times;
+        
+    private Student student;
     
-    private String id;
-    private String first_name;
-    private String last_name;
-    private String middle_name;
-    private String course;
-    private String univer;
-    private String study_end_year;
-    private String id_faculty;
-    private String email1;
-    private String email2;
-    private String phone1;
-    private String phone2;
+    private StudentDAOImpl studImpl;
     
     public FormToPDF() {
         
-        setFonts();   
+        studImpl = new StudentDAOImpl();        
         
-        ////
-        id = "1"; 
-        first_name = "Анна"; 
-        last_name = "Кац"; 
-        middle_name = "Владимировна"; 
-        course = "3"; 
-        univer = "ОНУ им. Мечникова"; 
-        study_end_year = "2013";                        
-        id_faculty = "Прикладная математика"; 
-        email1 = "kac.anna.vl@gmail.com"; 
-        email2 = "kac.anna.vl@gmail.com"; 
-        phone1 = "7843751"; 
-        phone2 = "7843752";
-        ///
+        setFonts();
     }
     
     private void setFonts() {
@@ -72,141 +56,234 @@ public class FormToPDF {
         cb.beginText();
         cb.setFontAndSize(times, 12);
         cb.moveText(60, 815); 
-        cb.showText(id);  
+        cb.showText(Integer.toString(student.getStudentId()));  
         cb.endText();
     }
     
     private void writePersonalInfoAndContacts(PdfContentByte cb) {
+                
+        SimpleDateFormat df = new SimpleDateFormat("yyyy");
         
         cb.beginText();
         cb.setFontAndSize(times, 12);
         cb.moveText(98, 748); 
-        cb.showText(last_name);
+        cb.showText(student.getLastName());
         cb.moveText(153, 0); 
-        cb.showText(first_name);
+        cb.showText(student.getFirstName());
         cb.moveText(156, 0); 
-        cb.showText(middle_name);
+        cb.showText(student.getMiddleName());
         cb.moveText(-333, -20); 
-        cb.showText(univer);
+        cb.showText(studImpl.getUniversityNameByIdStudent(student.getStudentId())); ///!!!!!1
         cb.moveText(182, 0); 
-        cb.showText(course);
+        cb.showText(Integer.toString(student.getCourse()));
         cb.moveText(118, 0); 
-        cb.showText(id_faculty);            
-        cb.moveText(-248, -21); 
-        cb.showText(study_end_year);           
+        cb.showText(studImpl.getFacultyNameByIdStudent(student.getStudentId()));            
+        cb.moveText(-248, -21);
+        cb.showText(df.format(student.getStudyEndYear());           
 
         cb.moveText(80, -65); 
-        cb.showText(email1);
+        cb.showText(student.getEmail1());
         cb.moveText(0, -20); 
-        cb.showText(email2);
+        cb.showText(student.getEmail2());
         cb.moveText(0, -21); 
-        cb.showText(phone1);
+        cb.showText(student.getPhone1());
         cb.moveText(42, -21); 
-        cb.showText(phone2);
+        cb.showText(student.getPhone1());
         cb.endText();
+    }
+    
+    private Map<String, String> getInterestMarksMap() {
+        
+        Map<String, String> map = new HashMap<String, String>();        
+        List<Interest> interestList = student.getInterests();
+        
+        for (int i = 0; i < interestList.size(); i++) {
+             Interest interest = interestList.get(i);
+             String key = DAOFactory.getInterestDAO().getInterestNameById(interest.getId_interest());
+             String value = interest.getMark();
+             if (key.equals(DAOConstants.InterestOther) ||
+                     key.equals(DAOConstants.InterestOtherJob))
+                 value += " " + interest.getNotes();
+             map.put(key, value);
+        }
+        
+        return map;
     }
     
     private void writeInterests(PdfContentByte cb) {
         
+        Map<String, String> map = getInterestMarksMap();
+        
         cb.beginText();
         cb.setFontAndSize(times, 12);
-        cb.moveText(182, 478); 
-        cb.showText("±");  
+        cb.moveText(182, 478);         
+        cb.showText(map.get(DAOConstants.InterestStudying));  
         cb.moveText(0, -28); 
-        cb.showText("+");  
+        cb.showText(map.get(DAOConstants.InterestWorking));  
         cb.endText();
 
+        String other = map.get(DAOConstants.InterestOther);
+        
         cb.beginText();
         cb.moveText(182, 408); 
-        cb.showText("±");
+        cb.showText(map.get(DAOConstants.InterestSoftwareDeveloping));
         cb.moveText(0, -25); 
-        cb.showText("-");
+        cb.showText(Character.toString(other.charAt(0)));
         cb.endText();
-
+        
         cb.beginText();
         cb.moveText(340, 379); 
-        cb.showText("Что-то интересует.");
+        cb.showText(other.substring(2));
         cb.endText();
     }
     
     private void writeInterestsAboutJobType(PdfContentByte cb) {
+        
+        Map<String, String> map = getInterestMarksMap();
+        
         cb.beginText();
         cb.moveText(90, 335);
-        cb.showText("+");
+        cb.showText(map.get(DAOConstants.InterestDeepSpecialization));
         cb.moveText(0, -22); 
-        cb.showText("±");
+        cb.showText(map.get(DAOConstants.InterestDifferentJob));
         cb.moveText(0, -22); 
-        cb.showText("+");
+        cb.showText(map.get(DAOConstants.InterestExpertsManagement));
         cb.endText();
 
+        String other = map.get(DAOConstants.InterestOtherJob);
+        
         cb.beginText();
         cb.moveText(345, 335);
-        cb.showText("±");
+        cb.showText(map.get(DAOConstants.InterestSale));
         cb.moveText(0, -22); 
-        cb.showText("?");
+        cb.showText(Character.toString(other.charAt(0)));
         cb.endText();
 
         cb.beginText();
         cb.moveText(452, 310); 
-        cb.showText("Какая-то.");
+        cb.showText(other.substring(2));
         cb.endText();
     }
     
-    private void writeSkills(PdfContentByte cb) {        
+    private Map<String, Integer> getSkillMarksMapBySkillType(String skillTypeName) {
+        
+        Map<String, Integer> map = new HashMap<String, Integer>();        
+        List<SkillsOfType> skillsByTypesList = student.getSkills();
+        
+        for (int i = 0; i < skillsByTypesList.size(); i++) {
+             
+            SkillsOfType skillType = skillsByTypesList.get(i);
+            
+            if(skillTypeName.equals(skillType.getSkill_type_name())) {
+                List<Skill> skillList = skillType.getSkills();
+                
+                for(int j = 0; j < skillList.size(); j++) {
+                    Skill skill = skillList.get(j);
+                    
+                    String key = skill.getSkill_name();
+                    Integer value = skill.getMark();
+                    
+                    map.put(key, value);
+                }
+             }
+        }
+        
+        return map;
+    }
+    
+    private void writeLanguageSkills(PdfContentByte cb) { 
+        
+        Map<String, Integer> mapLanguage = getSkillMarksMapBySkillType(DAOConstants.SkillTypeLanguage);
+        
         cb.beginText();
         cb.setFontAndSize(times, 12);
+        
         cb.moveText(144, 162); 
-        cb.showText("5");
+        cb.showText(mapLanguage.get(DAOConstants.SkillCPP).toString());              
         cb.moveText(107, 0); 
-        cb.showText("5");
-        for(int i = 0; i < 3; i++)
+        cb.showText(mapLanguage.get(DAOConstants.SkillJava).toString());
+        
+        mapLanguage.remove(DAOConstants.SkillCPP);  
+        mapLanguage.remove(DAOConstants.SkillJava);
+        
+        Iterator it = mapLanguage.entrySet().iterator();
+        for(int i = 0; i < 3 && it.hasNext(); i++)
         {
+            Map.Entry skill =(Map.Entry)it.next();
+
             cb.moveText(100 - 8*i, 0); 
-            cb.showText("5");
+            cb.showText(skill.getValue().toString());
             if(i == 0)
                 cb.moveText(-30, 16);
             else
                 cb.moveText(0, 16);
-            cb.showText("C#");
+            cb.showText(skill.getKey().toString());
             cb.moveText(0, -16);
         }          
         cb.endText();
-
+    }
+    
+    private void writeKnowledgeSkills(PdfContentByte cb) {
+        
+        Map<String, Integer> mapKnowledge = getSkillMarksMapBySkillType(DAOConstants.SkillTypeKnowledge);
+        
         cb.beginText();
         cb.setFontAndSize(times, 12);
         cb.moveText(48, 102); 
-        cb.showText("5");  
+        cb.showText(mapKnowledge.get(DAOConstants.SkillNetworkTechnologies).toString());  
         cb.moveText(0, -22); 
-        cb.showText("5"); 
+        cb.showText(mapKnowledge.get(DAOConstants.SkillAlgorithms).toString()); 
         cb.moveText(275.5f, 22); 
-        cb.showText("5"); 
+        cb.showText(mapKnowledge.get(DAOConstants.SkillOOP).toString()); 
         cb.moveText(0, -22); 
-        cb.showText("5");             
+        cb.showText(mapKnowledge.get(DAOConstants.SkillDB).toString());             
         cb.endText();
     }
     
-    private void writeSkillsOnSecondPage(PdfContentByte cb) {        
+    private void writeSkillsOnSecondPage(PdfContentByte cb) {      
+        
+        Map<String, Integer> mapKnowledge = getSkillMarksMapBySkillType(DAOConstants.SkillTypeKnowledge);
+        
         cb.beginText();
         cb.setFontAndSize(times, 12);
         cb.moveText(48, 789); 
-        cb.showText("5");  
+        cb.showText(mapKnowledge.get(DAOConstants.SkillWeb).toString());  
         cb.moveText(0, -22); 
-        cb.showText("5"); 
+        cb.showText(mapKnowledge.get(DAOConstants.SkillGUI).toString()); 
         cb.moveText(275.5f, 22); 
-        cb.showText("5"); 
+        cb.showText(mapKnowledge.get(DAOConstants.SkillNetworkProgramming).toString()); 
         cb.moveText(0, -22); 
-        cb.showText("5");             
+        cb.showText(mapKnowledge.get(DAOConstants.SkillProgramDesign).toString());             
         cb.endText();
-
-        String other1 = "Что-то еще 1", other2 = "Что-то еще 2", other3 = "Что-то еще 3";
-        int mark1 = 5, mark2 = 5, mark3 = 5;
+        
+        mapKnowledge.remove(DAOConstants.SkillNetworkTechnologies);
+        mapKnowledge.remove(DAOConstants.SkillAlgorithms);
+        mapKnowledge.remove(DAOConstants.SkillOOP);
+        mapKnowledge.remove(DAOConstants.SkillDB);
+        mapKnowledge.remove(DAOConstants.SkillWeb);
+        mapKnowledge.remove(DAOConstants.SkillGUI);
+        mapKnowledge.remove(DAOConstants.SkillNetworkProgramming);
+        mapKnowledge.remove(DAOConstants.SkillProgramDesign);
         
         cb.beginText();
         cb.setFontAndSize(times, 12);
         cb.moveText(275, 748); 
-        cb.showText(other1 + " (" + mark1 + ")");  
-        cb.moveText(-230, -20);             
-        cb.showText(other2 + " (" + mark2 + "), " + other3 + " (" + mark3 + ")");         
+        
+        Iterator it = mapKnowledge.entrySet().iterator();
+        for(int i = 0; i < 3 && it.hasNext(); i++)
+        {
+            Map.Entry skill =(Map.Entry)it.next();
+
+            if(i == 1)
+                cb.moveText(-230, -20);
+            
+            String knowledge = skill.getKey().toString();
+            String mark = skill.getValue().toString();
+            String text = knowledge + " (" + mark + ")";
+            if(i < 2 && it.hasNext())
+                text += ", ";
+            cb.showText(text);
+        }
         cb.endText();
     }
     
@@ -233,39 +310,71 @@ public class FormToPDF {
         cb.endText();
     }
     
-    private void writeEnglishLevel(PdfContentByte cb) {
+    private void writeExperience(PdfContentByte cb) {
+         writeText(cb, student.getExperience(), 45, 680);
+    }
+    
+    private void writeWhy(PdfContentByte cb) {
+         writeText(cb, student.getWhy(), 45, 456);
+    }
+    
+    private void writeExtra(PdfContentByte cb) {
+         writeText(cb, student.getExtra(), 45, 372.5f);
+    }
+    
+    private void writeEnglishSkills(PdfContentByte cb) {
+        
+        Map<String, Integer> mapEnglish = getSkillMarksMapBySkillType(DAOConstants.SkillTypeKnowledge);
+        
         cb.beginText();
         cb.setFontAndSize(times, 12);
         cb.moveText(183, 558);
-        cb.showText("5");
+        cb.showText(mapEnglish.get(DAOConstants.SkillReading).toString());
         cb.moveText(70, 0);
-        cb.showText("5");
+        cb.showText(mapEnglish.get(DAOConstants.SkillWriting).toString());
         cb.moveText(66, 0);
-        cb.showText("5");
+        cb.showText(mapEnglish.get(DAOConstants.SkillSpeaking).toString());
         cb.endText();
+    }
+    
+    private void writeAdvert(PdfContentByte cb) {
         
-        String commertials = "От друзей.";
+        AdvertDAOImpl advertImpl = new AdvertDAOImpl();
+        List<Advert> listAdvert = advertImpl.getAdvertsByIdStudent(student.getStudentId());
         
-        cb.beginText();
-        cb.moveText(45, 505);
-        cb.showText(commertials);
-        cb.endText();
+        String advert = "";
+        for(int i = 0; i < listAdvert.size(); i++) {
+            if(i > 0)
+                advert += ", ";
+            advert += listAdvert.get(i).getAdvert_name();
+        }
+        writeText(cb, advert, 45, 505);
     }
     
     private void writeNameForSign(PdfContentByte cb) {
-        float x = (float) (45 + (75 - last_name.length() - first_name.length() - middle_name.length())*3.3f); 
+        
+        float x = (float) (45 + (75 - student.getLastName().length() -
+                student.getFirstName().length() -
+                student.getMiddleName().length())*3.3f); 
+        
         cb.beginText();          
         cb.moveText(x, 248);
-        cb.showText(last_name + " " + first_name + " " + middle_name);
+        cb.showText(student.getLastName() + " " + student.getFirstName() +
+                " " + student.getMiddleName());
         cb.endText();
     }
     
     
-    public void createPDF() {
+    public void createPDF(Student stud) {
 
+        student = stud;
+        
         try {
             //Путь к файлу
-            String fileName = "Form/" + id + "_" + last_name + "_" + first_name + ".pdf";
+            String fileName = "Form/" + student.getLastName() + 
+                    "_" + student.getFirstName() + 
+                    "_" + student.getStudentId() + ".pdf";
+            
             String templateName = "Form/Анкета для студентов september 2012.pdf";
 
             //Поток (стрим) для записи файла
@@ -287,14 +396,14 @@ public class FormToPDF {
             cb.addTemplate(page, 0, 0);
             
             writeNumber(cb);
-             
+            
             writePersonalInfoAndContacts(cb);
             
             writeInterests(cb);
             writeInterestsAboutJobType(cb);
             
-            writeSkills(cb);
-            
+            writeLanguageSkills(cb);
+            writeKnowledgeSkills(cb);
             
             document.newPage();
             PdfImportedPage page2 = writer.getImportedPage(reader, 2); 
@@ -303,40 +412,21 @@ public class FormToPDF {
             writeNumber(cb);
             
             writeSkillsOnSecondPage(cb);
+            writeEnglishSkills(cb);
             
-            
-            String experienсe = "Была интерном в фейсбуке, гугле и яндексе. Писала на С++ и на Java. "
-                                + "Стажировалась в разных компаниях, таких как Luxoft, Lohica, ProductEngine. "
-                                + "Учавствовала во многих конференциях в Украине, Англии, Франции и Японии. "
-                                + "Имею черный пояс по карате. Хорошо рисую.";
-            
-            writeText(cb, experienсe, 45, 680);
-            writeEnglishLevel(cb);           
-            
-            
-            String commertials = "От друзей.";
-            
-            String why = "Потому что я хочу выучить Java намного лучше, чем знаю сейчас. "
-                        + "Хочу познакомиться с новыми людьми и чему-то у них научиться. "
-                        + "Хочу занять свое время полезными вещами. Обещаю ходить регулярно на курсы и что-то делать.";
-           
-            writeText(cb, why, 45, 456);
-            
-            
-            String moreAboutMe = "Участвую в олимпиадах по программированию типа ACM. "
-                                + "Имею много сертификатов и дипломов за большие достижения в математике и программировании.";
-            
-            writeText(cb, moreAboutMe, 45, 372.5f);
-            
+            writeExperience(cb);
+            writeAdvert(cb);
+            writeWhy(cb);
+            writeExtra(cb);
+                         
             writeNameForSign(cb);           
             
             document.close();
 
-
+        } catch (DocumentException ex) {
+            Logger.getLogger(FormToPDF.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(FormToPDF.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (DocumentException e) {
-            //Blah Blah Blah
         }
     }
   

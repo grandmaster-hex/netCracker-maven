@@ -29,6 +29,7 @@ public class Student {
     private final String why;
     private final String experience;
     private final String extra;
+    private final java.sql.Date reg_date;
     private final Blob photo;
 
     public Student(int id_student, String first_name, String last_name, String middle_name,
@@ -51,6 +52,7 @@ public class Student {
         this.why = why;
         this.experience = experience;
         this.extra = extra;
+        this.reg_date = new java.sql.Date(System.currentTimeMillis());
         this.photo = photo;
 
     }
@@ -118,6 +120,10 @@ public class Student {
     public String getExtra() {
         return this.extra;
     }
+    
+    public java.sql.Date getRegDate() {
+        return this.reg_date;
+    }
 
     public Blob getPhoto() {
         return this.photo;
@@ -151,6 +157,8 @@ public class Student {
         sbResult.append(this.experience);
         sbResult.append(", extra = ");
         sbResult.append(this.extra);
+        sbResult.append(", reg_date = ");
+        sbResult.append(this.reg_date);
         sbResult.append(", photo = ");
         sbResult.append(this.photo);
 
