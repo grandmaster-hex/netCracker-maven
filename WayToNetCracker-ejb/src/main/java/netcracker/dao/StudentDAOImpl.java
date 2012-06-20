@@ -323,4 +323,39 @@ public class StudentDAOImpl implements StudentDAO {
         }
         return facultyName;
     }
+    @Override
+    public int getIdStudentByEmail1(String email){
+        Connection conn = DAOFactory.createConnection();
+        PreparedStatement stmtSelect = null;
+        ResultSet res = null;
+        int id_student=0;
+        
+        try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("SELECT id_student FROM ");
+            sbSelect.append(DAOConstants.StudentsTableName);
+            sbSelect.append(" WHERE email1 like ?");
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            stmtSelect.setString(1, email);
+            //System.out.print(sbSelect.toString());
+            res = stmtSelect.executeQuery();
+            int rowsCount = 0;
+            while (res.next()) {
+               id_student = res.getInt(1);
+               rowsCount++;
+            }
+            if (rowsCount > 1) {
+                System.out.print("\n Epic Fail....\n");
+            }
+        }
+        catch (Exception e) {
+            System.out.print("\n Error while getting id student by email\n");
+        }
+        finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+        }
+        return id_student;
+    }
+            
 }

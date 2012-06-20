@@ -71,4 +71,6 @@ public interface StudentDAO {
     public String getUniversityNameByIdStudent(int id_student);
     
     public String getFacultyNameByIdStudent(int id_student);
+    
+    public int getIdStudentByEmail1(String email);
 }
