@@ -57,7 +57,7 @@ public class StudentDAOImpl implements StudentDAO {
             }
 
         } catch (SQLException ex) {
-            System.out.print("\nSQL exception in createEmployee");
+            System.out.print("\nSQL exception in create student");
         } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtInsert);
