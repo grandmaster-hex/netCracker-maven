@@ -79,7 +79,7 @@ public class FormToPDF {
         cb.moveText(118, 0); 
         cb.showText(studImpl.getFacultyNameByIdStudent(student.getStudentId()));            
         cb.moveText(-248, -21);
-        cb.showText(df.format(student.getStudyEndYear());           
+        cb.showText(df.format(student.getStudyEndYear()));           
 
         cb.moveText(80, -65); 
         cb.showText(student.getEmail1());
@@ -174,13 +174,13 @@ public class FormToPDF {
              
             SkillsOfType skillType = skillsByTypesList.get(i);
             
-            if(skillTypeName.equals(skillType.getSkill_type_name())) {
+            if(skillTypeName.equals(skillType.getSkillTypeNamr())) {
                 List<Skill> skillList = skillType.getSkills();
                 
                 for(int j = 0; j < skillList.size(); j++) {
                     Skill skill = skillList.get(j);
                     
-                    String key = skill.getSkill_name();
+                    String key = skill.getSkillName();
                     Integer value = skill.getMark();
                     
                     map.put(key, value);
@@ -346,7 +346,7 @@ public class FormToPDF {
         for(int i = 0; i < listAdvert.size(); i++) {
             if(i > 0)
                 advert += ", ";
-            advert += listAdvert.get(i).getAdvert_name();
+            advert += listAdvert.get(i).getAdvertName();
         }
         writeText(cb, advert, 45, 505);
     }
