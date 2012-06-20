@@ -305,8 +305,50 @@ public class Order {
         } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtSelect);
-
         }
         return number;
+    }
+    /**
+     * Gets all students who registered today
+     * @return 
+     */
+   public int getAllStudentsTodayCount(){
+        int count = 0;
+        java.sql.Date myDate = new java.sql.Date(System.currentTimeMillis());
+        PreparedStatement stmtSelect = null;
+        Connection conn = DAOFactory.createConnection();
+        ResultSet res = null;
+        try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("SELECT COUNT(last_name) FROM "
+                    + DAOConstants.StudentsTableName
+                    + " WHERE REG_DAY = ?");
+
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            stmtSelect.setDate(1, myDate);
+            System.out.print(stmtSelect.toString());
+            res = stmtSelect.executeQuery();
+
+            int rowsCount = 0;
+            while (res.next()) {
+                count = res.getInt(1);
+                rowsCount++;
+            }
+
+            if (rowsCount < 1) {
+                System.out.println("\n No students found");
+            }
+            if (rowsCount > 1) {
+                System.out.println("\n Some error!");
+            }
+        } catch (SQLException ex) {
+            System.out.print("\nSQLException while getting number of today students");
+        } finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+
+        }
+
+        return count;
     }
 }
