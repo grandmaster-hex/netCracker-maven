@@ -31,7 +31,7 @@ public class StudentDAOImpl implements StudentDAO {
             sbInsert.append("INSERT INTO ");
             sbInsert.append(DAOConstants.StudentsTableName);
             sbInsert.append(" (id_student, first_name, last_name, middle_name, course, study_end_year, id_faculty, "
-                    + "email1, email2, phone1, extra_contacts, why, experience, extra, photo,reg_date)");
+                    + "email1, email2, phone1, extra_contacts, why, experience, extra, reg_day, photo)");
             sbInsert.append(" VALUES (");
             sbInsert.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             stmtInsert = conn.prepareStatement(sbInsert.toString());
@@ -49,8 +49,9 @@ public class StudentDAOImpl implements StudentDAO {
             stmtInsert.setString(12, student.getWhy());
             stmtInsert.setString(13, student.getExperience());
             stmtInsert.setString(14, student.getExtra());
-            stmtInsert.setBlob(15, student.getPhoto());
-            stmtInsert.setDate(16, student.getRegDate());
+            stmtInsert.setDate(15, student.getRegDate());
+            stmtInsert.setBlob(16, student.getPhoto());
+           
             int rows = stmtInsert.executeUpdate();
             if (rows != 1) {
                 throw new SQLException("executeUpdate return value: " + rows);
