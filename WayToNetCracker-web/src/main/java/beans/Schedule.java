@@ -19,6 +19,7 @@ public class Schedule implements Serializable {
     
     String email;    
     String editingData; // поле для файла doEditing.xhtml
+    boolean emailCheck; // проверка почты на присутствие в базе данных
     
     String date;
     String time;
@@ -76,6 +77,14 @@ public class Schedule implements Serializable {
         int[] a= {7,8,9};
         return a;
     }
+
+    public boolean isEmailCheck() {
+        return emailCheck;
+    }
+
+    public void setEmailCheck(boolean emailCheck) {
+        this.emailCheck = emailCheck;
+    }
     
     public void getListTime(){
         if(date !=null && !date.equals(""))  
@@ -104,6 +113,11 @@ public class Schedule implements Serializable {
             times[1]="00:00";
             times[2]="00:00";
         }
+    }
+    
+    public String doEmailCheck(){
+        String a = "почта существует в базе";
+        return a;
     }
     
 }

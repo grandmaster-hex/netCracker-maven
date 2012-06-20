@@ -57,9 +57,16 @@
                 
                 <h:outputText value="Год окончания: " /> 
                 <p:inputMask value="#{Anketa.studt_end_year}" mask="9999"/>
+                
+                <h:outputText value="" />
+                <h:outputText value="" /> 
+                
+                <h:outputText value="Загрузите ваше фото (*.jpg, не больше 300 Кб): " /> 
+                <p:fileUpload value="#{Anketa.file}" mode="simple"/>  
                                 
-            </h:panelGrid>           
-            
+            </h:panelGrid>
+
+                          
             <hr />
             <h3 align="center">Контакты</h3>
             <h:panelGrid id="contactsPanel" columns="1" cellpadding="3" style="margin: 0 auto;">
@@ -118,14 +125,9 @@
             <h:outputText value="разработка ПО" />
             <h:outputText value="" />
             
-            <p:selectOneButton value="#{Anketa.chekExtraInterest}">  
-                <f:selectItem itemLabel="+" itemValue="1" />  
-                <f:selectItem itemLabel="±" itemValue="2" />  
-                <f:selectItem itemLabel="-" itemValue="3" /> 
-                <f:selectItem itemLabel="?" itemValue="4" /> 
-            </p:selectOneButton>
             <h:outputText value="другие области (уточните)" />
-            <p:inputText value="#{Anketa.extraInterest}" />
+            <p:inputText id="extraInterest" value="#{Anketa.extraInterest}" />
+            <h:outputText value="" />
             
             <p><b>Типы работы:</b></p>
             <h:outputText value="" />
@@ -167,14 +169,9 @@
             <h:outputText value="продажи," />
             <h:outputText value="" />
             
-            <p:selectOneButton value="#{Anketa.chekExtraTypesInterest}">  
-                <f:selectItem itemLabel="+" itemValue="1" />  
-                <f:selectItem itemLabel="±" itemValue="2" />  
-                <f:selectItem itemLabel="-" itemValue="3" /> 
-                <f:selectItem itemLabel="?" itemValue="4" /> 
-            </p:selectOneButton>
-            <h:outputText value="другое(уточните)" />
+            <h:outputText value="другое (уточните)" />
             <p:inputText value="#{Anketa.extraTypesInterest}" />
+            <h:outputText value="" />
             </h:panelGrid>
             </h:panelGrid>
             
@@ -369,7 +366,7 @@
                 
                 <h:panelGrid id="advertPanel" columns="2" cellpadding="0" style="border:0; width:450px;">
                     <p><b>Откуда</b> ты узнал о наборе в учебный центр?</p>
-                    <p:selectOneMenu id="advert" value="#{Anketa.advertising}">  
+                    <p:selectOneMenu id="advert" value="#{Anketa.advertising}"> 
                         <f:selectItems value="#{Anketa.getListAdvertising()}" />  
                     </p:selectOneMenu>
                 </h:panelGrid>

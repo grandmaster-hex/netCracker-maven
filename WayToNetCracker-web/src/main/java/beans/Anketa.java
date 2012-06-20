@@ -11,8 +11,13 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped; 
    // or import javax.faces.bean.SessionScoped;
 import netcracker.dao.*;
+import netcracker.converter.*;
 import java.util.*;
 
+import javax.faces.context.FacesContext;
+import javax.faces.application.FacesMessage;
+import org.primefaces.event.FileUploadEvent;  
+import org.primefaces.model.UploadedFile;
 
 @Named("Anketa")
 @SessionScoped
@@ -26,6 +31,7 @@ public class Anketa implements Serializable {
     private int course;
     private String faculty;
     private int studt_end_year;
+    private UploadedFile foto;
     
     //Контакты
     private String email1;
@@ -463,6 +469,14 @@ public class Anketa implements Serializable {
     public void setFaculties(List faculties) {
         this.faculties = faculties;
     }
+
+    public UploadedFile getFoto() {
+        return foto;
+    }
+
+    public void setFoto(UploadedFile foto) {
+        this.foto = foto;
+    }
     
     //метод берущий список вузов
     public List getListVuz(){
@@ -471,8 +485,9 @@ public class Anketa implements Serializable {
         List res = a.getAllUniversities();
         
         return res;
-    }          
+    }        
     
+    //метод берущий список факультетов по выбраному вузу
     public void getListFaculty(){
         if(vuz !=null && !vuz.equals(""))  
         {
@@ -483,13 +498,15 @@ public class Anketa implements Serializable {
         else  
             faculties.removeAll(faculties);
     }
-          
-    public String[] getListAdvertising(){
+    
+    //берем список реклам      
+    public List getListAdvertising(){
         
-        String[] a={"реклама 1","рекламка 2","рекламище 3"};
+        List<Advert> a = DAOFactory.getAdvertDAO().getAllAdverts();
         
-        return a;
+        List<String> res=netcracker.converter.converter.AdvertNames(a);  
+        
+        return res;
     } 
     
-
 }

@@ -19,10 +19,13 @@
                  
                  <h:panelGrid id="editingData" columns="1" cellpadding="3" style="margin: 0 auto;">
                     <p>Введите e-mail, указанный при заполнении анкеты:</p>
-                    <p:inputText value="#{Schedule.email}" />
-
+                    <h:panelGrid columns="2" style="border: 0; width: 500px;">
+                    <p:inputText id="emailCheck" value="#{Schedule.email}">  
+                        <p:ajax event="blur" update="outCheck" />  
+                    </p:inputText>
+                    <h:outputText id="outCheck" value="#{Schedule.doEmailCheck()}" />
+                    </h:panelGrid>
                     <p>Для того чтобы изменить данные по своей анкете, пожалуйста опишите изменяемые данные в поле ниже.</p>
-
                     <p:inputTextarea value="#{Schedule.editingData}" rows="3" cols="100" counter="counter5" maxlength="150"       
                     counterTemplate="{0} characters remaining." autoResize="false"/>  
                     <h:outputText id="counter5" />                    
