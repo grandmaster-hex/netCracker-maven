@@ -4,10 +4,12 @@
  */
 package netcracker.dao;
 
+import java.sql.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -305,24 +307,21 @@ public class Order {
         } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtSelect);
+
         }
         return number;
     }
-    /**
-     * Gets all students who registered today
-     * @return 
-     */
-   public int getAllStudentsTodayCount(){
+    
+    public int getAllStudentsByDayCount(Date myDate){
         int count = 0;
-        java.sql.Date myDate = new java.sql.Date(System.currentTimeMillis());
         PreparedStatement stmtSelect = null;
         Connection conn = DAOFactory.createConnection();
         ResultSet res = null;
         try {
             StringBuffer sbSelect = new StringBuffer();
             sbSelect.append("SELECT COUNT(last_name) FROM "
-                    + DAOConstants.StudentsTableName
-                    + " WHERE REG_DAY = ?");
+                    + DAOConstants.StudentsTableName 
+                    + " WHERE DATE(REG_DAY) = ?");
 
             stmtSelect = conn.prepareStatement(sbSelect.toString());
             stmtSelect.setDate(1, myDate);
@@ -348,7 +347,41 @@ public class Order {
             DAOFactory.closeStatement(stmtSelect);
 
         }
-
+        
         return count;
     }
+    
+    public List<Timestamp> GetAllDates(){
+        PreparedStatement stmtSelect = null;
+        Connection conn = DAOFactory.createConnection();
+        ResultSet result = null;
+        List<Timestamp> dates = new ArrayList();
+        Timestamp date = null;
+        try {
+            StringBuffer sbSelect = new StringBuffer();
+            sbSelect.append("SELECT START_TIME FROM "
+                    + DAOConstants.IntervalsTableName);
+            stmtSelect = conn.prepareStatement(sbSelect.toString());
+            System.out.print(stmtSelect.toString());
+            result = stmtSelect.executeQuery();
+            int rowsCount = 0;
+            while (result.next()) {
+                date = result.getTimestamp(1);
+                dates.add(date);
+                rowsCount++;
+            }
+            if (rowsCount < 1) {
+                System.out.println("\n No dates found");
+            }
+        } catch (SQLException ex) {
+            System.out.print("\nSQLException while getting dates");
+        } finally {
+            DAOFactory.closeConnection(conn);
+            DAOFactory.closeStatement(stmtSelect);
+
+        }
+        return dates;
+    }
+    
+    
 }
