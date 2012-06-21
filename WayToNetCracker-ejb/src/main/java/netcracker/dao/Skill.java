@@ -26,6 +26,15 @@ public class Skill {
         this.notes = notes;
         this.skill_name = skill_name;
     }
+     public Skill(String skill_name, int mark, String notes,
+            int id_student, int id_skill_type) {
+        this.id_skill = 0;
+        this.id_skill_type = id_skill_type;
+        this.id_student = id_student;
+        this.mark = mark;
+        this.notes = notes;
+        this.skill_name = skill_name;
+    }
 
     public int getIdSkill() {
         return id_skill;
