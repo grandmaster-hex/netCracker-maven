@@ -13,6 +13,8 @@ import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialException;
 import netcracker.dao.DAOFactory;
 import netcracker.dao.*; 
+import netcracker.service.FormToPDF;
+import netcracker.service.MailBean;
 import netcracker.service.ScheduleService;
 import org.apache.poi.util.IOUtils;
 /**
@@ -58,23 +60,23 @@ public class employeedaotesting {
 //      
       
                  // System.out.print(b.toString());
-      Calendar cal = Calendar.getInstance();
-      cal.set(Calendar.YEAR,2007);  
-      Date date = cal.getTime();
-      File file = new File("/home/phd/Pictures/5.jpg");  
-      FileInputStream fis = new FileInputStream(file);  
-      byte b1[] = new byte[(int)file.length()];  
-      fis.read(b1);  
-      //System.out.println(b1.length);  
-            try {
-                java.sql.Blob b2 = new SerialBlob(b1);  
-                Student s1 = new Student("asd", "asd", "asd", 4, new java.sql.Date(date.getTime()), 1, "asd", "fgh", "gfh", "hjg", "kj", "hgj", "kj", b2);        
-                StudentDAO stud = DAOFactory.getStudentDAO();
-                 stud.createStudent(s1);
-            }
-            catch(Exception e){
-                System.out.print("ERROR!");
-            }
+//      Calendar cal = Calendar.getInstance();
+//      cal.set(Calendar.YEAR,2007);  
+//      Date date = cal.getTime();
+//      File file = new File("/home/phd/Pictures/5.jpg");  
+//      FileInputStream fis = new FileInputStream(file);  
+//      byte b1[] = new byte[(int)file.length()];  
+//      fis.read(b1);  
+//      //System.out.println(b1.length);  
+//            try {
+//                java.sql.Blob b2 = new SerialBlob(b1);  
+//                Student s1 = new Student("asd", "asd", "asd", 4, new java.sql.Date(date.getTime()), 1, "asd", "fgh", "gfh", "hjg", "kj", "hgj", "kj", b2);        
+//                StudentDAO stud = DAOFactory.getStudentDAO();
+//                 stud.createStudent(s1);
+//            }
+//            catch(Exception e){
+//                System.out.print("ERROR!");
+//            }
                       //---------------Testing createEmployees();
                       //   EmployeeDAO d = null;
                       //   d = DAOFactory.getEmployeeDAO();  
@@ -84,13 +86,20 @@ public class employeedaotesting {
                       //   System.out.print("\n\n\n"+d.getEmployeeById(1).getFirstName());
                       //---------------Testing deleteEmployeeById()
                       //   d.deleteEmployeeById(2);
-                      //---------------Testing sending mail with attachment   
-                      //       MailBean mail = new MailBean();
-                      //        try{
-                      //        mail.sendForm("kvata.l@gmail.com, kalininasofiya@gmail.com,kac.anna.vl@gmail.com,onlylastride@gmail.com,lebentrop@gmail.com","/home/phd/ssh.txt");
-                      //        }
-                      //        catch (Exception ex){
-                      //        }
+                      //---------------Testing sending mail with attachment 
+                        Student st = DAOFactory.getStudentDAO().getStudentByIdStudent(1);
+       
+                        FormToPDF ftp = new FormToPDF();                   
+                        
+                        File file = ftp.createPDF(st);
+                             MailBean mail = new MailBean();
+                           
+                              try{
+                                 mail.sendForm("kvata.l@gmail.com",file);
+                              }
+                              catch (Exception ex){
+                              }
+      
 //                      //        }
 //            } catch (SerialException ex) {
 //                Logger.getLogger(employeedaotesting.class.getName()).log(Level.SEVERE, null, ex);
