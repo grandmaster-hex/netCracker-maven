@@ -8,6 +8,7 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.pdf.*;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -365,13 +366,14 @@ public class FormToPDF {
     }
     
     
-    public void createPDF(Student stud) {
+    public File createPDF(Student stud) {
 
         student = stud;
+        String fileName = "";
         
         try {
             //Путь к файлу
-            String fileName = "Form/" + student.getLastName() + 
+            fileName = "Form/" + student.getLastName() + 
                     "_" + student.getFirstName() + 
                     "_" + student.getStudentId() + ".pdf";
             
@@ -428,6 +430,8 @@ public class FormToPDF {
         } catch (IOException ex) {
             Logger.getLogger(FormToPDF.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return new File(fileName);
     }
   
 }
