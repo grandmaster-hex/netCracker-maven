@@ -44,7 +44,7 @@ public class SheduleDAOImpl implements SheduleDAO {
                 }
             }
         } catch (SQLException ex) {
-            System.out.print("\nSQL exception in createEmployee");
+            System.out.print("\nSQL exception in create shedule");
         } finally {
             DAOFactory.closeConnection(conn);
             DAOFactory.closeStatement(stmtInsert);
