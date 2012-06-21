@@ -39,9 +39,12 @@ public class employeedaotesting {
 //                    cal.set(Calendar.MINUTE,00);
 //                    cal.set(Calendar.SECOND,00);
 //                    Date end = cal.getTime();
-//                    netcracker.service.ScheduleService.deleteSheduleBetweenDates(d, end);                    
-//                    DAOFactory.getSheduleDAO().createShedule(netcracker.service.ScheduleService.separate(d, end, 20, 1, 7));
-
+                   // netcracker.service.ScheduleService.deleteSheduleBetweenDates(d, end);                    
+//                    DAOFactory.getSheduleDAO().createShedule(netcracker.service.ScheduleService.separate(new java.sql.Timestamp(d.getTime()),
+//                            new java.sql.Timestamp(end.getTime()), 20, 1, 7));
+        List<Date> a = DAOFactory.getSheduleDAO().getUniqueDates();
+        Date date = a.get(0);
+        System.out.print(DAOFactory.getSheduleDAO().getStartTimeByDate(date));
         
             //---------------Testing Skills
             //        List<SkillsOfType> a = DAOFactory.getSkillsDAO().getAllSkillTypes(1);
@@ -87,18 +90,18 @@ public class employeedaotesting {
                       //---------------Testing deleteEmployeeById()
                       //   d.deleteEmployeeById(2);
                       //---------------Testing sending mail with attachment 
-                        Student st = DAOFactory.getStudentDAO().getStudentByIdStudent(1);
-       
-                        FormToPDF ftp = new FormToPDF();                   
-                        
-                        File file = ftp.createPDF(st);
-                             MailBean mail = new MailBean();
-                           
-                              try{
-                                 mail.sendForm("kvata.l@gmail.com",file);
-                              }
-                              catch (Exception ex){
-                              }
+//                        Student st = DAOFactory.getStudentDAO().getStudentByIdStudent(1);
+//       
+//                        FormToPDF ftp = new FormToPDF();                   
+//                        
+//                        File file = ftp.createPDF(st);
+//                             MailBean mail = new MailBean();
+//                           
+//                              try{
+//                                 mail.sendForm("kvata.l@gmail.com",file);
+//                              }
+//                              catch (Exception ex){
+//                              }
       
 //                      //        }
 //            } catch (SerialException ex) {
