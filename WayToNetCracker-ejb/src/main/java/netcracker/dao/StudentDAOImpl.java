@@ -262,12 +262,12 @@ public class StudentDAOImpl implements StudentDAO {
             StringBuffer sbSelect = new StringBuffer();
             sbSelect.append("SELECT UNIVERSITY_NAME FROM ");
             sbSelect.append(DAOConstants.FacultiesTableName);
-            sbSelect.append("WHERE id_university = (SELECT id_university FROM");
+            sbSelect.append(" WHERE id_university = (SELECT id_university FROM ");
             sbSelect.append(DAOConstants.StudentsTableName);
-            sbSelect.append("WHERE id_student = ? )");
+            sbSelect.append(" WHERE id_student = ? )");
             stmtSelect = conn.prepareStatement(sbSelect.toString());
             stmtSelect.setInt(1, id_student);
-            //System.out.print(sbSelect.toString());
+            System.out.print(sbSelect.toString());
             res = stmtSelect.executeQuery();
             int rowsCount = 0;
             while (res.next()) {
