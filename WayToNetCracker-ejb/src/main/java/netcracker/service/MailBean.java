@@ -13,6 +13,7 @@ import javax.activation.FileDataSource;
 import javax.ejb.Stateless;
 import javax.mail.*;
 import javax.mail.internet.MimeBodyPart;
+import javax.mail.BodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.naming.NamingException;
@@ -28,7 +29,7 @@ public class MailBean implements MailBeanLocal {
     @Override
      public void sendForm(String email, String file) throws NamingException, MessagingException, IOException {
             String body = new String();
-            body ="\tДобрый день, student.first_name,student.last_name!\n\n"
+            body ="\t Добрый день,student.first_name,student.last_name!\n\n"
                     + "Благодарим за регистрацию для участия в собеседовании."
                     + "Высылаем на указанный Вами адрес анкету. Пожалуйста, распечатайте ее "
                     + "и приходите с ней к нам на собеседование.\n\n"
@@ -46,7 +47,7 @@ public class MailBean implements MailBeanLocal {
             MimeMessage message = new MimeMessage(session);
             message.setSubject("Анкета для собеседования NetCracker");
             MimeBodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setText(body);
+            messageBodyPart.setContent(body,"text/html; charset=UTF-8");
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
             messageBodyPart = new MimeBodyPart();
@@ -59,6 +60,25 @@ public class MailBean implements MailBeanLocal {
             message.setSentDate(new Date());
             transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
     }
+    public void sendMail(String email, String body) throws NamingException, MessagingException, IOException {
+            Properties props = new Properties();
+            props.load(getClass().getResourceAsStream("mail.properties"));
+            Session session = Session.getDefaultInstance(props);
+            session.setDebug(true);
+            Transport transport = session.getTransport();
+            transport.connect(props.getProperty("host"),
+                              Integer.parseInt(props.getProperty("port")),
+                              props.getProperty("user"),
+                              props.getProperty("password"));
+            
+            MimeMessage message = new MimeMessage(session);
+            message.setSubject("Запрос на изменение данных анкеты");
+            message.setContent(body, "text/html; charset=UTF-8");
+            message.addRecipients(Message.RecipientType.TO, email);
+            message.setSentDate(new Date());
+            transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
+    }
+
     
 }
 
