@@ -325,7 +325,7 @@ public class FormToPDF {
     
     private void writeEnglishSkills(PdfContentByte cb) {
         
-        Map<String, Integer> mapEnglish = getSkillMarksMapBySkillType(DAOConstants.SkillTypeKnowledge);
+        Map<String, Integer> mapEnglish = getSkillMarksMapBySkillType(DAOConstants.SkillTypeEnglish);
         
         cb.beginText();
         cb.setFontAndSize(times, 12);
@@ -366,7 +366,7 @@ public class FormToPDF {
     }
     
     
-    public File createPDF(Student stud) {
+    public  File createPDF(Student stud) {
 
         student = stud;
         String fileName = "";
