@@ -4,6 +4,7 @@
  */
 package netcracker.service;
 
+import java.io.File;
 import java.io.IOException;
 import javax.ejb.Local;
 import javax.mail.MessagingException;
@@ -15,6 +16,6 @@ import javax.naming.NamingException;
  */
 @Local
 public interface MailBeanLocal {
-    public void sendForm(String email, String File) 
+    public void sendForm(String email, File file) 
             throws NamingException, MessagingException, IOException;
 }

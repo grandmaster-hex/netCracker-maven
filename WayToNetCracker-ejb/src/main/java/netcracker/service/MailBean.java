@@ -4,6 +4,7 @@
  */
 package netcracker.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
@@ -27,7 +28,7 @@ public class MailBean implements MailBeanLocal {
 
     //Sending mail with generated pdf file. 
     @Override
-     public void sendForm(String email, String file) throws NamingException, MessagingException, IOException {
+     public void sendForm(String email, File file) throws NamingException, MessagingException, IOException {
             String body = new String();
             body ="\t Добрый день,student.first_name,student.last_name!\n\n"
                     + "Благодарим за регистрацию для участия в собеседовании."
